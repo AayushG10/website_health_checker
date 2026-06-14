@@ -55,7 +55,19 @@ function onEvent(evt){
   if(event === "anchors"){ RUN.anchors = data; feed(`anchors: ${data.generic} generic, ${data.empty_or_image_only} empty`); }
   if(event === "topics"){ RUN.clusters = data.clusters; feed(`topics: ${data.clusters.length} clusters`); }
   if(event === "entities"){ RUN.entities = data; feed(`entities on ${data.pages_with_entities} pages`); }
-  if(event === "recommendations"){ RUN.recommendations = data.count; feed(`${data.count} link recommendations`); }
+  if(event === "recommendations"){ RUN.recommendations = data.count; feed(`${data.count} link recommendations`);
+    fetch("/state").then(r=>r.json()).then(s=>{
+      const recs = (s.link_recs || []).slice(0,20);
+      if(recs.length){
+        $("recs").innerHTML = recs.map(r=>`<div class="rec">
+          <span class="mono" style="font-size:11px;color:var(--mute)">${r.source.replace(/https?:\/\/[^/]+/,'')||'/'}</span>
+          <span style="color:var(--mute)"> → </span>
+          <span class="mono" style="font-size:11px">${r.target.replace(/https?:\/\/[^/]+/,'')||'/'}</span>
+          <div class="a">"${r.suggested_anchor||'(pending)'}"</div>
+        </div>`).join("");
+      }
+    }).catch(()=>{});
+  }
   if(event === "saved"){ RUN.status = "done"; feed("report.json written"); }
   if(event === "exported"){ feed("report.html exported"); }
   paint(RUN);
