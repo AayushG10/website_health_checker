@@ -127,6 +127,7 @@ def li_set_recommendations(recommendations: list) -> dict:
     """
     _A["final_recs"] = recommendations or []
     RUN["recommendations"] = len(_A["final_recs"])
+    RUN["link_recs"] = _A["final_recs"][:20]  # top 20 in state for dashboard
     _emit("recommendations", {"count": RUN["recommendations"]})
     return {"count": RUN["recommendations"]}
 

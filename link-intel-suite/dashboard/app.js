@@ -32,10 +32,18 @@ function paint(RUN){
       `<span class="tag ${c.authority}">${c.authority}</span></div>`).join("");
     $("clusters").innerHTML = html || '<div class="empty">No clusters yet.</div>';
   }
-  if(RUN.recommendations !== undefined && RUN.recommendations !== null){
-    set("k-recs", typeof RUN.recommendations === "number" ? RUN.recommendations : RUN.recommendations);
-  }
   if(s) set("k-recs", s.link_recommendations);
+  else if(RUN.recommendations !== undefined && RUN.recommendations !== null) set("k-recs", RUN.recommendations);
+  // render recommendations list from state (available after pipeline finishes)
+  const recs = RUN.link_recs;
+  if(recs && recs.length){
+    $("recs").innerHTML = recs.map(r=>`<div class="rec">
+      <span class="mono" style="font-size:11px;color:var(--mute)">${r.source.replace(/https?:\/\/[^/]+/,'')||'/'}</span>
+      <span style="color:var(--mute)"> → </span>
+      <span class="mono" style="font-size:11px">${r.target.replace(/https?:\/\/[^/]+/,'')||'/'}</span>
+      <div class="a">"${r.suggested_anchor||'(pending)'}"</div>
+    </div>`).join("");
+  }
 }
 
 function feed(line){
