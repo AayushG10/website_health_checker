@@ -57,12 +57,21 @@ def _int(v, d=0):
 
 
 def _norm(u: str) -> str:
-    """Normalise a URL for matching (drop trailing slash, fragment)."""
+    """Normalise a URL for matching.
+
+    Rules (per rulebook):
+      - Strip leading/trailing whitespace
+      - Lowercase (URLs are case-insensitive)
+      - Drop the # fragment
+      - Drop exactly ONE trailing slash (// -> /, not recursively)
+      - Keep query strings as-is (different query = different page)
+    """
     if not u:
         return ""
-    u = u.split("#")[0].strip()
+    u = u.strip().lower()
+    u = u.split("#")[0]          # drop fragment
     if len(u) > 1 and u.endswith("/"):
-        u = u[:-1]
+        u = u[:-1]               # drop exactly one trailing slash
     return u
 
 
@@ -290,6 +299,45 @@ def page_keywords(page, body: str, top=12) -> list[str]:
     return [w for w, _ in c.most_common(top)]
 
 
+def compute_tfidf(pages: list, page_text: dict, top=12) -> dict[str, list[str]]:
+    """TF-IDF keywords per indexable page. IDF penalises terms common across all pages
+    so site-wide terms like 'development' or 'nmg' don't dominate every page's vector."""
+    idx200 = [p for p in pages if is_html(p) and is_200(p) and indexable(p)]
+    N = len(idx200)
+    if N == 0:
+        return {}
+
+    # Step 1: raw token counts per page (title once, H1 ×3, H2, body)
+    raw: dict[str, Counter] = {}
+    for p in idx200:
+        u = _norm(p["Address"])
+        blob = " ".join([
+            p.get("Title 1", "") or "",
+            ((p.get("H1-1", "") or "") + " ") * 3,
+            p.get("H2-1", "") or "",
+            p.get("H2-2", "") or "",
+            (page_text.get(u, "") or "")[:4000],
+        ])
+        raw[u] = Counter(_tokens(blob))
+
+    # Step 2: document frequency — how many pages contain each term
+    df: Counter = Counter()
+    for counts in raw.values():
+        df.update(counts.keys())
+
+    # Step 3: TF-IDF score; top terms returned as ordered list
+    tfidf: dict[str, list[str]] = {}
+    for u, counts in raw.items():
+        total = sum(counts.values()) or 1
+        scores: dict[str, float] = {}
+        for term, cnt in counts.items():
+            tf = cnt / total
+            idf = math.log(N / (df[term] + 1)) + 1
+            scores[term] = tf * idf
+        tfidf[u] = [t for t, _ in sorted(scores.items(), key=lambda x: -x[1])[:top]]
+    return tfidf
+
+
 def build_tfidf_keywords(pages: list, page_text: dict, top=12) -> dict[str, list[str]]:
     """Compute TF-IDF keywords per page. Downweights terms common across all pages
     (e.g. 'development', 'software' on a tech site), surfacing page-specific terms."""
@@ -329,29 +377,65 @@ def build_tfidf_keywords(pages: list, page_text: dict, top=12) -> dict[str, list
 
 
 def cluster_pages(pages, page_text, n_keywords=12) -> dict:
-    """Group indexable pages into topical clusters.
+    """Group indexable pages into topical clusters using greedy keyword-similarity.
 
-    Primary grouping: first URL path segment (e.g. /blog/, /services/, /success-stories/).
-    This matches the expected grader baseline. TF-IDF keywords (not plain TF) are used
-    so relatedness edges are sharper. Each page belongs to exactly one cluster.
-    The model (topic-agent) can later replace keyword-derived names with plain-English ones.
+    Algorithm (deterministic, O(n²)):
+      1. Sort indexable pages by Unique Inlinks descending.
+      2. The most-inlinked page becomes the first cluster seed.
+      3. For each subsequent page (inlinks desc): compare its TF keywords against
+         every existing seed's keywords. Join the cluster whose seed has the highest
+         Jaccard overlap (> 0). If all overlaps are 0, start a new cluster.
+      4. Every page belongs to exactly one cluster (min size = 1).
+
+    Hub and authority logic follow the rulebook exactly.
+    cluster["name"] is left None — the topic-agent fills it in.
     """
     idx200 = [p for p in pages if is_html(p) and is_200(p) and indexable(p)]
-    kw = build_tfidf_keywords(pages, page_text, top=n_keywords)
-
-    path_groups: dict[str, list] = defaultdict(list)
-    for p in idx200:
-        u = _norm(p["Address"])
-        path = urlparse(u).path.strip("/")
-        seg = path.split("/")[0] if path else "(home)"
-        path_groups[seg].append(u)
-
     inl = {_norm(p["Address"]): _int(p.get("Unique Inlinks")) for p in idx200}
-    out: list[dict] = []
 
-    for seg, members in sorted(path_groups.items(), key=lambda x: -len(x[1])):
+    # TF-IDF keywords per page — downweights site-wide generic terms so Jaccard
+    # comparison reflects genuine topical similarity, not shared boilerplate words
+    kw: dict[str, list[str]] = compute_tfidf(idx200, page_text, n_keywords)
+
+    # greedy assignment — process pages most-inlinked first
+    sorted_urls = sorted(
+        [_norm(p["Address"]) for p in idx200],
+        key=lambda u: -inl.get(u, 0),
+    )
+
+    seeds: list[str] = []
+    seed_kw: list[set] = []
+    assignments: dict[str, str] = {}  # url -> seed url
+
+    for u in sorted_urls:
+        kw_u = set(kw.get(u, []))
+        best_seed, best_jac = None, 0.0
+        for i, s in enumerate(seeds):
+            kw_s = seed_kw[i]
+            if not kw_u or not kw_s:
+                continue
+            jac = len(kw_u & kw_s) / len(kw_u | kw_s)
+            if jac > best_jac:
+                best_jac = jac
+                best_seed = s
+        if best_seed is None or best_jac == 0.0:
+            seeds.append(u)
+            seed_kw.append(kw_u)
+            assignments[u] = u
+        else:
+            assignments[u] = best_seed
+
+    # group members by seed
+    seed_members: dict[str, list] = defaultdict(list)
+    for u, s in assignments.items():
+        seed_members[s].append(u)
+
+    # build output clusters
+    used_keys: Counter = Counter()
+    out: list[dict] = []
+    for s, members in seed_members.items():
         members = sorted(members)
-        hub = max(members, key=lambda u: inl.get(u, 0)) if members else None
+        hub = max(members, key=lambda u: inl.get(u, 0))
         hub_inlinks = inl.get(hub, 0)
         member_inl = sorted((inl.get(m, 0) for m in members), reverse=True)
         clear_hub = bool(len(member_inl) >= 2 and hub_inlinks >= 2 * (member_inl[1] or 1))
@@ -359,10 +443,13 @@ def cluster_pages(pages, page_text, n_keywords=12) -> dict:
         for m in members:
             ck.update(kw.get(m, []))
         top_kw = [w for w, _ in ck.most_common(8)]
-        name = " / ".join(top_kw[:3]) if top_kw else seg  # model will replace this
+        # key = top keyword slug, deduplicated with a suffix
+        base_key = top_kw[0] if top_kw else s.rstrip("/").split("/")[-1]
+        used_keys[base_key] += 1
+        key = base_key if used_keys[base_key] == 1 else f"{base_key}_{used_keys[base_key]}"
         out.append({
-            "key": seg,
-            "name": name,
+            "key": key,
+            "name": None,   # topic-agent names this cluster
             "size": len(members),
             "pages": members,
             "hub_page": hub,
@@ -452,8 +539,8 @@ def analyze(export_dir: str) -> dict:
     graph = build_graph(pages, inlinks)
     gstats = graph_stats(pages, inlinks, graph)
     anchors = anchor_analysis(inlinks)
-    clusters = cluster_pages(pages, text)
-    relate = relatedness(clusters["page_keywords"])
+    clusters = cluster_pages(pages, text)                    # uses TF-IDF internally
+    relate = relatedness(clusters["page_keywords"])          # same TF-IDF vectors
     cands = link_candidates(graph, relate, pages)
     return {
         "pages": pages, "graph": graph, "graph_stats": gstats,

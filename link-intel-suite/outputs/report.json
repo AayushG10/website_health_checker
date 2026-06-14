@@ -7,8 +7,8 @@
     "internal_links": 12420,
     "orphan_pages": 0,
     "broken_internal_links": 73,
-    "generic_anchors": 157,
-    "topical_clusters": 33,
+    "generic_anchors": 158,
+    "topical_clusters": 4,
     "link_recommendations": 188
   },
   "link_graph": {
@@ -384,19 +384,19 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/top-12-web-design-trends-you-must-follow-in-2020",
-        "destination": "https://www.hostgator.com/promo/wpbgator?clickid=SnXS-RxJcxyOW95wUx0Mo3QwUknW-TRVPWf-WE0&irgwc=1&affpat=1&mpid=11535",
+        "destination": "https://www.hostgator.com/promo/wpbgator?clickid=snxs-rxjcxyow95wux0mo3qwuknw-trvpwf-we0&irgwc=1&affpat=1&mpid=11535",
         "status": 403,
         "anchor": "Gator Builder"
       },
       {
         "source": "https://nmgtechnologies.com/blog/top-12-web-design-trends-you-must-follow-in-2020",
-        "destination": "https://www.constantcontact.com/website/builder/?clickid=SnXS-RxJcxyOW95wUx0Mo3QwUknW-TXVPWf-WE0&AID=205991&PID=11535&cc=CLK_DCLKAFF_IR_11535_205991&pn=iraffiliate",
+        "destination": "https://www.constantcontact.com/website/builder/?clickid=snxs-rxjcxyow95wux0mo3qwuknw-txvpwf-we0&aid=205991&pid=11535&cc=clk_dclkaff_ir_11535_205991&pn=iraffiliate",
         "status": 403,
         "anchor": "Constant Contact Builder"
       },
       {
         "source": "https://nmgtechnologies.com/blog/top-12-web-design-trends-you-must-follow-in-2020",
-        "destination": "http://twitter.com/share?url=https%3A%2F%2F99designs.com%2Fblog%2Ftrends%2Fweb-design-trends%2F&text=Soft+shadows+and+floating+elements+create+a+pseudo-3D+effect+and+make\u2026+-<a+href%3D\"%2Fprofiles%2F1603259\">Alex+Ivanov<%2Fa>",
+        "destination": "http://twitter.com/share?url=https%3a%2f%2f99designs.com%2fblog%2ftrends%2fweb-design-trends%2f&text=soft+shadows+and+floating+elements+create+a+pseudo-3d+effect+and+make\u2026+-<a+href%3d\"%2fprofiles%2f1603259\">alex+ivanov<%2fa>",
         "status": 520,
         "anchor": "Soft shadows and floating elements create a pseudo-3D effect and make the design more layered and more interesting."
       },
@@ -438,7 +438,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.google.com/fonts/specimen/Exo+2",
+        "destination": "http://www.google.com/fonts/specimen/exo+2",
         "status": 404,
         "anchor": "Exo 2"
       },
@@ -500,7 +500,7 @@
     "redirect_internal_links": [
       {
         "source": "https://nmgtechnologies.com/blog/covid-19-resources",
-        "destination": "https://support.loom.com/hc/en-us/articles/360006579637-Loom-Pro-Free-for-Students-and-Teachers",
+        "destination": "https://support.loom.com/hc/en-us/articles/360006579637-loom-pro-free-for-students-and-teachers",
         "status": 302,
         "anchor": "Loom Pro"
       },
@@ -512,7 +512,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/covid-19-resources",
-        "destination": "https://essentials.salesforce.com/salesforce-care-for-small-business/?d=7010M000000ZWY2&utm_source=ActiveCampaign&utm_medium=email&utm_content=Should+you+change+Facebook+ad+spend+right+now%3F+(and+other+stories)&utm_campaign=MKT-1728",
+        "destination": "https://essentials.salesforce.com/salesforce-care-for-small-business/?d=7010m000000zwy2&utm_source=activecampaign&utm_medium=email&utm_content=should+you+change+facebook+ad+spend+right+now%3f+(and+other+stories)&utm_campaign=mkt-1728",
         "status": 301,
         "anchor": "a free Salesforce Essentials"
       },
@@ -542,7 +542,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/covid-19-resources",
-        "destination": "https://products.office.com/en-us/microsoft-teams/free?&OCID=AID2000955_SEM_Xe7cUAAAAHnJziPd:20200228221128:s&msclkid=54b052bc6b1f119cd58f0ce5fb12755d&ef_id=Xe7cUAAAAHnJziPd:20200228221128:s",
+        "destination": "https://products.office.com/en-us/microsoft-teams/free?&ocid=aid2000955_sem_xe7cuaaaahnjzipd:20200228221128:s&msclkid=54b052bc6b1f119cd58f0ce5fb12755d&ef_id=xe7cuaaaahnjzipd:20200228221128:s",
         "status": 301,
         "anchor": "freemium option to download Teams"
       },
@@ -2012,7 +2012,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/covid-19-resources",
-        "destination": "https://go.microsoft.com/fwlink/p/?linkid=873020&lm=deeplink&lmsrc=homePageWeb&cmpid=WebSignIn",
+        "destination": "https://go.microsoft.com/fwlink/p/?linkid=873020&lm=deeplink&lmsrc=homepageweb&cmpid=websignin",
         "status": 301,
         "anchor": "here"
       },
@@ -3290,19 +3290,19 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/ecommerce-website-development",
-        "destination": "https://nmgtechnologies.drift.com/Nish",
+        "destination": "https://nmgtechnologies.drift.com/nish",
         "status": 302,
         "anchor": "Schedule A Free Assessment"
       },
       {
         "source": "https://nmgtechnologies.com/blog/good-design-vs-great-design",
-        "destination": "https://nmgtechnologies.drift.com/Nish",
+        "destination": "https://nmgtechnologies.drift.com/nish",
         "status": 302,
         "anchor": "Schedule a Free Assesment"
       },
       {
         "source": "https://nmgtechnologies.com/blog/principles-quality-web-design",
-        "destination": "https://nmgtechnologies.drift.com/Nish",
+        "destination": "https://nmgtechnologies.drift.com/nish",
         "status": 302,
         "anchor": "Schedule A Free Assessment"
       },
@@ -3848,7 +3848,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/python-development-guide",
-        "destination": "https://www.ibm.com/support/knowledgecenter/SSANHD_7.6.0/com.ibm.mbs.doc/autoscript/c_automation_scripts.html",
+        "destination": "https://www.ibm.com/support/knowledgecenter/ssanhd_7.6.0/com.ibm.mbs.doc/autoscript/c_automation_scripts.html",
         "status": 301,
         "anchor": "write scripts that automate"
       },
@@ -4250,7 +4250,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
-        "destination": "https://nmgtechnologies.com/Developmental-Checklist.pdf",
+        "destination": "https://nmgtechnologies.com/developmental-checklist.pdf",
         "status": 301,
         "anchor": "carry out web development"
       },
@@ -4262,7 +4262,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
-        "destination": "https://www.mozilla.org/en-US/firefox/new",
+        "destination": "https://www.mozilla.org/en-us/firefox/new",
         "status": 301,
         "anchor": "Firefox"
       },
@@ -4286,7 +4286,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
-        "destination": "https://www.bigcommerce.com/essentials/?irgwc=1&utm_term=VOHxfI3fMxyOW7fwUx0Mo3QwUki2u6T8LSAMQE0&utm_content=185949&utm_campaign=124652&utm_medium=affiliates&utm_source=ImpactRadius",
+        "destination": "https://www.bigcommerce.com/essentials/?irgwc=1&utm_term=vohxfi3fmxyow7fwux0mo3qwuki2u6t8lsamqe0&utm_content=185949&utm_campaign=124652&utm_medium=affiliates&utm_source=impactradius",
         "status": 301,
         "anchor": "BigCommerce"
       },
@@ -4394,7 +4394,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
-        "destination": "https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works",
+        "destination": "https://developer.mozilla.org/en-us/docs/learn/getting_started_with_the_web/how_the_web_works",
         "status": 301,
         "anchor": "How does the web work"
       },
@@ -4592,7 +4592,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
-        "destination": "http://pypl.github.io/PYPL.html",
+        "destination": "http://pypl.github.io/pypl.html",
         "status": 301,
         "anchor": "popular programming languages"
       },
@@ -4826,7 +4826,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/mobile-app-development-guide",
-        "destination": "https://searchmobilecomputing.techtarget.com/definition/mobile-UI-mobile-user-interface",
+        "destination": "https://searchmobilecomputing.techtarget.com/definition/mobile-ui-mobile-user-interface",
         "status": 301,
         "anchor": "here"
       },
@@ -4940,25 +4940,25 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/hashtag/SEMPOChat?src=hash",
+        "destination": "https://twitter.com/hashtag/sempochat?src=hash",
         "status": 301,
         "anchor": "#SEMPOChat"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/hashtag/SEMPOChat?src=hash",
+        "destination": "https://twitter.com/hashtag/sempochat?src=hash",
         "status": 301,
         "anchor": "#SEMPOChat"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/hashtag/SEMPOChat?src=hash",
+        "destination": "https://twitter.com/hashtag/sempochat?src=hash",
         "status": 301,
         "anchor": "#SEMPOChat"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/hashtag/SEMPOChat?src=hash",
+        "destination": "https://twitter.com/hashtag/sempochat?src=hash",
         "status": 301,
         "anchor": "#SEMPOChat"
       },
@@ -4976,7 +4976,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/hashtag/SEMPO?src=hash",
+        "destination": "https://twitter.com/hashtag/sempo?src=hash",
         "status": 301,
         "anchor": "#SEMPO"
       },
@@ -4994,31 +4994,31 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/BKVadvertising",
+        "destination": "https://twitter.com/bkvadvertising",
         "status": 301,
         "anchor": "@BKVadvertising"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/NEW_MEDIA_GURU",
+        "destination": "https://twitter.com/new_media_guru",
         "status": 301,
         "anchor": "@NEW_MEDIA_GURU"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/NEW_MEDIA_GURU",
+        "destination": "https://twitter.com/new_media_guru",
         "status": 301,
         "anchor": "@NEW_MEDIA_GURU"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/NEW_MEDIA_GURU",
+        "destination": "https://twitter.com/new_media_guru",
         "status": 301,
         "anchor": "@NEW_MEDIA_GURU"
       },
       {
         "source": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "destination": "https://twitter.com/NEW_MEDIA_GURU",
+        "destination": "https://twitter.com/new_media_guru",
         "status": 301,
         "anchor": "@NEW_MEDIA_GURU"
       },
@@ -5102,7 +5102,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/new-media-gurus-webinar-and-workshop-on-digital-marketing-strategies-for-smbs-startups",
-        "destination": "http://goo.gl/yXrjsh",
+        "destination": "http://goo.gl/yxrjsh",
         "status": 301,
         "anchor": "Digital Marketing Strategies for SMBs & Startups"
       },
@@ -5414,7 +5414,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/web-application-testing-checklist",
-        "destination": "https://accounts.google.com/ServiceLogin/signinchooser?service=sitemaps&passive=1209600&continue=https%3A%2F%2Fwww.google.com%2Fwebmasters%2Ftools%2Fsitemap-list%3Fpli%3D1&followup=https%3A%2F%2Fwww.google.com%2Fwebmasters%2Ftools%2Fsitemap-list%3Fpli%3D1&flowName=GlifWebSignIn&flowEntry=ServiceLogin",
+        "destination": "https://accounts.google.com/servicelogin/signinchooser?service=sitemaps&passive=1209600&continue=https%3a%2f%2fwww.google.com%2fwebmasters%2ftools%2fsitemap-list%3fpli%3d1&followup=https%3a%2f%2fwww.google.com%2fwebmasters%2ftools%2fsitemap-list%3fpli%3d1&flowname=glifwebsignin&flowentry=servicelogin",
         "status": 302,
         "anchor": "Google Search Console"
       },
@@ -5516,7 +5516,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/frameworks-hybrid-app-development",
-        "destination": "https://www.appcelerator.com/Titanium",
+        "destination": "https://www.appcelerator.com/titanium",
         "status": 301,
         "anchor": "Appcelerator Titanium"
       },
@@ -5570,37 +5570,37 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/BG1X2k",
+        "destination": "http://goo.gl/bg1x2k",
         "status": 301,
         "anchor": "Reporter Connection"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/0GjThN",
+        "destination": "http://goo.gl/0gjthn",
         "status": 301,
         "anchor": "Critique the site"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/iiChMF",
+        "destination": "http://goo.gl/iichmf",
         "status": 301,
         "anchor": "Pitching notes"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/YgUqsA",
+        "destination": "http://goo.gl/yguqsa",
         "status": 301,
         "anchor": "Lucky Orange"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/eRJ41j",
+        "destination": "http://goo.gl/erj41j",
         "status": 301,
         "anchor": "Profnet by Prnewswire"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/fRLIuF",
+        "destination": "http://goo.gl/frliuf",
         "status": 301,
         "anchor": "Feedback Army"
       },
@@ -5618,19 +5618,19 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/qP4nI7",
+        "destination": "http://goo.gl/qp4ni7",
         "status": 301,
         "anchor": "Woopra"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/x4ErQ7",
+        "destination": "http://goo.gl/x4erq7",
         "status": 301,
         "anchor": "Five second test"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/4EXbZh",
+        "destination": "http://goo.gl/4exbzh",
         "status": 301,
         "anchor": "My local reporter"
       },
@@ -5642,25 +5642,25 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/ISjKZl",
+        "destination": "http://goo.gl/isjkzl",
         "status": 301,
         "anchor": "Usabilla"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/cpQitY",
+        "destination": "http://goo.gl/cpqity",
         "status": 301,
         "anchor": "HARO"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/7cZegb",
+        "destination": "http://goo.gl/7czegb",
         "status": 301,
         "anchor": "Media Kitty"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/amAb6t",
+        "destination": "http://goo.gl/amab6t",
         "status": 301,
         "anchor": "User testing.com"
       },
@@ -5672,19 +5672,19 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/2xo3cD",
+        "destination": "http://goo.gl/2xo3cd",
         "status": 301,
         "anchor": "Session Cam"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/1XsXEz",
+        "destination": "http://goo.gl/1xsxez",
         "status": 301,
         "anchor": "Detailed guide on HARO"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/d93Rzu",
+        "destination": "http://goo.gl/d93rzu",
         "status": 301,
         "anchor": "Chartbeat"
       },
@@ -5702,31 +5702,31 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/rqiGNQ",
+        "destination": "http://goo.gl/rqignq",
         "status": 301,
         "anchor": "Source Bottle"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/dBC3KN",
+        "destination": "http://goo.gl/dbc3kn",
         "status": 301,
         "anchor": "Muck Rack"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/HR6Zql",
+        "destination": "http://goo.gl/hr6zql",
         "status": 301,
         "anchor": "Clicky"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/xPG4G0",
+        "destination": "http://goo.gl/xpg4g0",
         "status": 301,
         "anchor": "Expert Engine"
       },
       {
         "source": "https://nmgtechnologies.com/blog/digital-marketing-guide",
-        "destination": "http://goo.gl/mpLdFy",
+        "destination": "http://goo.gl/mpldfy",
         "status": 301,
         "anchor": "me"
       },
@@ -5810,7 +5810,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/best-tools-and-rules-for-mobile-ab-testing",
-        "destination": "https://mixpanel.com/?from=adwords-mp1&gclid=CjwKEAjwydK_BRDK34GenvLB61YSJACZ8da3RGkfs-j_LazNdjEJtI4EtSLaW9zA2uoh4BiomtHQoxoCiEbw_wcB",
+        "destination": "https://mixpanel.com/?from=adwords-mp1&gclid=cjwkeajwydk_brdk34genvlb61ysjacz8da3rgkfs-j_lazndjejti4etslaw9za2uoh4biomthqoxociebw_wcb",
         "status": 308,
         "anchor": "#4 Mixpanel"
       },
@@ -5846,7 +5846,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/top-12-web-design-trends-you-must-follow-in-2020",
-        "destination": "https://www.mozilla.org/en-US/firefox/developer/?utm_source=firebug&utm_medium=lp&utm_campaign=switch&utm_content=landingpage",
+        "destination": "https://www.mozilla.org/en-us/firefox/developer/?utm_source=firebug&utm_medium=lp&utm_campaign=switch&utm_content=landingpage",
         "status": 301,
         "anchor": "Firefox Developer"
       },
@@ -5882,7 +5882,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.comscore.com/Insights/Press_Releases/2013/12/comScore_Reports_October_2013_US_Smartphone_Subscriber_Market_Share",
+        "destination": "http://www.comscore.com/insights/press_releases/2013/12/comscore_reports_october_2013_us_smartphone_subscriber_market_share",
         "status": 301,
         "anchor": "Read more!"
       },
@@ -5900,7 +5900,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.youtube.com/watch?v=mQZY7EmjbMA",
+        "destination": "http://www.youtube.com/watch?v=mqzy7emjbma",
         "status": 301,
         "anchor": "a video"
       },
@@ -5918,7 +5918,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.comscore.com/Products/Audience_Analytics/Mobile_Metrix",
+        "destination": "http://www.comscore.com/products/audience_analytics/mobile_metrix",
         "status": 301,
         "anchor": "Mobile Metrix"
       },
@@ -5936,7 +5936,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://opensource.org/licenses/OFL-1.1",
+        "destination": "http://opensource.org/licenses/ofl-1.1",
         "status": 301,
         "anchor": "SIL Open Font License 1.1"
       },
@@ -5948,7 +5948,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.youtube.com/watch?v=nCeJITfEhSk",
+        "destination": "http://www.youtube.com/watch?v=ncejitfehsk",
         "status": 301,
         "anchor": "Watch video!"
       },
@@ -5978,7 +5978,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.jeffkorhan.com/2013/12/google-is-content-marketing-on-fire.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+StandOutInYourMarket-JeffKorhan+(Jeff+Korhan+)",
+        "destination": "http://www.jeffkorhan.com/2013/12/google-is-content-marketing-on-fire.html?utm_source=feedburner&utm_medium=feed&utm_campaign=feed%3a+standoutinyourmarket-jeffkorhan+(jeff+korhan+)",
         "status": 301,
         "anchor": "Jeff Korhan"
       },
@@ -5990,7 +5990,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.magentocommerce.com/knowledge-base/entry/ce-18-later-release-notes?icid=BLOG_magentoce1810release_funtionalimprovementsreleasenotes",
+        "destination": "http://www.magentocommerce.com/knowledge-base/entry/ce-18-later-release-notes?icid=blog_magentoce1810release_funtionalimprovementsreleasenotes",
         "status": 301,
         "anchor": "release notes"
       },
@@ -6014,19 +6014,19 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.comscore.com/Products/Audience_Analytics/MobiLens",
+        "destination": "http://www.comscore.com/products/audience_analytics/mobilens",
         "status": 301,
         "anchor": "MobiLens"
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://www.comscore.com/Insights/Press_Releases/2013/12/Final_Online_Shopping_Week_Falls_Short_of_Expectations_as_Shortened_Holiday_Calendar_Weighs_on_Season-to-Date_Growth_Rates",
+        "destination": "http://www.comscore.com/insights/press_releases/2013/12/final_online_shopping_week_falls_short_of_expectations_as_shortened_holiday_calendar_weighs_on_season-to-date_growth_rates",
         "status": 301,
         "anchor": "Check the full report!"
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "https://accounts.google.com/ServiceLogin?service=sitemaps&passive=1209600&continue=https%3A%2F%2Fwww.google.com%2Fwebmasters%2Ftools%2Fremovals&followup=https%3A%2F%2Fwww.google.com%2Fwebmasters%2Ftools%2Fremovals",
+        "destination": "https://accounts.google.com/servicelogin?service=sitemaps&passive=1209600&continue=https%3a%2f%2fwww.google.com%2fwebmasters%2ftools%2fremovals&followup=https%3a%2f%2fwww.google.com%2fwebmasters%2ftools%2fremovals",
         "status": 302,
         "anchor": "public URL removal tool"
       },
@@ -6038,7 +6038,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://googlewebmastercentral.blogspot.in/search?updated-max=2013-12-10T11:30:00-08:00&max-results=7",
+        "destination": "http://googlewebmastercentral.blogspot.in/search?updated-max=2013-12-10t11:30:00-08:00&max-results=7",
         "status": 302,
         "anchor": "Read more"
       },
@@ -10452,7 +10452,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/covid-19-resources",
-        "destination": "https://go.microsoft.com/fwlink/p/?linkid=873020&lm=deeplink&lmsrc=homePageWeb&cmpid=WebSignIn",
+        "destination": "https://go.microsoft.com/fwlink/p/?linkid=873020&lm=deeplink&lmsrc=homepageweb&cmpid=websignin",
         "anchor": "here"
       },
       {
@@ -10517,7 +10517,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library/mobile-app-development-guide",
-        "destination": "https://searchmobilecomputing.techtarget.com/definition/mobile-UI-mobile-user-interface",
+        "destination": "https://searchmobilecomputing.techtarget.com/definition/mobile-ui-mobile-user-interface",
         "anchor": "here"
       },
       {
@@ -10561,6 +10561,11 @@
         "anchor": "View More"
       },
       {
+        "source": "https://nmgtechnologies.com/blog/ada-compliance-website-checklist",
+        "destination": "https://www.access-board.gov/guidelines-and-standards/communications-and-it/about-the-section-508-standards/guide-to-the-section-508-standards/web-based-intranet-and-internet-information-and-applications-1194-22",
+        "anchor": "Read here"
+      },
+      {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
         "destination": "http://www.smashingmagazine.com/2013/12/10/freebie-exo-2-0-geometric-sans-serif-font",
         "anchor": "Read more"
@@ -10577,7 +10582,7 @@
       },
       {
         "source": "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "destination": "http://googlewebmastercentral.blogspot.in/search?updated-max=2013-12-10T11:30:00-08:00&max-results=7",
+        "destination": "http://googlewebmastercentral.blogspot.in/search?updated-max=2013-12-10t11:30:00-08:00&max-results=7",
         "anchor": "Read more"
       },
       {
@@ -16165,11 +16170,11 @@
       },
       {
         "source": "https://nmgtechnologies.com/resources/library",
-        "destination": "https://share.hsforms.com/234EjKD2kQeGNhke7DKCksQ5gaz1"
+        "destination": "https://share.hsforms.com/234ejkd2kqegnhke7dkcksq5gaz1"
       },
       {
         "source": "https://nmgtechnologies.com/resources/library",
-        "destination": "https://share.hsforms.com/234EjKD2kQeGNhke7DKCksQ5gaz1"
+        "destination": "https://share.hsforms.com/234ejkd2kqegnhke7dkcksq5gaz1"
       },
       {
         "source": "https://nmgtechnologies.com/blog/tag/events",
@@ -18011,17 +18016,27 @@
   },
   "topical_clusters": [
     {
-      "key": "blog",
-      "name": "blog / journey / easy",
-      "size": 106,
+      "key": "development",
+      "name": null,
+      "size": 181,
       "pages": [
+        "https://nmgtechnologies.com",
+        "https://nmgtechnologies.com/agentic-ai",
+        "https://nmgtechnologies.com/ai-driven-business-transformation-consulting",
+        "https://nmgtechnologies.com/ai-driven-devops-cloud-automation",
+        "https://nmgtechnologies.com/ai-driven-enterprise-software-development",
+        "https://nmgtechnologies.com/ai-enhanced-web-mobile-application-development",
+        "https://nmgtechnologies.com/ai-machine-learning-solutions",
+        "https://nmgtechnologies.com/ai-optimized-ecommerce-solutions",
+        "https://nmgtechnologies.com/ai-powered-business-process-transformation",
+        "https://nmgtechnologies.com/ai-powered-saas-development",
+        "https://nmgtechnologies.com/ai-strategy-implementation-consulting",
         "https://nmgtechnologies.com/blog",
         "https://nmgtechnologies.com/blog/10-best-html-css-frameworks-for-2015",
         "https://nmgtechnologies.com/blog/10-ways-to-find-the-best-outsourcing-team",
         "https://nmgtechnologies.com/blog/5-website-design-trends-invest-2017",
         "https://nmgtechnologies.com/blog/50-mobile-app-kpis",
         "https://nmgtechnologies.com/blog/8-reasons-to-choose-android-application-development-over-ios",
-        "https://nmgtechnologies.com/blog/ada-compliance-website-checklist",
         "https://nmgtechnologies.com/blog/advantages-building-app-dot-net-technology",
         "https://nmgtechnologies.com/blog/advantages-of-asp-net-core",
         "https://nmgtechnologies.com/blog/app-store-optimization-tips",
@@ -18037,11 +18052,9 @@
         "https://nmgtechnologies.com/blog/author/nishtha/page/8",
         "https://nmgtechnologies.com/blog/author/nmg",
         "https://nmgtechnologies.com/blog/avoid-web-design-feedback-mistakes",
-        "https://nmgtechnologies.com/blog/best-call-to-action-buttons",
         "https://nmgtechnologies.com/blog/best-practices-contact-us-page",
         "https://nmgtechnologies.com/blog/best-practices-offshore-software-development",
         "https://nmgtechnologies.com/blog/best-tools-and-rules-for-mobile-ab-testing",
-        "https://nmgtechnologies.com/blog/choose-the-perfect-e-commerce-platform",
         "https://nmgtechnologies.com/blog/consulting-can-save-building-bad-tech",
         "https://nmgtechnologies.com/blog/core-php-vs-php-framework",
         "https://nmgtechnologies.com/blog/covid-19-resources",
@@ -18051,16 +18064,11 @@
         "https://nmgtechnologies.com/blog/ecommerce-website-development",
         "https://nmgtechnologies.com/blog/frameworks-hybrid-app-development",
         "https://nmgtechnologies.com/blog/good-design-vs-great-design",
-        "https://nmgtechnologies.com/blog/google-penalty-recovery-case-study",
-        "https://nmgtechnologies.com/blog/grow-your-website-conversions-2020",
         "https://nmgtechnologies.com/blog/how-to-build-an-app-like-uber",
-        "https://nmgtechnologies.com/blog/how-to-increase-your-website-traffic",
         "https://nmgtechnologies.com/blog/industry-roundup-december-2013",
-        "https://nmgtechnologies.com/blog/least-expensive-way-increase-sales-e-commerce-store",
         "https://nmgtechnologies.com/blog/marketing-tips-for-smbs",
         "https://nmgtechnologies.com/blog/mobile-app-analytics-tools",
         "https://nmgtechnologies.com/blog/must-have-pages-on-your-ecommerce-site",
-        "https://nmgtechnologies.com/blog/new-media-gurus-webinar-and-workshop-on-digital-marketing-strategies-for-smbs-startups",
         "https://nmgtechnologies.com/blog/nmg-recognized-top-performing-mobile-app-development-company-goodfirms",
         "https://nmgtechnologies.com/blog/nmg-technologies-made-list-top-mobile-app-development-companies-goodfirms",
         "https://nmgtechnologies.com/blog/nmg-technologies-nigeria-meet",
@@ -18085,8 +18093,6 @@
         "https://nmgtechnologies.com/blog/principles-quality-web-design",
         "https://nmgtechnologies.com/blog/requirement-gathering-solve-biggest-problems-consulting",
         "https://nmgtechnologies.com/blog/requirement-gathering-the-most-important-step-to-begin-your-start-up-journey",
-        "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-        "https://nmgtechnologies.com/blog/startup-india-event-2016-key-highlights",
         "https://nmgtechnologies.com/blog/stay-ahead-of-the-game-with-koora-break-your-ultimate-companion-for-football-updates",
         "https://nmgtechnologies.com/blog/steps-to-create-engaging-mobile-app-content",
         "https://nmgtechnologies.com/blog/tag/design",
@@ -18102,7 +18108,6 @@
         "https://nmgtechnologies.com/blog/tag/search-engine-optimization",
         "https://nmgtechnologies.com/blog/tag/technology",
         "https://nmgtechnologies.com/blog/tag/web",
-        "https://nmgtechnologies.com/blog/the-hourly-model-of-hiring-resources",
         "https://nmgtechnologies.com/blog/top-12-web-design-trends-you-must-follow-in-2020",
         "https://nmgtechnologies.com/blog/top-ten-php-framework-to-look-out-in-2020",
         "https://nmgtechnologies.com/blog/top-ways-find-right-outsourcing-company",
@@ -18115,75 +18120,37 @@
         "https://nmgtechnologies.com/blog/web-application-php-laravel-framework",
         "https://nmgtechnologies.com/blog/web-application-testing-checklist",
         "https://nmgtechnologies.com/blog/web-design-best-practices",
-        "https://nmgtechnologies.com/blog/website-redesign-process",
         "https://nmgtechnologies.com/blog/why-does-enterprise-mobility-solutions-become-so-popular",
         "https://nmgtechnologies.com/blog/why-mobile-app-fails",
         "https://nmgtechnologies.com/blog/wireframes-mobile-app-development",
         "https://nmgtechnologies.com/blog/wordpress-website-perfect-solution-small-business",
-        "https://nmgtechnologies.com/blog/working-from-home-during-the-coronavirus-lockdown"
-      ],
-      "hub_page": "https://nmgtechnologies.com/blog",
-      "hub_inlinks": 218,
-      "authority": "scattered",
-      "keywords": [
-        "blog",
-        "journey",
-        "easy",
-        "estimated",
-        "minutes",
-        "reading",
-        "app",
-        "website"
-      ]
-    },
-    {
-      "key": "success-stories",
-      "name": "seo / organic / traffic",
-      "size": 23,
-      "pages": [
-        "https://nmgtechnologies.com/success-stories",
-        "https://nmgtechnologies.com/success-stories/acs",
-        "https://nmgtechnologies.com/success-stories/advanced-care",
-        "https://nmgtechnologies.com/success-stories/atlys-case-study",
-        "https://nmgtechnologies.com/success-stories/atmosrx-case-study",
-        "https://nmgtechnologies.com/success-stories/competiscan",
-        "https://nmgtechnologies.com/success-stories/compound-banc",
-        "https://nmgtechnologies.com/success-stories/fusion-firearms-case-study",
-        "https://nmgtechnologies.com/success-stories/hugo-by-rgp",
-        "https://nmgtechnologies.com/success-stories/international-insurance",
-        "https://nmgtechnologies.com/success-stories/jobgraze",
-        "https://nmgtechnologies.com/success-stories/little-academy-nursery",
-        "https://nmgtechnologies.com/success-stories/nikon-case-study",
-        "https://nmgtechnologies.com/success-stories/omtut",
-        "https://nmgtechnologies.com/success-stories/reputation-rhino-case-study",
-        "https://nmgtechnologies.com/success-stories/sforzo-dillingham-case-study",
-        "https://nmgtechnologies.com/success-stories/south-county",
-        "https://nmgtechnologies.com/success-stories/sunshine-case-study",
-        "https://nmgtechnologies.com/success-stories/trainup",
-        "https://nmgtechnologies.com/success-stories/unique-schools",
-        "https://nmgtechnologies.com/success-stories/wealth-concert",
-        "https://nmgtechnologies.com/success-stories/wolomi",
-        "https://nmgtechnologies.com/success-stories/yew"
-      ],
-      "hub_page": "https://nmgtechnologies.com/success-stories",
-      "hub_inlinks": 218,
-      "authority": "hub",
-      "keywords": [
-        "seo",
-        "organic",
-        "traffic",
-        "healthcare",
-        "months",
-        "health",
-        "schema",
-        "potential"
-      ]
-    },
-    {
-      "key": "services",
-      "name": "services / offer / app",
-      "size": 21,
-      "pages": [
+        "https://nmgtechnologies.com/blog/working-from-home-during-the-coronavirus-lockdown",
+        "https://nmgtechnologies.com/clients/case-studies",
+        "https://nmgtechnologies.com/company/about-us",
+        "https://nmgtechnologies.com/company/careers",
+        "https://nmgtechnologies.com/company/leadership",
+        "https://nmgtechnologies.com/company/outsourcing",
+        "https://nmgtechnologies.com/company/process",
+        "https://nmgtechnologies.com/company/promise",
+        "https://nmgtechnologies.com/contact-us",
+        "https://nmgtechnologies.com/download-appdevelopmentcost-ebook",
+        "https://nmgtechnologies.com/download-content-editorial-calendar",
+        "https://nmgtechnologies.com/download-developmental-checklist",
+        "https://nmgtechnologies.com/download-outsourcingrules-ebook",
+        "https://nmgtechnologies.com/ecommerce-checklist",
+        "https://nmgtechnologies.com/get-custom-pricing",
+        "https://nmgtechnologies.com/industry/fintech",
+        "https://nmgtechnologies.com/industry/healthcare",
+        "https://nmgtechnologies.com/industry/marketresearch",
+        "https://nmgtechnologies.com/industry/staffing",
+        "https://nmgtechnologies.com/industry/travel",
+        "https://nmgtechnologies.com/mobile-development-checklist",
+        "https://nmgtechnologies.com/privacy-policy",
+        "https://nmgtechnologies.com/resources/faq",
+        "https://nmgtechnologies.com/resources/library",
+        "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
+        "https://nmgtechnologies.com/resources/library/mobile-app-development-guide",
+        "https://nmgtechnologies.com/resources/library/python-development-guide",
         "https://nmgtechnologies.com/services/crm-development",
         "https://nmgtechnologies.com/services/custom-software-development",
         "https://nmgtechnologies.com/services/custom-software-development/aspnet-development",
@@ -18204,671 +18171,129 @@
         "https://nmgtechnologies.com/services/user-interface-design/mobile-design",
         "https://nmgtechnologies.com/services/user-interface-design/mobile-versions-v1",
         "https://nmgtechnologies.com/services/user-interface-design/web-design",
-        "https://nmgtechnologies.com/services/web-development"
-      ],
-      "hub_page": "https://nmgtechnologies.com/services/custom-software-development",
-      "hub_inlinks": 218,
-      "authority": "scattered",
-      "keywords": [
-        "services",
-        "offer",
-        "app",
-        "migration",
-        "custom",
-        "developers",
-        "provide",
-        "ecommerce"
-      ]
-    },
-    {
-      "key": "company",
-      "name": "digital / solutions / team",
-      "size": 6,
-      "pages": [
-        "https://nmgtechnologies.com/company/about-us",
-        "https://nmgtechnologies.com/company/careers",
-        "https://nmgtechnologies.com/company/leadership",
-        "https://nmgtechnologies.com/company/outsourcing",
-        "https://nmgtechnologies.com/company/process",
-        "https://nmgtechnologies.com/company/promise"
-      ],
-      "hub_page": "https://nmgtechnologies.com/company/about-us",
-      "hub_inlinks": 218,
-      "authority": "scattered",
-      "keywords": [
-        "digital",
-        "solutions",
-        "team",
-        "scientist",
-        "artist",
-        "global",
-        "ventures",
-        "partner"
-      ]
-    },
-    {
-      "key": "solution",
-      "name": "efficiency / services / expansive",
-      "size": 6,
-      "pages": [
+        "https://nmgtechnologies.com/services/web-development",
+        "https://nmgtechnologies.com/sitemap",
         "https://nmgtechnologies.com/solution/artificial-intelligence",
         "https://nmgtechnologies.com/solution/augmented-reality",
         "https://nmgtechnologies.com/solution/blockchain",
         "https://nmgtechnologies.com/solution/cloud-apps",
         "https://nmgtechnologies.com/solution/fintech",
-        "https://nmgtechnologies.com/solution/portals"
-      ],
-      "hub_page": "https://nmgtechnologies.com/solution/artificial-intelligence",
-      "hub_inlinks": 218,
-      "authority": "scattered",
-      "keywords": [
-        "efficiency",
-        "services",
-        "expansive",
-        "generative",
-        "artificial",
-        "advanced",
-        "language",
-        "accelerate"
-      ]
-    },
-    {
-      "key": "resources",
-      "name": "chapter / developer / questions",
-      "size": 5,
-      "pages": [
-        "https://nmgtechnologies.com/resources/faq",
-        "https://nmgtechnologies.com/resources/library",
-        "https://nmgtechnologies.com/resources/library/hire-web-developers-guide",
-        "https://nmgtechnologies.com/resources/library/mobile-app-development-guide",
-        "https://nmgtechnologies.com/resources/library/python-development-guide"
-      ],
-      "hub_page": "https://nmgtechnologies.com/resources/faq",
-      "hub_inlinks": 218,
-      "authority": "scattered",
-      "keywords": [
-        "chapter",
-        "developer",
-        "questions",
-        "frequently",
-        "asked",
-        "faq",
-        "scope",
-        "end"
-      ]
-    },
-    {
-      "key": "industry",
-      "name": "solutions / fintech / financial",
-      "size": 5,
-      "pages": [
-        "https://nmgtechnologies.com/industry/fintech",
-        "https://nmgtechnologies.com/industry/healthcare",
-        "https://nmgtechnologies.com/industry/marketresearch",
-        "https://nmgtechnologies.com/industry/staffing",
-        "https://nmgtechnologies.com/industry/travel"
-      ],
-      "hub_page": "https://nmgtechnologies.com/industry/fintech",
-      "hub_inlinks": 213,
-      "authority": "scattered",
-      "keywords": [
-        "solutions",
-        "fintech",
-        "financial",
-        "crowdfunding",
-        "banking",
-        "payments",
-        "insurance",
-        "accessible"
-      ]
-    },
-    {
-      "key": "work",
-      "name": "trusted / b2b / vice",
-      "size": 4,
-      "pages": [
+        "https://nmgtechnologies.com/solution/portals",
+        "https://nmgtechnologies.com/success-stories",
+        "https://nmgtechnologies.com/success-stories/acs",
+        "https://nmgtechnologies.com/success-stories/advanced-care",
+        "https://nmgtechnologies.com/success-stories/atlys-case-study",
+        "https://nmgtechnologies.com/success-stories/compound-banc",
+        "https://nmgtechnologies.com/success-stories/fusion-firearms-case-study",
+        "https://nmgtechnologies.com/success-stories/international-insurance",
+        "https://nmgtechnologies.com/success-stories/jobgraze",
+        "https://nmgtechnologies.com/success-stories/little-academy-nursery",
+        "https://nmgtechnologies.com/success-stories/nikon-case-study",
+        "https://nmgtechnologies.com/success-stories/sforzo-dillingham-case-study",
+        "https://nmgtechnologies.com/success-stories/south-county",
+        "https://nmgtechnologies.com/success-stories/trainup",
+        "https://nmgtechnologies.com/success-stories/unique-schools",
+        "https://nmgtechnologies.com/success-stories/wealth-concert",
+        "https://nmgtechnologies.com/success-stories/wolomi",
+        "https://nmgtechnologies.com/success-stories/yew",
+        "https://nmgtechnologies.com/wordpress-development",
         "https://nmgtechnologies.com/work/advanced-seo",
         "https://nmgtechnologies.com/work/ecommerce",
         "https://nmgtechnologies.com/work/mobile",
         "https://nmgtechnologies.com/work/web"
       ],
-      "hub_page": "https://nmgtechnologies.com/work/ecommerce",
-      "hub_inlinks": 76,
-      "authority": "scattered",
-      "keywords": [
-        "trusted",
-        "b2b",
-        "vice",
-        "movers",
-        "seo",
-        "original",
-        "delivering",
-        "excellent"
-      ]
-    },
-    {
-      "key": "(home)",
-      "name": "ai-driven / read / nasdaq",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com"
-      ],
       "hub_page": "https://nmgtechnologies.com",
       "hub_inlinks": 218,
       "authority": "scattered",
       "keywords": [
-        "ai-driven",
-        "read",
-        "nasdaq",
-        "ai-powered",
-        "inc",
-        "transforming",
-        "automate",
-        "delvecchia"
+        "development",
+        "nmg",
+        "web",
+        "software",
+        "business",
+        "app",
+        "mobile",
+        "technologies"
       ]
     },
     {
-      "key": "wordpress-development",
-      "name": "wordpress / custom / theme",
-      "size": 1,
+      "key": "website",
+      "name": null,
+      "size": 12,
       "pages": [
-        "https://nmgtechnologies.com/wordpress-development"
-      ],
-      "hub_page": "https://nmgtechnologies.com/wordpress-development",
-      "hub_inlinks": 213,
-      "authority": "scattered",
-      "keywords": [
-        "wordpress",
-        "custom",
-        "theme",
-        "plugins",
-        "cms",
-        "optimized",
-        "offer",
-        "upgradation"
-      ]
-    },
-    {
-      "key": "disclaimer",
-      "name": "disclaimer / pvt / ltd",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/disclaimer"
+        "https://nmgtechnologies.com/advanced-seo-case-studies",
+        "https://nmgtechnologies.com/blog/ada-compliance-website-checklist",
+        "https://nmgtechnologies.com/blog/best-call-to-action-buttons",
+        "https://nmgtechnologies.com/blog/grow-your-website-conversions-2020",
+        "https://nmgtechnologies.com/blog/how-to-increase-your-website-traffic",
+        "https://nmgtechnologies.com/blog/new-media-gurus-webinar-and-workshop-on-digital-marketing-strategies-for-smbs-startups",
+        "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
+        "https://nmgtechnologies.com/blog/startup-india-event-2016-key-highlights",
+        "https://nmgtechnologies.com/blog/website-redesign-process",
+        "https://nmgtechnologies.com/disclaimer",
+        "https://nmgtechnologies.com/success-stories/hugo-by-rgp",
+        "https://nmgtechnologies.com/success-stories/reputation-rhino-case-study"
       ],
       "hub_page": "https://nmgtechnologies.com/disclaimer",
       "hub_inlinks": 139,
-      "authority": "scattered",
+      "authority": "hub",
       "keywords": [
-        "disclaimer",
-        "pvt",
-        "ltd",
-        "india",
-        "guru",
-        "review",
-        "job",
-        "media"
-      ]
-    },
-    {
-      "key": "ai-powered-business-process-transformation",
-      "name": "transformation / workflows / ai-powered",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-powered-business-process-transformation"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-powered-business-process-transformation",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "transformation",
-        "workflows",
-        "ai-powered",
-        "ai-driven",
-        "powered",
-        "automation",
-        "reimagining",
-        "manual"
-      ]
-    },
-    {
-      "key": "ai-driven-devops-cloud-automation",
-      "name": "devops / cloud / intelligent",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-driven-devops-cloud-automation"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-driven-devops-cloud-automation",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "devops",
-        "cloud",
-        "intelligent",
-        "automation",
-        "ai-driven",
-        "monitoring",
-        "pipelines",
-        "faster"
-      ]
-    },
-    {
-      "key": "ai-driven-business-transformation-consulting",
-      "name": "transformation / ai-driven / consulting",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-driven-business-transformation-consulting"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-driven-business-transformation-consulting",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "transformation",
-        "ai-driven",
-        "consulting",
-        "models",
-        "reimagine",
-        "consultants",
-        "matters",
-        "disruption"
-      ]
-    },
-    {
-      "key": "ai-optimized-ecommerce-solutions",
-      "name": "ai-powered / ai-optimized / ecommerce",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-optimized-ecommerce-solutions"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-optimized-ecommerce-solutions",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "ai-powered",
-        "ai-optimized",
-        "ecommerce",
-        "retail",
-        "recommendations",
-        "inventory",
-        "intelligent",
-        "measurable"
-      ]
-    },
-    {
-      "key": "ai-powered-saas-development",
-      "name": "saas / ai-powered / scalable",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-powered-saas-development"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-powered-saas-development",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "saas",
-        "ai-powered",
-        "scalable",
-        "ai-driven",
-        "smarter",
-        "builder",
-        "predictive",
-        "analytics"
-      ]
-    },
-    {
-      "key": "ai-strategy-implementation-consulting",
-      "name": "consulting / roadmap / strategy",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-strategy-implementation-consulting"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-strategy-implementation-consulting",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "consulting",
-        "roadmap",
-        "strategy",
-        "adoption",
-        "implementation",
-        "execution",
-        "scaling",
-        "strategic"
-      ]
-    },
-    {
-      "key": "privacy-policy",
-      "name": "privacy / information / policy",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/privacy-policy"
-      ],
-      "hub_page": "https://nmgtechnologies.com/privacy-policy",
-      "hub_inlinks": 213,
-      "authority": "scattered",
-      "keywords": [
-        "privacy",
-        "information",
-        "policy",
-        "identifiable",
-        "cookies",
-        "personal",
         "website",
-        "collected"
+        "new",
+        "traffic",
+        "design",
+        "how",
+        "marketing",
+        "media",
+        "guru"
       ]
     },
     {
-      "key": "agentic-ai",
-      "name": "agentic / agents / autonomy",
-      "size": 1,
+      "key": "how",
+      "name": null,
+      "size": 5,
       "pages": [
-        "https://nmgtechnologies.com/agentic-ai"
+        "https://nmgtechnologies.com/blog/choose-the-perfect-e-commerce-platform",
+        "https://nmgtechnologies.com/blog/google-penalty-recovery-case-study",
+        "https://nmgtechnologies.com/blog/least-expensive-way-increase-sales-e-commerce-store",
+        "https://nmgtechnologies.com/success-stories/atmosrx-case-study",
+        "https://nmgtechnologies.com/success-stories/sunshine-case-study"
       ],
-      "hub_page": "https://nmgtechnologies.com/agentic-ai",
-      "hub_inlinks": 213,
+      "hub_page": "https://nmgtechnologies.com/blog/least-expensive-way-increase-sales-e-commerce-store",
+      "hub_inlinks": 7,
       "authority": "scattered",
       "keywords": [
-        "agentic",
-        "agents",
-        "autonomy",
-        "risks",
-        "beyond",
-        "autonomous",
-        "automation",
-        "shift"
-      ]
-    },
-    {
-      "key": "contact-us",
-      "name": "together / nmgtechnologies / com",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/contact-us"
-      ],
-      "hub_page": "https://nmgtechnologies.com/contact-us",
-      "hub_inlinks": 218,
-      "authority": "scattered",
-      "keywords": [
-        "together",
-        "nmgtechnologies",
-        "com",
-        "let",
-        "contact",
-        "future",
-        "foyer",
-        "floor"
-      ]
-    },
-    {
-      "key": "ai-enhanced-web-mobile-application-development",
-      "name": "ai-enhanced / apps / adaptive",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-enhanced-web-mobile-application-development"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-enhanced-web-mobile-application-development",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "ai-enhanced",
-        "apps",
-        "adaptive",
-        "recognition",
-        "voice",
-        "predictive",
-        "smarter",
-        "image"
-      ]
-    },
-    {
-      "key": "ai-driven-enterprise-software-development",
-      "name": "enterprise / ai-driven / erp",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-driven-enterprise-software-development"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-driven-enterprise-software-development",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "enterprise",
-        "ai-driven",
-        "erp",
-        "scm",
-        "ai-powered",
-        "modernize",
-        "crm",
-        "predictive"
-      ]
-    },
-    {
-      "key": "ai-machine-learning-solutions",
-      "name": "machine / learning / data",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/ai-machine-learning-solutions"
-      ],
-      "hub_page": "https://nmgtechnologies.com/ai-machine-learning-solutions",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "machine",
-        "learning",
-        "data",
-        "models",
-        "intelligence",
-        "unlock",
-        "processing",
-        "predict"
-      ]
-    },
-    {
-      "key": "get-custom-pricing",
-      "name": "estimates / quote / pricing",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/get-custom-pricing"
-      ],
-      "hub_page": "https://nmgtechnologies.com/get-custom-pricing",
-      "hub_inlinks": 213,
-      "authority": "scattered",
-      "keywords": [
-        "estimates",
-        "quote",
-        "pricing",
-        "personalized",
-        "share",
-        "fill",
-        "schedule",
-        "requirements"
-      ]
-    },
-    {
-      "key": "sitemap",
-      "name": "sitemap / promise / policy",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/sitemap"
-      ],
-      "hub_page": "https://nmgtechnologies.com/sitemap",
-      "hub_inlinks": 139,
-      "authority": "scattered",
-      "keywords": [
-        "sitemap",
-        "promise",
-        "policy",
-        "faq",
-        "privacy",
-        "setups",
-        "versions",
-        "library"
-      ]
-    },
-    {
-      "key": "download-content-editorial-calendar",
-      "name": "calendar / download / fitness",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/download-content-editorial-calendar"
-      ],
-      "hub_page": "https://nmgtechnologies.com/download-content-editorial-calendar",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "calendar",
-        "download",
-        "fitness",
-        "gluten",
-        "equipment",
-        "free",
-        "editorial",
-        "template"
-      ]
-    },
-    {
-      "key": "download-outsourcingrules-ebook",
-      "name": "download / e-book / fitness",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/download-outsourcingrules-ebook"
-      ],
-      "hub_page": "https://nmgtechnologies.com/download-outsourcingrules-ebook",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "download",
-        "e-book",
-        "fitness",
-        "gluten",
-        "equipment",
-        "outsourcing",
-        "ebooks",
-        "eat"
-      ]
-    },
-    {
-      "key": "download-appdevelopmentcost-ebook",
-      "name": "cost / download / e-book",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/download-appdevelopmentcost-ebook"
-      ],
-      "hub_page": "https://nmgtechnologies.com/download-appdevelopmentcost-ebook",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "cost",
-        "download",
-        "e-book",
-        "fitness",
-        "gluten",
-        "equipment",
-        "ebook",
-        "budgets"
-      ]
-    },
-    {
-      "key": "download-developmental-checklist",
-      "name": "checklist / download / fitness",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/download-developmental-checklist"
-      ],
-      "hub_page": "https://nmgtechnologies.com/download-developmental-checklist",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "checklist",
-        "download",
-        "fitness",
-        "gluten",
-        "equipment",
-        "updated",
-        "eat",
-        "free"
-      ]
-    },
-    {
-      "key": "mobile-development-checklist",
-      "name": "checklist / fitness / gluten",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/mobile-development-checklist"
-      ],
-      "hub_page": "https://nmgtechnologies.com/mobile-development-checklist",
-      "hub_inlinks": 3,
-      "authority": "scattered",
-      "keywords": [
-        "checklist",
-        "fitness",
-        "gluten",
-        "equipment",
-        "download",
-        "free",
-        "launch",
-        "eat"
-      ]
-    },
-    {
-      "key": "clients",
-      "name": "inc / stories / atlys",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/clients/case-studies"
-      ],
-      "hub_page": "https://nmgtechnologies.com/clients/case-studies",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "inc",
-        "stories",
-        "atlys",
-        "nasdaq",
-        "studies",
+        "how",
+        "e-commerce",
+        "store",
+        "sales",
+        "increase",
+        "strategy",
         "seo",
-        "delvecchia",
-        "barnes"
+        "website"
       ]
     },
     {
-      "key": "ecommerce-checklist",
-      "name": "checklist / fitness / gluten",
-      "size": 1,
+      "key": "project",
+      "name": null,
+      "size": 3,
       "pages": [
-        "https://nmgtechnologies.com/ecommerce-checklist"
+        "https://nmgtechnologies.com/blog/the-hourly-model-of-hiring-resources",
+        "https://nmgtechnologies.com/success-stories/competiscan",
+        "https://nmgtechnologies.com/success-stories/omtut"
       ],
-      "hub_page": "https://nmgtechnologies.com/ecommerce-checklist",
-      "hub_inlinks": 2,
-      "authority": "scattered",
+      "hub_page": "https://nmgtechnologies.com/blog/the-hourly-model-of-hiring-resources",
+      "hub_inlinks": 5,
+      "authority": "hub",
       "keywords": [
-        "checklist",
-        "fitness",
-        "gluten",
-        "equipment",
-        "ecommerce",
-        "launch",
-        "eat",
-        "thrive"
-      ]
-    },
-    {
-      "key": "advanced-seo-case-studies",
-      "name": "seo / ranking / organic",
-      "size": 1,
-      "pages": [
-        "https://nmgtechnologies.com/advanced-seo-case-studies"
-      ],
-      "hub_page": "https://nmgtechnologies.com/advanced-seo-case-studies",
-      "hub_inlinks": 2,
-      "authority": "scattered",
-      "keywords": [
-        "seo",
-        "ranking",
-        "organic",
-        "keywords",
-        "months",
-        "on-site",
-        "firearms",
-        "lenswear"
+        "project",
+        "time",
+        "model",
+        "hourly",
+        "work",
+        "resources",
+        "hiring",
+        "need"
       ]
     }
   ],
