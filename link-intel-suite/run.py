@@ -196,6 +196,14 @@ def main():
     print(f"Model calls     : {model_calls}")
     print("Wrote outputs/report.json and outputs/report.html")
 
+    if not args.no_dashboard:
+        print(f"\n[li] Dashboard live at http://localhost:{server.PORT}  (Ctrl+C to quit)", flush=True)
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            pass
+
 
 if __name__ == "__main__":
     main()
