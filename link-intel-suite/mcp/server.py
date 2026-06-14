@@ -203,42 +203,217 @@ def li_export() -> dict:
 
 
 def _render_html(o) -> str:
-    s = o["summary"]; g = o["link_graph"]
+    s  = o["summary"]
+    g  = o["link_graph"]
+    at = o["anchor_text"]
+
+    # ── health score (simple weighted formula) ───────────────────────────────
+    score = 100
+    score -= min(len(g["orphan_pages"]) * 3, 15)
+    score -= min(len(g["broken_internal_links"]) * 5, 15)
+    score -= min(len(g.get("redirect_internal_links", [])) * 1, 5)
+    score -= min(len(at["generic_anchors"]) * 0.5, 10)
+    score -= min(len(at["over_optimized_anchors"]) * 5, 5)
+    scattered = sum(1 for c in o["topical_clusters"] if c.get("authority") == "scattered")
+    score -= min(scattered * 5, 20)
+    under = len(g.get("under_linked_pages", []))
+    score -= min(under * 0.5, 5)
+    maxd = g.get("max_crawl_depth", 0)
+    score -= (10 if maxd > 6 else 5 if maxd > 4 else 0)
+    score = max(0, round(score))
+    grade = "A" if score >= 90 else "B" if score >= 75 else "C" if score >= 60 else "D" if score >= 45 else "F"
+    grade_color = {"A":"#22c55e","B":"#6ea8fe","C":"#e2b53e","D":"#f97316","F":"#FF0000"}.get(grade,"#c8c5be")
+
+    # ── helpers ──────────────────────────────────────────────────────────────
+    def slug(url): return (url or "").replace("https://","").replace("http://","")
+    def tag(label, color, bg):
+        return f'<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:{bg};color:{color}">{label}</span>'
+    def badge_auth(a):
+        return tag("hub","#04210f","#22c55e") if a=="hub" else tag("scattered","#c8c5be","#3a3a42")
+
+    # ── section: clusters ─────────────────────────────────────────────────────
     cl_rows = "".join(
-        f'<tr><td>{c.get("name") or c["key"]}</td><td>{c["size"]}</td>'
-        f'<td><span class="sev {"high" if c["authority"]=="hub" else "low"}">{c["authority"]}</span></td>'
-        f'<td class="mono" style="font-size:11px">{(c["hub_page"] or "").replace("https://","")}</td></tr>'
+        f'<tr><td><strong>{c.get("name") or c["key"]}</strong></td>'
+        f'<td>{c["size"]}</td>'
+        f'<td>{badge_auth(c.get("authority","scattered"))}</td>'
+        f'<td class="mono" style="font-size:11px;color:#c8c5be">{slug(c.get("hub_page") or "")}</td></tr>'
         for c in o["topical_clusters"])
+
+    # ── section: recommendations ──────────────────────────────────────────────
     rec_rows = "".join(
-        f'<tr><td class="mono" style="font-size:11px">{r["source"].replace("https://","")}</td>'
-        f'<td class="mono" style="font-size:11px">{r["target"].replace("https://","")}</td>'
-        f'<td><strong>{(r.get("suggested_anchor") or "(write anchor)")}</strong></td>'
-        f'<td>{r.get("relatedness","")}</td></tr>'
-        for r in o["link_recommendations"][:40])
-    return f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>Internal Linking Intelligence - {o['site']}</title>
-<style>body{{font-family:Inter,system-ui,sans-serif;background:#1a1a1f;color:#f8f7f4;margin:0;padding:40px;line-height:1.5}}
-.wrap{{max-width:920px;margin:0 auto}}h1{{font-size:28px;margin:0 0 4px}}.sub{{color:#c8c5be;margin-bottom:24px}}
-.card{{background:#242428;border:1px solid #3a3a42;border-radius:14px;padding:22px;margin-bottom:18px}}
-.k{{display:flex;gap:22px;flex-wrap:wrap}}.k div{{font-size:13px;color:#c8c5be}}.k b{{display:block;font-size:28px;color:#f8f7f4}}
-table{{width:100%;border-collapse:collapse;font-size:13.5px}}th,td{{text-align:left;padding:9px 10px;border-bottom:1px solid #3a3a42}}
-th{{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c8c5be}}
-.mono{{font-family:'JetBrains Mono',ui-monospace,monospace}}
-.sev{{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}}.sev.high{{background:#22c55e;color:#04210f}}
-.sev.low{{background:#3a3a42;color:#c8c5be}}.muted{{color:#c8c5be;font-size:13px}}</style></head><body><div class="wrap">
-<h1>Internal Linking Intelligence</h1><div class="sub">{o['site']} - {o['pages_crawled']} pages crawled</div>
-<div class="card k">
-<div><b>{s['internal_links']}</b>internal links</div>
-<div><b style="color:#e2b53e">{s['orphan_pages']}</b>orphan pages</div>
-<div><b style="color:#FF0000">{s['broken_internal_links']}</b>broken internal links</div>
-<div><b>{s['generic_anchors']}</b>generic anchors</div>
-<div><b>{s['topical_clusters']}</b>clusters</div>
-<div><b style="color:#6ea8fe">{s['link_recommendations']}</b>link suggestions</div></div>
-<div class="card"><h3>Topical clusters &amp; authority</h3><table><thead><tr><th>Cluster</th><th>Pages</th><th>Authority</th><th>Hub page</th></tr></thead>
-<tbody>{cl_rows or '<tr><td colspan=4 class=muted>No clusters.</td></tr>'}</tbody></table></div>
-<div class="card"><h3>Contextual internal link recommendations</h3><table><thead><tr><th>From</th><th>Should link to</th><th>Suggested anchor</th><th>Rel.</th></tr></thead>
-<tbody>{rec_rows or '<tr><td colspan=4 class=muted>No recommendations.</td></tr>'}</tbody></table></div>
-<p class="muted">Generated by Link Intel Suite - model {o.get('run_meta',{}).get('model','')}</p></div></body></html>"""
+        f'<tr>'
+        f'<td class="mono" style="font-size:11px;color:#c8c5be">{slug(r["source"])}</td>'
+        f'<td class="mono" style="font-size:11px">{slug(r["target"])}</td>'
+        f'<td><strong style="color:#6ea8fe">{r.get("suggested_anchor") or "(pending)"}</strong></td>'
+        f'<td style="color:#c8c5be">{r.get("reason","")[:60]}</td>'
+        f'</tr>'
+        for r in o["link_recommendations"][:50])
+
+    # ── section: broken links ─────────────────────────────────────────────────
+    broken_rows = "".join(
+        f'<tr>'
+        f'<td class="mono" style="font-size:11px;color:#c8c5be">{slug(b["source"])}</td>'
+        f'<td class="mono" style="font-size:11px">{slug(b["destination"])}</td>'
+        f'<td>{tag(str(b["status"]),"#fff","#FF0000")}</td>'
+        f'<td style="color:#c8c5be">{(b.get("anchor") or "")[:40]}</td>'
+        f'</tr>'
+        for b in g["broken_internal_links"][:30])
+
+    # ── section: generic anchors ──────────────────────────────────────────────
+    generic_rows = "".join(
+        f'<tr>'
+        f'<td class="mono" style="font-size:11px;color:#c8c5be">{slug(a["source"])}</td>'
+        f'<td class="mono" style="font-size:11px">{slug(a["destination"])}</td>'
+        f'<td style="color:#e2b53e">{a.get("anchor","")}</td>'
+        f'</tr>'
+        for a in at["generic_anchors"][:30])
+
+    # ── section: orphan pages ─────────────────────────────────────────────────
+    orphan_items = "".join(
+        f'<div style="padding:5px 0;border-bottom:1px solid #3a3a42;font-family:monospace;font-size:12px;color:#c8c5be">{slug(u)}</div>'
+        for u in g["orphan_pages"][:20]) or '<div style="color:#c8c5be;font-size:13px">No orphan pages found.</div>'
+
+    # ── section: over-optimised anchors ──────────────────────────────────────
+    over_rows = "".join(
+        f'<tr>'
+        f'<td class="mono" style="font-size:11px;color:#c8c5be">{slug(a["destination"])}</td>'
+        f'<td><strong style="color:#f97316">{a["anchor"]}</strong></td>'
+        f'<td>{a["count"]}</td>'
+        f'<td>{int(a.get("share",0)*100)}%</td>'
+        f'</tr>'
+        for a in at["over_optimized_anchors"][:20])
+
+    # ── section: editorially invisible ───────────────────────────────────────
+    invisible = g.get("editorially_invisible_pages", [])
+    invisible_items = "".join(
+        f'<div style="padding:5px 0;border-bottom:1px solid #3a3a42;font-family:monospace;font-size:12px;color:#c8c5be">{slug(u)}</div>'
+        for u in invisible[:20]) or '<div style="color:#22c55e;font-size:13px">All pages have editorial links.</div>'
+
+    model = o.get("run_meta", {}).get("model", "")
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Internal Linking Report — {o['site']}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:Inter,system-ui,sans-serif;background:#0f0f13;color:#f8f7f4;line-height:1.6;padding:40px 20px}}
+.wrap{{max-width:980px;margin:0 auto}}
+h1{{font-size:26px;font-weight:700;margin-bottom:4px}}
+h2{{font-size:16px;font-weight:600;margin-bottom:14px;color:#f8f7f4}}
+.sub{{color:#c8c5be;font-size:14px;margin-bottom:32px}}
+.card{{background:#17171c;border:1px solid #2e2e38;border-radius:14px;padding:24px;margin-bottom:20px}}
+.kpi-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}}
+.kpi{{background:#17171c;border:1px solid #2e2e38;border-radius:12px;padding:18px}}
+.kpi .val{{font-size:32px;font-weight:700;line-height:1;display:block;margin-bottom:4px}}
+.kpi .lbl{{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#c8c5be}}
+.grade-box{{background:#17171c;border:1px solid #2e2e38;border-radius:14px;padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:28px}}
+.grade-circle{{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:700;flex-shrink:0;border:3px solid {grade_color};color:{grade_color}}}
+.grade-detail{{flex:1}}
+.grade-detail h2{{font-size:18px;margin-bottom:6px}}
+.grade-detail p{{font-size:13px;color:#c8c5be;margin-bottom:10px}}
+.score-bar-bg{{background:#2e2e38;border-radius:999px;height:8px;width:100%}}
+.score-bar-fill{{background:{grade_color};border-radius:999px;height:8px;width:{score}%}}
+table{{width:100%;border-collapse:collapse;font-size:13px}}
+th{{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#c8c5be;padding:8px 10px;border-bottom:1px solid #2e2e38;text-align:left}}
+td{{padding:9px 10px;border-bottom:1px solid #2e2e38;vertical-align:top}}
+tr:last-child td{{border-bottom:none}}
+.mono{{font-family:'JetBrains Mono',monospace}}
+.section-label{{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#c8c5be;margin-bottom:10px;display:flex;align-items:center;gap:8px}}
+.dot-red{{width:8px;height:8px;border-radius:50%;background:#FF0000;display:inline-block}}
+.dot-amber{{width:8px;height:8px;border-radius:50%;background:#e2b53e;display:inline-block}}
+.dot-green{{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block}}
+.dot-blue{{width:8px;height:8px;border-radius:50%;background:#6ea8fe;display:inline-block}}
+.footer{{color:#c8c5be;font-size:12px;margin-top:32px;padding-top:16px;border-top:1px solid #2e2e38}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Internal Linking Intelligence</h1>
+<div class="sub">{o['site']} &nbsp;·&nbsp; {o['pages_crawled']} pages crawled &nbsp;·&nbsp; model: {model}</div>
+
+<!-- HEALTH SCORE -->
+<div class="grade-box">
+  <div class="grade-circle">{grade}</div>
+  <div class="grade-detail">
+    <h2>Site Link Health Score: {score}/100</h2>
+    <p>Based on orphan pages, broken links, anchor quality, topical authority, and crawl depth.</p>
+    <div class="score-bar-bg"><div class="score-bar-fill"></div></div>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi"><span class="val">{s['internal_links']}</span><span class="lbl">Internal Links</span></div>
+  <div class="kpi"><span class="val" style="color:#e2b53e">{s['orphan_pages']}</span><span class="lbl">Orphan Pages</span></div>
+  <div class="kpi"><span class="val" style="color:#FF0000">{s['broken_internal_links']}</span><span class="lbl">Broken Links</span></div>
+  <div class="kpi"><span class="val" style="color:#e2b53e">{s['generic_anchors']}</span><span class="lbl">Generic Anchors</span></div>
+  <div class="kpi"><span class="val">{s['topical_clusters']}</span><span class="lbl">Topic Clusters</span></div>
+  <div class="kpi"><span class="val" style="color:#6ea8fe">{s['link_recommendations']}</span><span class="lbl">Link Suggestions</span></div>
+  <div class="kpi"><span class="val" style="color:#f97316">{len(invisible)}</span><span class="lbl">Editorially Invisible</span></div>
+  <div class="kpi"><span class="val" style="color:#f97316">{scattered}</span><span class="lbl">Scattered Clusters</span></div>
+</div>
+
+<!-- BROKEN LINKS -->
+<div class="card">
+  <div class="section-label"><span class="dot-red"></span>Broken Internal Links ({len(g["broken_internal_links"])} total)</div>
+  {"<p style='color:#22c55e;font-size:13px'>No broken internal links found.</p>" if not g["broken_internal_links"] else
+  f'<table><thead><tr><th>Source page</th><th>Broken destination</th><th>Status</th><th>Anchor</th></tr></thead><tbody>{broken_rows}</tbody></table>'}
+  {"" if len(g["broken_internal_links"]) <= 30 else f'<p style="color:#c8c5be;font-size:12px;margin-top:8px">Showing 30 of {len(g["broken_internal_links"])} broken links.</p>'}
+</div>
+
+<!-- ORPHAN PAGES -->
+<div class="card">
+  <div class="section-label"><span class="dot-amber"></span>Orphan Pages — no inlinks ({len(g["orphan_pages"])} total)</div>
+  {orphan_items}
+</div>
+
+<!-- EDITORIALLY INVISIBLE -->
+<div class="card">
+  <div class="section-label"><span class="dot-amber"></span>Editorially Invisible Pages ({len(invisible)} total)</div>
+  <p style="font-size:13px;color:#c8c5be;margin-bottom:12px">These pages appear in nav/header/footer but no article body text links to them. Zero editorial endorsement.</p>
+  {invisible_items}
+</div>
+
+<!-- TOPICAL CLUSTERS -->
+<div class="card">
+  <div class="section-label"><span class="dot-blue"></span>Topical Clusters &amp; Authority ({len(o["topical_clusters"])} clusters, {scattered} scattered)</div>
+  <table><thead><tr><th>Cluster</th><th>Pages</th><th>Authority</th><th>Hub page</th></tr></thead>
+  <tbody>{cl_rows or '<tr><td colspan=4 style="color:#c8c5be">No clusters.</td></tr>'}</tbody></table>
+</div>
+
+<!-- LINK RECOMMENDATIONS -->
+<div class="card">
+  <div class="section-label"><span class="dot-green"></span>Contextual Link Recommendations ({len(o["link_recommendations"])} suggestions)</div>
+  <table><thead><tr><th>From page</th><th>Should link to</th><th>Suggested anchor</th><th>Reason</th></tr></thead>
+  <tbody>{rec_rows or '<tr><td colspan=4 style="color:#c8c5be">No recommendations.</td></tr>'}</tbody></table>
+  {"" if len(o["link_recommendations"]) <= 50 else f'<p style="color:#c8c5be;font-size:12px;margin-top:8px">Showing 50 of {len(o["link_recommendations"])} recommendations.</p>'}
+</div>
+
+<!-- ANCHOR TEXT -->
+<div class="card">
+  <div class="section-label"><span class="dot-amber"></span>Generic Anchors ({len(at["generic_anchors"])} found)</div>
+  {"<p style='color:#22c55e;font-size:13px'>No generic anchors found.</p>" if not at["generic_anchors"] else
+  f'<table><thead><tr><th>Source</th><th>Destination</th><th>Anchor text</th></tr></thead><tbody>{generic_rows}</tbody></table>'}
+</div>
+
+{"" if not at["over_optimized_anchors"] else f'''
+<div class="card">
+  <div class="section-label"><span class="dot-red"></span>Over-Optimised Anchors ({len(at["over_optimized_anchors"])} destinations)</div>
+  <p style="font-size:13px;color:#c8c5be;margin-bottom:12px">One non-generic anchor accounts for &ge;60% of all internal links to this page with &ge;10 uses — unnatural pattern.</p>
+  <table><thead><tr><th>Destination</th><th>Dominant anchor</th><th>Count</th><th>Share</th></tr></thead>
+  <tbody>{over_rows}</tbody></table>
+</div>
+'''}
+
+<div class="footer">Generated by Link Intel Suite &nbsp;·&nbsp; model: {model} &nbsp;·&nbsp; {o['pages_crawled']} pages &nbsp;·&nbsp; {s['internal_links']} internal links</div>
+</div>
+</body>
+</html>"""
 
 
 # ---------- dashboard HTTP host ----------
