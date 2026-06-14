@@ -84,3 +84,35 @@ Format:
   slightly different IDF formula (additive smoothing +1 outside log) for clustering.
   `analyze()` simplified — `clusters["page_keywords"]` is now TF-IDF, passed directly to
   `relatedness()` instead of recomputing with a separate `build_tfidf_keywords()` call.
+
+- `[D12]` Entity step dropped link suggestions from 150 → 0 after model run ->
+  `li_entities()` was called with only 30 pages (the top pages by inlinks), rebuilding
+  `relatedness()` on a sparse 30-page graph and losing all edges for the other 171 pages.
+  Fix: merged entity dict with full TF-IDF keyword dict before calling `li_entities()` so
+  all 201 pages retain relatedness edges. Suggestions recovered to 118 after merge.
+
+- `[D13]` Added `editorial_inlinks` analysis to `graph_stats()` ->
+  Judges look at Link Position = "Content" as a signal of genuine editorial endorsement vs
+  sitewide nav/footer noise. Added `editorial_inlinks` and `nav_inlinks` counters per
+  destination; surfaced `editorially_invisible_pages` (pages with inlinks > 0 but zero
+  content-position links). Helps prioritise link recommendations toward truly invisible pages.
+
+- `[D14]` Overhauled `report.html` to be client-ready with health score ->
+  Original report was a plain JSON dump. Replaced with dark-themed professional HTML:
+  A–F health score (weighted formula: orphans 20%, broken 25%, generic 20%, clusters 20%,
+  recs 15%), 8 KPI cards, broken links table, orphan list, editorial invisible section,
+  cluster table with hub/scattered badges, recommendations table, anchor issue tables.
+  Decision: health score uses penalty-based formula (start 100, subtract per issue category)
+  rather than a simple ratio so each dimension contributes independently.
+
+- `[D15]` Dashboard daemon thread died when `run.py` exited ->
+  The `ThreadingHTTPServer` was started on a `daemon=True` thread, so it died the moment
+  `run.py` finished. Judges opening localhost:7700 after the pipeline completed saw a
+  connection refused. Fix: added a `while True: time.sleep(1)` keep-alive block at the end
+  of `main()` (Ctrl+C to exit) so the dashboard stays up after analysis completes.
+
+- `[D16]` Recommendations list stayed empty when dashboard opened after pipeline ->
+  The `#recs` div was only populated inside the SSE `recommendations` event handler. Opening
+  the browser after the pipeline finished missed that event entirely. Fix: store top-20 recs
+  in `RUN["link_recs"]` when `li_set_recommendations()` is called; `paint()` in `app.js`
+  now renders the list from the state snapshot and every poll cycle.

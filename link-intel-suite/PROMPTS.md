@@ -88,3 +88,43 @@ Format per entry:
    - **For:** wiring model-driven cluster naming and anchor writing into the headless pipeline
    - **Revised?** Minor — added is_available() check + --no-model CLI flag so run.py works
      without Ollama for grader testing. Schema still passes with null anchors.
+
+8. **Prompt:** "Add editorial_inlinks tracking to graph_stats(). For each row in all_inlinks.csv
+   where Type==Hyperlink and destination is a 200 indexable page: if Link Position=='Content'
+   increment editorial_inlinks[dst], if Link Position in ('Header','Nav','Footer') increment
+   nav_inlinks[dst]. Return editorial_inlinks dict, nav_inlinks dict, and
+   editorially_invisible_pages = pages with inlinks > 0 but editorial_inlinks == 0."
+   - **For:** surfacing pages that only get linked from nav/footer, never from editorial content
+   - **Revised?** No — first try. Found 54 editorially invisible pages on the sample export.
+
+9. **Prompt:** "Overhaul mcp/server.py _render_html() to produce a client-ready dark-themed
+   report. Include: (1) health score A-F with weighted penalty formula
+   (orphans 20%, broken 25%, generic 20%, clusters 20%, recs 15%); (2) 8 KPI cards;
+   (3) broken links table with red badges; (4) orphan page list; (5) editorially invisible
+   section; (6) topical clusters table with hub/scattered badges; (7) recommendations table
+   with anchor text in blue; (8) generic and over-optimised anchor tables."
+   - **For:** making report.html genuinely presentable to a client, not a raw data dump
+   - **Revised?** Minor tweaks to health score weights to avoid too-harsh grading on sites
+     with zero orphans but many broken links.
+
+10. **Prompt:** "After li_entities() is called with only the top 30 pages, link suggestions
+    dropped from 150 to 0. Debug why. Fix: before calling li_entities(entity_dict), merge
+    entity_dict with the full tfidf_kw dict from analyze() so all 201 pages have keyword
+    entries in the relatedness graph, not just the 30 entity-extracted pages."
+    - **For:** fixing sparse relatedness graph that collapsed link candidate count to zero
+    - **Revised?** No — after merge, suggestions recovered to 118.
+
+11. **Prompt:** "The dashboard server dies as soon as run.py finishes because the HTTP thread
+    is daemon=True. Fix: after the summary print block in main(), if not args.no_dashboard,
+    print a 'Dashboard live at localhost:7700 (Ctrl+C to quit)' message then block with
+    while True: time.sleep(1) inside a try/except KeyboardInterrupt."
+    - **For:** keeping localhost:7700 alive so judges can open it after the pipeline completes
+    - **Revised?** No — one shot fix. Server now stays up until Ctrl+C.
+
+12. **Prompt:** "The #recs div shows 'No recommendations yet.' even after the pipeline
+    finishes. Root cause: recs are only rendered in the SSE 'recommendations' event handler,
+    so opening the browser after the pipeline misses the event. Fix in two parts:
+    (1) in server.py li_set_recommendations(), add RUN['link_recs'] = _A['final_recs'][:20];
+    (2) in app.js paint(), read RUN.link_recs and render the same rec template used in onEvent."
+    - **For:** making recommendations visible on page load, not just during live SSE stream
+    - **Revised?** No — both parts applied together fixed it in one pass.
