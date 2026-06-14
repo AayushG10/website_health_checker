@@ -202,12 +202,16 @@ def graph_stats(pages, inlinks, graph) -> dict:
         over_linked = []
 
     # broken / redirect / nofollow internal links (from all_inlinks)
+    # editorial inlinks: Link Position == "Content" only (not Header/Nav/Footer)
     broken, redir, nofollow = [], [], []
+    editorial_inlinks = defaultdict(int)   # destination -> count of Content-position links
+    nav_inlinks       = defaultdict(int)   # destination -> count of Header/Nav/Footer links
     for r in inlinks:
-        sc = _int(r.get("Status Code"))
+        sc  = _int(r.get("Status Code"))
         typ = r.get("Type", "")
         dst = _norm(r.get("Destination", ""))
         src = _norm(r.get("Source", ""))
+        pos = (r.get("Link Position", "") or "").strip().lower()
         if typ == "Hyperlink" and 400 <= sc <= 599:
             broken.append({"source": src, "destination": dst, "status": sc,
                            "anchor": (r.get("Anchor", "") or "").strip()})
@@ -217,6 +221,17 @@ def graph_stats(pages, inlinks, graph) -> dict:
         if typ == "Hyperlink" and (r.get("Follow", "true") or "").strip().lower() == "false":
             nofollow.append({"source": src, "destination": dst,
                              "anchor": (r.get("Anchor", "") or "").strip()})
+        if typ == "Hyperlink" and dst in {_norm(p["Address"]) for p in idx200}:
+            if pos == "content":
+                editorial_inlinks[dst] += 1
+            elif pos in ("header", "nav", "footer"):
+                nav_inlinks[dst] += 1
+
+    # editorially invisible: indexable 200 pages with total inlinks > 0 but 0 Content links
+    editorially_invisible = sorted([
+        u for u in inl
+        if inl[u] > 0 and editorial_inlinks.get(u, 0) == 0
+    ])
 
     return {
         "pages_total": len(pages),
@@ -231,6 +246,9 @@ def graph_stats(pages, inlinks, graph) -> dict:
         "redirect_internal_links": redir,
         "nofollow_internal_links": nofollow,
         "avg_inlinks": round(sum(inl.values()) / len(inl), 1) if inl else 0,
+        "editorial_inlinks": dict(editorial_inlinks),
+        "nav_inlinks": dict(nav_inlinks),
+        "editorially_invisible_pages": editorially_invisible,
     }
 
 
