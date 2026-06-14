@@ -11,7 +11,10 @@
     "./agents/anchor-agent.md",
     "./agents/topic-agent.md",
     "./agents/linker-agent.md",
-    "./agents/reporter.md"
+    "./agents/reporter.md",
+    "./agents/editorial-audit-agent.md",
+    "./agents/health-score-agent.md",
+    "./agents/fixplan-agent.md"
   ],
   "mcpServers": {
     "link-intel-suite": {
