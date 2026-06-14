@@ -14,7 +14,7 @@ Usage:
   python run.py sample-export/ --no-model      # skip Ollama even if running
 """
 from __future__ import annotations
-import argparse, os, sys, time
+import argparse, json as _json, os, re as _re, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "mcp"))
@@ -25,58 +25,122 @@ from linkintel import model_steps as _ms
 
 
 def _run_model_steps():
-    """Name clusters, extract entities, write anchors via Ollama."""
-    model_calls = 0
-
-    # 1. name clusters (one batched call)
-    clusters = server._A["clusters"]["clusters"]
-    names = _ms.name_clusters(clusters)
-    if names:
-        server.li_topics(names)
-        model_calls += 1
-        print(f"[li] named {len(names)} clusters", flush=True)
-
-    # 2. entity extraction for important pages (top 25 by inlinks)
+    """Three model steps: name clusters, extract entities, write anchor text."""
     pages_by_url = {_ana._norm(p["Address"]): p for p in server._A["pages"]}
-    page_text = server._A.get("page_text", {})
-    inl = {_ana._norm(p["Address"]): _ana._int(p.get("Unique Inlinks"))
-           for p in server._A["pages"]
-           if _ana.is_html(p) and _ana.is_200(p) and _ana.indexable(p)}
-    important_urls = sorted(inl, key=lambda u: -inl[u])[:25]
+    page_text    = server._A.get("page_text", {})
+    clusters     = server._A["clusters"]["clusters"]
+    tfidf_kw     = server._A["clusters"]["page_keywords"]   # TF-IDF fallback
+    model_calls  = 0
+
+    # ── Step 1: Name every cluster (one call per cluster) ────────────────────
+    total = len(clusters)
+    for i, cluster in enumerate(clusters, 1):
+        kw_str = ", ".join((cluster.get("keywords") or [])[:5])
+        titles = [
+            (pages_by_url.get(u, {}).get("Title 1") or "").strip()
+            for u in cluster.get("pages", [])[:3]
+        ]
+        titles_str = "; ".join(t for t in titles if t) or "(no titles)"
+        prompt = (
+            f"Given these keywords: {kw_str} and these page titles: {titles_str}, "
+            f"give a 2-4 word plain English name for this topic cluster. "
+            f"Reply with only the cluster name, nothing else."
+        )
+        try:
+            name = _ms._chat(prompt, max_tokens=20).strip().strip("\"'")
+            cluster["name"] = name
+            model_calls += 1
+            print(f"[li] Naming cluster {i}/{total}: {name}", flush=True)
+        except Exception as e:
+            print(f"[li] cluster {i} naming failed: {e}", flush=True)
+
+    # push names to the server RUN state
+    server.li_topics({c["key"]: c.get("name") for c in clusters if c.get("name")})
+
+    # ── Step 2: Entity extraction — top 30 pages by Unique Inlinks ───────────
+    inl = {
+        _ana._norm(p["Address"]): _ana._int(p.get("Unique Inlinks"))
+        for p in server._A["pages"]
+        if _ana.is_html(p) and _ana.is_200(p) and _ana.indexable(p)
+    }
+    important = sorted(inl, key=lambda u: -inl[u])[:30]
 
     entities: dict = {}
-    for u in important_urls:
-        p = pages_by_url.get(u, {})
-        body = page_text.get(u, "")
-        ents = _ms.extract_entities(u, body, p.get("Title 1", ""), p.get("H1-1", ""))
-        if ents:
-            entities[u] = ents
+    for url in important:
+        p       = pages_by_url.get(url, {})
+        title   = (p.get("Title 1") or "").strip()
+        h1      = (p.get("H1-1")    or "").strip()
+        content = " ".join((page_text.get(url, "") or "").split()[:600])
+        prompt  = (
+            "Extract 5-8 key entities from this webpage. Entities are: product names, service "
+            "names, technologies, methodologies, or named concepts specific to this page. "
+            "Do NOT include generic words like 'development', 'services', 'company', 'solutions'.\n\n"
+            f"Page title: {title}\nH1: {h1}\nContent: {content}\n\n"
+            'Reply with a JSON array of strings only. Example: ["React Native", "iOS", "Flutter"]'
+        )
+        try:
+            raw  = _ms._chat(prompt, max_tokens=150)
+            m    = _re.search(r"\[.*?\]", raw, _re.DOTALL)
+            ents = _json.loads(m.group()) if m else []
+            entities[url] = [str(e).strip() for e in ents if e][:8] or tfidf_kw.get(url, [])
             model_calls += 1
+        except Exception:
+            entities[url] = tfidf_kw.get(url, [])
+        print(f"[li] Entities for {url}: {entities[url]}", flush=True)
 
-    if entities:
-        server.li_entities(entities)
-        print(f"[li] entities extracted for {len(entities)} pages", flush=True)
+    # merge real entities with TF-IDF fallback for pages not in the entity dict,
+    # so relatedness() has full page coverage and link_candidates stays non-empty
+    merged = dict(tfidf_kw)
+    merged.update(entities)
+    server.li_entities(merged)   # rebuilds relatedness + link_candidates on full set
 
-    # 3. write anchors (one call per source page)
+    # ── Step 3: Anchor text — one call per candidate ──────────────────────────
     recs = []
-    for blk in server._A.get("link_candidates", []):
-        source = blk["source"]
-        source_title = (pages_by_url.get(source, {}).get("Title 1") or "").strip() \
-                       or source.rstrip("/").split("/")[-1].replace("-", " ")
-        updated = _ms.write_anchors(source, source_title, blk["candidates"], pages_by_url)
-        model_calls += 1
-        for c in updated:
+    for item in server._A.get("link_candidates", []):
+        source    = item["source"]
+        src_p     = pages_by_url.get(source, {})
+        src_title = (src_p.get("Title 1") or "").strip() \
+                    or source.rstrip("/").split("/")[-1].replace("-", " ")
+
+        for c in item["candidates"]:
+            target    = c["target"]
+            tgt_p     = pages_by_url.get(target, {})
+            tgt_title = (tgt_p.get("Title 1") or "").strip() \
+                        or target.rstrip("/").split("/")[-1].replace("-", " ")
+            tgt_h1    = (tgt_p.get("H1-1") or "").strip()
+            tgt_ents  = entities.get(target, tfidf_kw.get(target, []))[:3]
+
+            prompt = (
+                "Write a 3-6 word internal link anchor text for a link pointing to this page.\n\n"
+                f"Target page title: {tgt_title}\n"
+                f"Target page H1: {tgt_h1}\n"
+                f"Target page topics: {', '.join(tgt_ents)}\n"
+                f"Source page context: {src_title}\n\n"
+                "Rules:\n"
+                "- Describe the TARGET page specifically\n"
+                "- Do NOT use: click here, read more, learn more, here, this, view more\n"
+                "- Do NOT repeat the exact page title word-for-word\n"
+                "- Write naturally as if it appears mid-sentence in body copy\n"
+                "- Reply with only the anchor text, nothing else"
+            )
+            try:
+                anchor = _ms._chat(prompt, max_tokens=30).strip().strip("\"'")
+                c["suggested_anchor"] = anchor
+                model_calls += 1
+            except Exception:
+                pass   # stays None; schema allows null
+
             recs.append({
-                "source": source,
-                "target": c["target"],
+                "source":           source,
+                "target":           target,
                 "suggested_anchor": c.get("suggested_anchor"),
-                "relatedness": c["relatedness"],
-                "reason": "shared topics: " + ", ".join(c.get("shared_topics") or []),
+                "relatedness":      c["relatedness"],
+                "reason":           "shares topics: " + ", ".join((c.get("shared_topics") or [])[:3]),
             })
 
     if recs:
         server.li_set_recommendations(recs)
-        print(f"[li] wrote {len(recs)} link recommendations with anchors", flush=True)
+        print(f"[li] wrote {len(recs)} recommendations", flush=True)
 
     return model_calls
 

@@ -69,6 +69,12 @@ Format:
   pages from 40 → 60 -> more candidate edges means the linker has more options to find
   genuinely useful non-redundant suggestions. Link recommendations went from 30 → 188.
 
+- `[D11]` Fixed `_chat()` returning empty string for qwen3:8b -> Root cause: qwen3:8b's
+  extended thinking mode consumes the entire `num_predict` token budget on `<think>` tokens,
+  leaving zero tokens for the actual answer. Adding `"think": False` to the Ollama API payload
+  disables the thinking chain completely; the model then outputs content tokens directly.
+  Verified: `think: False` + `num_predict: 30` is sufficient for cluster names and anchors.
+
 - `[D10]` Added `compute_tfidf()` and switched clustering from plain TF to TF-IDF ->
   greedy Jaccard with plain TF produced 4 clusters (181 pages in one) because "development",
   "nmg", "software" appear in top-12 TF of almost every tech company page, giving non-zero

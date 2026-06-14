@@ -16,17 +16,24 @@ from __future__ import annotations
 import json, os, re, urllib.request, urllib.error
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-MODEL = os.environ.get("RADAR_MODEL", os.environ.get("LI_MODEL", "gpt-oss:20b-cloud"))
+MODEL = os.environ.get("RADAR_MODEL", os.environ.get("LI_MODEL", "qwen3:8b"))
 
 
 # --------------------------------------------------------------------------- #
 # low-level chat call
 # --------------------------------------------------------------------------- #
 def _chat(prompt: str, max_tokens: int = 512) -> str:
+    """Call Ollama chat API with streaming.
+
+    Uses think=False to disable qwen3/deepseek-r1 thinking chains — otherwise
+    qwen3 spends its entire num_predict budget on <think> tokens and returns
+    empty content.  stream=True so we can join incremental content tokens.
+    """
     payload = json.dumps({
         "model": MODEL,
         "messages": [{"role": "user", "content": prompt}],
-        "stream": False,
+        "stream": True,
+        "think": False,
         "options": {"num_predict": max_tokens, "temperature": 0.15},
     }).encode()
     req = urllib.request.Request(
@@ -35,8 +42,15 @@ def _chat(prompt: str, max_tokens: int = 512) -> str:
         headers={"Content-Type": "application/json"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=90) as r:
-        return json.loads(r.read())["message"]["content"].strip()
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = r.read()
+
+    lines = [json.loads(l) for l in raw.strip().split(b"\n") if l.strip()]
+    # collect content tokens (not thinking tokens — those are in message.thinking)
+    content = "".join(d.get("message", {}).get("content", "") for d in lines).strip()
+    # also strip any inline <think>…</think> blocks (non-streaming reasoning models)
+    content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL).strip()
+    return content
 
 
 def _extract_json(text: str, kind: str = "object"):

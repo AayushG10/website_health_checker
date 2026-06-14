@@ -69,6 +69,15 @@ Format per entry:
    - **For:** fixing the 4-cluster collapse caused by plain TF generic terms dominating Jaccard
    - **Revised?** No — 24 clusters on first try, largest 50 pages, all 201 covered.
 
+7. **Prompt:** "qwen3:8b returns empty content on all streaming chunks — content is '' and
+   thinking is non-empty. Test think=False API param vs /no_think in system/user message vs
+   increasing num_predict. Report which works with num_predict=20."
+   - **For:** debugging why _chat() returned empty string for every call through the module
+   - **Revised?** Yes — `/no_think` in system/user message still triggers thinking. `think: False`
+     in the top-level JSON payload (not in `options`) disables thinking entirely. With that fix
+     `num_predict=50` is sufficient. Root cause: thinking tokens count against `num_predict`,
+     so a budget of 20 is entirely consumed by `<think>` with no room for the answer.
+
 6. **Prompt:** "Create linkintel/model_steps.py with three Ollama API functions:
    name_clusters(clusters) — one batched call for all clusters, returns {key: name};
    extract_entities(url, body, title, h1) — one call per page, returns list of 5-10 entities;
