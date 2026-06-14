@@ -18218,7 +18218,7 @@
     },
     {
       "key": "mobile",
-      "name": "Mobile App Performance",
+      "name": "Mobile App Performance and Tools",
       "size": 11,
       "pages": [
         "https://nmgtechnologies.com/blog/50-mobile-app-kpis",
@@ -18455,7 +18455,7 @@
     },
     {
       "key": "strategy",
-      "name": "AI Commerce Strategy Implementation",
+      "name": "AI Commerce Strategy",
       "size": 3,
       "pages": [
         "https://nmgtechnologies.com/ai-strategy-implementation-consulting",
@@ -18591,7 +18591,7 @@
     },
     {
       "key": "google",
-      "name": "Digital Marketing for Pandemic Recovery",
+      "name": "Digital Marketing for Pandemic Response",
       "size": 2,
       "pages": [
         "https://nmgtechnologies.com/blog/covid-19-resources",
@@ -18716,22 +18716,7 @@
       }
     ],
     "https://nmgtechnologies.com/wordpress-development": [],
-    "https://nmgtechnologies.com/services/mobile-application-development/enterprise-mobility": [
-      {
-        "to": "https://nmgtechnologies.com/services/user-interface-design/web-design",
-        "score": 0.067,
-        "shared": [
-          "Healthcare & Medical"
-        ]
-      },
-      {
-        "to": "https://nmgtechnologies.com/services/user-interface-design",
-        "score": 0.067,
-        "shared": [
-          "Healthcare & Medical"
-        ]
-      }
-    ],
+    "https://nmgtechnologies.com/services/mobile-application-development/enterprise-mobility": [],
     "https://nmgtechnologies.com/solution/portals": [],
     "https://nmgtechnologies.com/disclaimer": [
       {
@@ -18812,13 +18797,6 @@
     ],
     "https://nmgtechnologies.com/services/custom-software-development/aspnet-development": [],
     "https://nmgtechnologies.com/services/user-interface-design/web-design": [
-      {
-        "to": "https://nmgtechnologies.com/services/mobile-application-development/enterprise-mobility",
-        "score": 0.067,
-        "shared": [
-          "Healthcare & Medical"
-        ]
-      },
       {
         "to": "https://nmgtechnologies.com/services/user-interface-design",
         "score": 0.067,
@@ -18941,6 +18919,14 @@
       }
     ],
     "https://nmgtechnologies.com/company/outsourcing": [
+      {
+        "to": "https://nmgtechnologies.com/company/process",
+        "score": 0.143,
+        "shared": [
+          "Agile Development",
+          "Scrum"
+        ]
+      },
       {
         "to": "https://nmgtechnologies.com/services/user-interface-design/mobile-design",
         "score": 0.067,
@@ -19172,13 +19158,6 @@
         "score": 0.071,
         "shared": [
           "NMG Technologies"
-        ]
-      },
-      {
-        "to": "https://nmgtechnologies.com/services/mobile-application-development/enterprise-mobility",
-        "score": 0.067,
-        "shared": [
-          "Healthcare & Medical"
         ]
       },
       {
@@ -20614,7 +20593,16 @@
       }
     ],
     "https://nmgtechnologies.com/company/careers": [],
-    "https://nmgtechnologies.com/company/process": [],
+    "https://nmgtechnologies.com/company/process": [
+      {
+        "to": "https://nmgtechnologies.com/company/outsourcing",
+        "score": 0.143,
+        "shared": [
+          "Agile Development",
+          "Scrum"
+        ]
+      }
+    ],
     "https://nmgtechnologies.com/contact-us": [
       {
         "to": "https://nmgtechnologies.com/solution/augmented-reality",
@@ -34079,7 +34067,7 @@
     {
       "source": "https://nmgtechnologies.com/company/leadership",
       "target": "https://nmgtechnologies.com/success-stories/jobgraze",
-      "suggested_anchor": "Discover how JobGraze connects healthcare employers with skilled professionals.",
+      "suggested_anchor": "Discover how JobGraze connects healthcare employers with precision-targeted opportunities.",
       "relatedness": 0.043,
       "reason": "shares topics: career"
     },
@@ -34198,7 +34186,7 @@
     {
       "source": "https://nmgtechnologies.com/privacy-policy",
       "target": "https://nmgtechnologies.com/blog/good-design-vs-great-design",
-      "suggested_anchor": "Choosing between good and great design",
+      "suggested_anchor": "Choosing between good and great design for your business",
       "relatedness": 0.091,
       "reason": "shares topics: site, website"
     },
@@ -34247,7 +34235,7 @@
     {
       "source": "https://nmgtechnologies.com/agentic-ai",
       "target": "https://nmgtechnologies.com/blog/ada-compliance-website-checklist",
-      "suggested_anchor": "ADA Compliance Checklist for Website Accessibility",
+      "suggested_anchor": "ADA Compliance Checklist for Public Websites",
       "relatedness": 0.043,
       "reason": "shares topics: compliance"
     },
@@ -34359,7 +34347,7 @@
     {
       "source": "https://nmgtechnologies.com/blog/tag/events",
       "target": "https://nmgtechnologies.com/blog/author/nishtha/page/6",
-      "suggested_anchor": "Discover how to save minutes on your software development journey",
+      "suggested_anchor": "Discover how to save minutes on your software development journey with our estimated reading guide.",
       "relatedness": 0.5,
       "reason": "shares topics: easy, estimated, events"
     },
@@ -34429,7 +34417,7 @@
     {
       "source": "https://nmgtechnologies.com/get-custom-pricing",
       "target": "https://nmgtechnologies.com/blog/best-practices-offshore-software-development",
-      "suggested_anchor": "offshore software development best practices",
+      "suggested_anchor": "Discover offshore software development best practices",
       "relatedness": 0.043,
       "reason": "shares topics: project"
     },
@@ -34485,7 +34473,7 @@
     {
       "source": "https://nmgtechnologies.com/disclaimer",
       "target": "https://nmgtechnologies.com/blog/sempo-hangouts-session-user-experience",
-      "suggested_anchor": "SEMPo Hangouts on web design and UX in 2019",
+      "suggested_anchor": "SEMPo Hangouts on Web Design and UX",
       "relatedness": 0.091,
       "reason": "shares topics: guru, media"
     },
@@ -34506,7 +34494,7 @@
     {
       "source": "https://nmgtechnologies.com/disclaimer",
       "target": "https://nmgtechnologies.com/blog/page/8",
-      "suggested_anchor": "Discover how to save estimated reading minutes with our blog.",
+      "suggested_anchor": "Discover how to save estimated reading minutes with our blog tips.",
       "relatedness": 0.091,
       "reason": "shares topics: guru, media"
     },
@@ -34709,7 +34697,7 @@
     {
       "source": "https://nmgtechnologies.com/blog/author/nishtha",
       "target": "https://nmgtechnologies.com/blog/page/5",
-      "suggested_anchor": "Streamline your software development with tips in under 5 minutes",
+      "suggested_anchor": "Make your software development journey easy with our blog tips and tricks",
       "relatedness": 0.412,
       "reason": "shares topics: easy, estimated, journey"
     },
@@ -34870,7 +34858,7 @@
     {
       "source": "https://nmgtechnologies.com/blog/tag/growth",
       "target": "https://nmgtechnologies.com/blog/author/nishtha/page/4",
-      "suggested_anchor": "Discover how to save minutes on your software development journey",
+      "suggested_anchor": "Discover how to save minutes on your software development journey with our estimated reading guide.",
       "relatedness": 0.5,
       "reason": "shares topics: easy, estimated, journey"
     }
@@ -34878,6 +34866,6 @@
   "run_meta": {
     "model": "gpt-oss:20b-cloud",
     "model_calls": 172,
-    "duration_sec": 225.2
+    "duration_sec": 245.4
   }
 }
