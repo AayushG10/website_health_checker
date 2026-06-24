@@ -1,0 +1,16 @@
+{
+  "runs": [
+    {
+      "date": "2026-06-21 12:34",
+      "site": "nmgtechnologies.com",
+      "score": 36,
+      "grade": "F",
+      "pages": 221,
+      "links": 12420,
+      "broken": 73,
+      "orphans": 0,
+      "clusters": 16,
+      "recs": 163
+    }
+  ]
+}

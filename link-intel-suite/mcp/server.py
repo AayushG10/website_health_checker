@@ -58,9 +58,79 @@ def li_load(export_dir: str) -> dict:
     RUN.update({"urls": res["graph_stats"]["pages_total"],
                 "site": _site(res["pages"]), "status": "running",
                 "page_text_count": res["page_text_count"]})
+
+    # expose digital marketing intelligence immediately
+    dm = res.get("digital_marketing", {})
+    pr = dm.get("pagerank", {})
+    RUN["digital_marketing"] = {
+        "cannibalization":    dm.get("cannibalization", []),
+        "money_pages":        dm.get("money_pages", []),
+        "seo_opportunities":  dm.get("seo_opportunities", []),
+        "thin_content":       dm.get("thin_content", []),
+        "content_gaps":       dm.get("content_gaps", []),
+        "anchor_keyword_map": dm.get("anchor_keyword_map", []),
+        "pagerank_top": sorted(
+            [{"url": u, "score": s} for u, s in pr.items()], key=lambda x: -x["score"])[:15],
+        "pagerank_bottom": sorted(
+            [{"url": u, "score": s} for u, s in pr.items()], key=lambda x: x["score"])[:10],
+    }
     _emit("loaded", {"site": RUN["site"], "urls": RUN["urls"],
                      "page_text": res["page_text_count"]})
     return {"urls": RUN["urls"], "site": RUN["site"], "page_text": res["page_text_count"]}
+
+
+def _depth_distribution(pages) -> dict:
+    """Count indexable 200 HTML pages per crawl depth level."""
+    dist = {}
+    for p in pages:
+        if analyzer.is_html(p) and analyzer.is_200(p) and analyzer.indexable(p):
+            d = str(analyzer._int(p.get("Crawl Depth", 0)))
+            dist[d] = dist.get(d, 0) + 1
+    return dist
+
+
+def _health_score(g, a, cl_list) -> tuple:
+    score = 100
+    score -= min(len(g["orphan_pages"]) * 3, 15)
+    score -= min(len(g["broken_internal_links"]) * 5, 15)
+    score -= min(len(g.get("redirect_internal_links", [])) * 1, 5)
+    score -= min(len(a["generic_anchors"]) * 0.5, 10)
+    score -= min(len(a["over_optimized_anchors"]) * 5, 5)
+    scattered = sum(1 for c in cl_list if c.get("authority") == "scattered")
+    score -= min(scattered * 5, 20)
+    score -= min(len(g.get("under_linked_pages", [])) * 0.5, 5)
+    maxd = g.get("max_crawl_depth", 0)
+    score -= (10 if maxd > 6 else 5 if maxd > 4 else 0)
+    score = max(0, round(score))
+    grade = "A" if score >= 90 else "B" if score >= 75 else "C" if score >= 60 else "D" if score >= 45 else "F"
+    return score, grade
+
+
+def _priority_fixes(g, a, cl_list) -> list:
+    fixes = []
+    for lnk in g["broken_internal_links"][:6]:
+        fixes.append({"priority": 1, "impact": "critical", "type": "broken_link",
+                      "action": f"Fix broken link → {lnk['destination'].replace('https://','').replace('http://','')}",
+                      "source": lnk["source"], "detail": f"HTTP {lnk['status']}"})
+    for url in g["orphan_pages"][:5]:
+        fixes.append({"priority": 2, "impact": "high", "type": "orphan_page",
+                      "action": f"Add inlinks to orphan: {url.replace('https://','').replace('http://','')}",
+                      "source": url, "detail": "0 inlinks"})
+    for item in a["over_optimized_anchors"][:3]:
+        fixes.append({"priority": 3, "impact": "medium", "type": "over_optimized",
+                      "action": f'Diversify anchor "{item["anchor"]}" ({item["count"]} uses, {int(item.get("share",0)*100)}%)',
+                      "source": item["destination"], "detail": f'{item["count"]} exact-match uses'})
+    scattered_cl = [c for c in cl_list if c.get("authority") == "scattered"]
+    for c in scattered_cl[:4]:
+        fixes.append({"priority": 4, "impact": "medium", "type": "scattered_cluster",
+                      "action": f'Build hub for "{c.get("name") or c["key"]}" cluster ({c["size"]} pages)',
+                      "source": c.get("hub_page", ""), "detail": f'{c["size"]} pages, no clear hub'})
+    for url in g.get("under_linked_pages", [])[:3]:
+        fixes.append({"priority": 5, "impact": "low", "type": "under_linked",
+                      "action": f"Add internal links to under-linked page",
+                      "source": url, "detail": "≤1 inlink"})
+    fixes.sort(key=lambda x: x["priority"])
+    return fixes[:12]
 
 
 def li_graph() -> dict:
@@ -76,6 +146,9 @@ def li_graph() -> dict:
         "redirect_internal_links": len(g["redirect_internal_links"]),
         "nofollow_internal_links": len(g["nofollow_internal_links"]),
     }
+    RUN["depth_distribution"] = _depth_distribution(_A["pages"])
+    RUN["orphan_urls"] = g["orphan_pages"][:30]
+    RUN["under_linked_urls"] = g.get("under_linked_pages", [])[:20]
     _emit("graph", RUN["graph_stats"])
     return RUN["graph_stats"]
 
@@ -86,8 +159,19 @@ def li_anchors() -> dict:
                       "empty_or_image_only": len(a["empty_or_image_only"]),
                       "over_optimized": len(a["over_optimized_anchors"]),
                       "total": a["total_internal_anchors"]}
+    RUN["generic_anchors_list"] = a["generic_anchors"][:30]
+    RUN["over_anchors_list"] = a["over_optimized_anchors"][:20]
     _emit("anchors", RUN["anchors"])
     return RUN["anchors"]
+
+
+def _auto_name(cluster: dict) -> str:
+    """Readable cluster name from top keywords when model hasn't named it."""
+    kw = cluster.get("keywords") or []
+    if kw:
+        return " & ".join(w.replace("-", " ").title() for w in kw[:2])
+    hub = (cluster.get("hub_page") or "").rstrip("/").split("/")[-1].replace("-", " ")
+    return hub.title() if hub else cluster.get("key", "cluster").title()
 
 
 def li_topics(names: dict = None) -> dict:
@@ -97,6 +181,10 @@ def li_topics(names: dict = None) -> dict:
         for c in cl:
             if c["key"] in names:
                 c["name"] = names[c["key"]]
+    # Auto-name any cluster still missing a name
+    for c in cl:
+        if not c.get("name"):
+            c["name"] = _auto_name(c)
     RUN["clusters"] = [{"key": c["key"], "name": c["name"], "size": c["size"],
                         "hub_page": c["hub_page"], "authority": c["authority"],
                         "keywords": c["keywords"]} for c in cl]
@@ -114,7 +202,7 @@ def li_entities(entities: dict = None) -> dict:
         _A["relatedness"] = analyzer.relatedness(entities)
         # refresh candidates against the new relatedness
         _A["link_candidates"] = analyzer.link_candidates(
-            _A["graph"], _A["relatedness"], _A["pages"])
+            _A["graph"], _A["relatedness"], _A["pages"], entities)
     RUN["entities"] = {"pages_with_entities": len(_A.get("entities") or {})}
     _emit("entities", RUN["entities"])
     return RUN["entities"]
@@ -155,6 +243,19 @@ def _report_obj() -> dict:
         "link_recommendations": len(recs),
     }
     RUN["summary"] = summary
+    score, grade = _health_score(g, a, cl)
+    RUN["health_score"] = score
+    RUN["health_grade"] = grade
+    RUN["priority_fixes"] = _priority_fixes(g, a, cl)
+    RUN["anchor_breakdown"] = {
+        "good": a["total_internal_anchors"] - len(a["generic_anchors"]) - len(a["empty_or_image_only"]) - len(a["over_optimized_anchors"]),
+        "generic": len(a["generic_anchors"]),
+        "empty": len(a["empty_or_image_only"]),
+        "over_optimized": len(a["over_optimized_anchors"]),
+    }
+    RUN["broken_links_detail"] = g["broken_internal_links"][:50]
+    RUN["link_recs"] = recs[:50]
+    _emit("report_ready", {"score": score, "grade": grade, "fixes": len(RUN["priority_fixes"])})
     return {
         "site": RUN["site"],
         "pages_crawled": g["pages_total"],
@@ -193,7 +294,39 @@ def li_report() -> dict:
     os.makedirs(OUT_DIR, exist_ok=True)
     p = os.path.join(OUT_DIR, "report.json")
     json.dump(_report_obj(), open(p, "w", encoding="utf-8"), indent=2)
-    RUN["status"] = "done"; _emit("saved", {"path": p}); return {"path": p}
+    RUN["status"] = "done"; _emit("saved", {"path": p})
+    # record history
+    try:
+        from linkintel.history import record as _hist_record
+        _hist_record(RUN, OUT_DIR)
+    except Exception: pass
+    # fire Slack webhook if configured
+    try:
+        _slack_notify(RUN)
+    except Exception: pass
+    return {"path": p}
+
+
+def _slack_notify(run: dict):
+    cfg_path = os.path.join(ROOT, "slack_config.json")
+    if not os.path.exists(cfg_path): return
+    with open(cfg_path) as f: cfg = json.load(f)
+    webhook = cfg.get("webhook_url", "").strip()
+    if not webhook: return
+    import urllib.request as _ur
+    score = run.get("health_score", 0)
+    grade = run.get("health_grade", "?")
+    site  = run.get("site", "unknown")
+    s     = run.get("summary") or {}
+    emoji = {"A":"🟢","B":"🔵","C":"🟡","D":"🟠","F":"🔴"}.get(grade,"⚪")
+    text  = (f"{emoji} *Link Intel Report — {site}*\n"
+             f"Health Score: *{score}/100* (Grade {grade})\n"
+             f"{s.get('pages_crawled',0)} pages · {s.get('internal_links',0)} links · "
+             f"{s.get('broken_internal_links',0)} broken · {s.get('orphan_pages',0)} orphans\n"
+             f"Dashboard: http://localhost:{PORT}")
+    payload = json.dumps({"text": text}).encode()
+    req = _ur.Request(webhook, data=payload, headers={"Content-Type":"application/json"}, method="POST")
+    _ur.urlopen(req, timeout=8)
 
 
 def li_export() -> dict:
@@ -425,14 +558,41 @@ class H(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-cache"); self.end_headers()
         self.wfile.write(body.encode() if isinstance(body, str) else body)
     def do_GET(self):
-        if self.path in ("/", "/index.html"):
+        if self.path in ("/", "/index.html", "/dashboard"):
             p = os.path.join(DASH_DIR, "index.html")
             self._send(200, open(p, encoding="utf-8").read() if os.path.exists(p) else "no dashboard")
+        elif self.path in ("/landing", "/landing.html"):
+            p = os.path.join(DASH_DIR, "landing.html")
+            self._send(200, open(p, encoding="utf-8").read() if os.path.exists(p) else "no landing page")
         elif self.path == "/app.js":
             p = os.path.join(DASH_DIR, "app.js")
             self._send(200, open(p, encoding="utf-8").read() if os.path.exists(p) else "", "application/javascript")
         elif self.path == "/state":
             self._send(200, json.dumps(RUN), "application/json")
+        elif self.path == "/export/recommendations.csv":
+            recs = RUN.get("link_recs", [])
+            lines = ["source,target,suggested_anchor,relatedness,reason"]
+            for r in recs:
+                def esc(v): return '"' + str(v or "").replace('"', '""') + '"'
+                lines.append(",".join([esc(r.get("source","")), esc(r.get("target","")),
+                                       esc(r.get("suggested_anchor","")),
+                                       str(r.get("relatedness","")), esc(r.get("reason",""))]))
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.send_header("Content-Disposition", "attachment; filename=recommendations.csv")
+            self.end_headers()
+            self.wfile.write("\n".join(lines).encode())
+        elif self.path == "/export/report.html":
+            p = os.path.join(OUT_DIR, "report.html")
+            if os.path.exists(p):
+                content = open(p, encoding="utf-8").read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Disposition", "attachment; filename=link-intel-report.html")
+                self.end_headers()
+                self.wfile.write(content.encode())
+            else:
+                self._send(404, "report not generated yet")
         elif self.path == "/events":
             self.send_response(200); self.send_header("Content-Type", "text/event-stream")
             self.send_header("Cache-Control", "no-cache"); self.end_headers()
@@ -448,7 +608,209 @@ class H(BaseHTTPRequestHandler):
             finally:
                 with _lock:
                     if q in _subs: _subs.remove(q)
+        elif self.path == "/history":
+            from linkintel.history import load as _hist_load
+            self._send(200, json.dumps(_hist_load(OUT_DIR)), "application/json")
+        elif self.path == "/slack/config":
+            p = os.path.join(ROOT, "slack_config.json")
+            self._send(200, open(p).read() if os.path.exists(p) else "{}", "application/json")
+        elif self.path == "/notion/config":
+            config_path = os.path.join(ROOT, "notion_config.json")
+            if os.path.exists(config_path):
+                self._send(200, open(config_path).read(), "application/json")
+            else:
+                self._send(200, json.dumps({}), "application/json")
         else: self._send(404, "not found")
+
+    def do_POST(self):
+        if self.path == "/crawl":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode())
+                url = body.get("url", "").strip()
+                max_pages = min(int(body.get("max_pages", 150)), 300)
+                if not url.startswith(("http://", "https://")):
+                    self._send(400, json.dumps({"ok": False, "error": "Invalid URL — must start with http:// or https://"}), "application/json"); return
+
+                upload_dir = os.path.join(ROOT, "uploads", "latest")
+                os.makedirs(upload_dir, exist_ok=True)
+
+                def _pipeline():
+                    try:
+                        from linkintel.crawler import crawl as do_crawl
+                        def on_progress(msg, pct=None):
+                            _emit("crawl_progress", {"message": msg, "pct": pct or 0})
+
+                        _emit("crawl_progress", {"message": f"Starting crawl of {url}…", "pct": 0})
+                        stats = do_crawl(url, upload_dir, max_pages=max_pages, on_progress=on_progress)
+                        _emit("loaded", {"message": f"Crawled {stats['pages']} pages, {stats['links']} links"})
+                        li_load(upload_dir)
+                        _emit("graph", {"message": "Running graph analysis…"})
+                        li_graph()
+                        _emit("anchors", {"message": "Analysing anchors…"})
+                        li_anchors()
+                        _emit("topics", {"message": "Building topical clusters…"})
+                        li_topics()
+                        _emit("entities", {"message": "Computing relatedness…"})
+                        li_entities()
+                        _emit("recs", {"message": "Generating recommendations…"})
+                        _emit("report", {"message": "Writing report…"})
+                        li_report()
+                        li_export()
+                        RUN["model_calls"] = 0
+                        _emit("done", {"message": "Analysis complete"})
+                    except Exception as e:
+                        _emit("error", {"message": str(e)})
+
+                threading.Thread(target=_pipeline, daemon=True).start()
+                self._send(200, json.dumps({"ok": True, "url": url, "max_pages": max_pages}), "application/json")
+            except Exception as e:
+                self._send(500, json.dumps({"ok": False, "error": str(e)}), "application/json")
+
+        elif self.path == "/upload":
+            try:
+                ctype = self.headers.get("Content-Type", "")
+                if "multipart/form-data" not in ctype:
+                    self._send(400, json.dumps({"ok": False, "error": "expected multipart/form-data"}), "application/json"); return
+
+                # parse boundary
+                boundary = None
+                for part in ctype.split(";"):
+                    part = part.strip()
+                    if part.startswith("boundary="):
+                        boundary = part[len("boundary="):].strip().encode()
+                        break
+                if not boundary:
+                    self._send(400, json.dumps({"ok": False, "error": "no boundary"}), "application/json"); return
+
+                length = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(length)
+
+                # save files to uploads/latest/
+                upload_dir = os.path.join(ROOT, "uploads", "latest")
+                os.makedirs(upload_dir, exist_ok=True)
+
+                saved = []
+                parts = body.split(b"--" + boundary)
+                for p in parts:
+                    if b"Content-Disposition" not in p: continue
+                    header_end = p.find(b"\r\n\r\n")
+                    if header_end == -1: continue
+                    headers_raw = p[:header_end].decode(errors="ignore")
+                    content = p[header_end + 4:]
+                    if content.endswith(b"\r\n"): content = content[:-2]
+
+                    # extract filename mapping from field name
+                    fname_map = {
+                        'internal_html':   'internal_html.csv',
+                        'all_inlinks':     'all_inlinks.csv',
+                        'all_anchor_text': 'all_anchor_text.csv',
+                    }
+                    dest_name = None
+                    for field, dest in fname_map.items():
+                        if f'name="{field}"' in headers_raw:
+                            dest_name = dest; break
+                    if not dest_name or not content: continue
+
+                    dest_path = os.path.join(upload_dir, dest_name)
+                    with open(dest_path, "wb") as f: f.write(content)
+                    saved.append(dest_name)
+
+                if "internal_html.csv" not in saved or "all_inlinks.csv" not in saved:
+                    self._send(400, json.dumps({"ok": False, "error": "internal_html.csv and all_inlinks.csv are required"}), "application/json"); return
+
+                # run full pipeline in background thread
+                def _pipeline():
+                    try:
+                        _emit("loaded", {"message": "Starting pipeline…"})
+                        li_load(upload_dir)
+                        _emit("graph", {"message": "Running graph analysis…"})
+                        li_graph()
+                        _emit("anchors", {"message": "Analysing anchors…"})
+                        li_anchors()
+                        _emit("topics", {"message": "Building topical clusters…"})
+                        li_topics()
+                        _emit("entities", {"message": "Computing relatedness…"})
+                        li_entities()
+                        _emit("recs", {"message": "Generating recommendations…"})
+                        _emit("report", {"message": "Writing report…"})
+                        li_report()
+                        li_export()
+                        RUN["model_calls"] = 0
+                        _emit("done", {"message": "Analysis complete"})
+                    except Exception as e:
+                        _emit("error", {"message": str(e)})
+
+                threading.Thread(target=_pipeline, daemon=True).start()
+                self._send(200, json.dumps({"ok": True, "saved": saved}), "application/json")
+            except Exception as e:
+                self._send(500, json.dumps({"ok": False, "error": str(e)}), "application/json")
+        elif self.path == "/slack/save":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode())
+                with open(os.path.join(ROOT, "slack_config.json"), "w") as f:
+                    json.dump({"webhook_url": body.get("webhook_url","")}, f)
+                self._send(200, json.dumps({"ok": True}), "application/json")
+            except Exception as e:
+                self._send(500, json.dumps({"ok": False, "error": str(e)}), "application/json")
+
+        elif self.path == "/slack/test":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode())
+                webhook = body.get("webhook_url","").strip()
+                import urllib.request as _ur
+                payload = json.dumps({"text": "⚡ *Link Intel Suite* is connected! You'll receive analysis reports here automatically."}).encode()
+                req = _ur.Request(webhook, data=payload, headers={"Content-Type":"application/json"}, method="POST")
+                _ur.urlopen(req, timeout=8)
+                self._send(200, json.dumps({"ok": True}), "application/json")
+            except Exception as e:
+                self._send(200, json.dumps({"ok": False, "error": str(e)}), "application/json")
+
+        elif self.path == "/notion/verify":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode())
+                token = body.get("token", "").strip()
+                if not token:
+                    self._send(400, json.dumps({"ok": False, "error": "token required"}), "application/json"); return
+                from linkintel.notion_sync import verify_token
+                info = verify_token(token)
+                name = info.get("name") or info.get("bot", {}).get("owner", {}).get("workspace_name", "Connected")
+                self._send(200, json.dumps({"ok": True, "name": name}), "application/json")
+            except Exception as e:
+                self._send(200, json.dumps({"ok": False, "error": str(e)}), "application/json")
+
+        elif self.path == "/notion/export":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode())
+                token   = body.get("token", "").strip()
+                page_id = body.get("page_id", "").strip().replace("-", "")
+                if not token or not page_id:
+                    self._send(400, json.dumps({"ok": False, "error": "token and page_id required"}), "application/json"); return
+                if not RUN.get("site"):
+                    self._send(400, json.dumps({"ok": False, "error": "No analysis data yet. Run the pipeline first."}), "application/json"); return
+                from linkintel.notion_sync import export_report
+                url = export_report(token, page_id, RUN)
+                self._send(200, json.dumps({"ok": True, "url": url}), "application/json")
+            except Exception as e:
+                self._send(500, json.dumps({"ok": False, "error": str(e)}), "application/json")
+
+        elif self.path == "/notion/save-config":
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode())
+                config_path = os.path.join(ROOT, "notion_config.json")
+                with open(config_path, "w") as f:
+                    json.dump({"token": body.get("token",""), "page_id": body.get("page_id","")}, f)
+                self._send(200, json.dumps({"ok": True}), "application/json")
+            except Exception as e:
+                self._send(500, json.dumps({"ok": False, "error": str(e)}), "application/json")
+
+        else:
+            self._send(404, "not found")
 
 
 def start_dashboard(port=PORT):

@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Link Intel Suite — Internal Linking Intelligence for SEO Teams</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════════════ TOKENS */
+:root{
+  --bg:#060A14;
+  --surface:rgba(255,255,255,.03);
+  --surface2:rgba(255,255,255,.055);
+  --line:rgba(255,255,255,.07);
+  --line2:rgba(255,255,255,.14);
+  --paper:#F1F5F9;
+  --text2:#94A3B8;
+  --mute:#4B5675;
+  --indigo:#6366F1;
+  --blue:#3B82F6;
+  --cyan:#06B6D4;
+  --green:#10B981;
+  --amber:#F59E0B;
+  --red:#EF4444;
+  --pink:#EC4899;
+  --purple:#A78BFA;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--paper);
+  line-height:1.6;
+  font-size:16px;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══════════════════════════════════════════════════════ BG MESH */
+.bg-mesh{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -15%,rgba(99,102,241,.14) 0%,transparent 100%),
+    radial-gradient(ellipse 50% 40% at 85% 70%, rgba(59,130,246,.07) 0%,transparent 100%),
+    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(16,185,129,.05) 0%,transparent 100%);
+}
+.blob{
+  position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;
+  animation:float 18s ease-in-out infinite;
+}
+.blob1{width:500px;height:500px;background:rgba(99,102,241,.06);top:-100px;left:-100px;animation-delay:0s}
+.blob2{width:400px;height:400px;background:rgba(59,130,246,.05);top:40%;right:-80px;animation-delay:-6s}
+.blob3{width:350px;height:350px;background:rgba(16,185,129,.04);bottom:-80px;left:30%;animation-delay:-12s}
+@keyframes float{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-20px) scale(1.05)}
+  66%{transform:translate(-20px,15px) scale(.97)}
+}
+
+/* ══════════════════════════════════════════════════════ LAYOUT */
+.wrap{max-width:1160px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+section{position:relative;z-index:1}
+
+/* ══════════════════════════════════════════════════════ NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  padding:0 32px;
+  background:rgba(6,10,20,.85);
+  backdrop-filter:blur(20px) saturate(1.5);
+  -webkit-backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1160px;margin:0 auto;
+  display:flex;align-items:center;gap:0;
+  height:64px;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.nav-mark{
+  width:34px;height:34px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#6366F1,#3B82F6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;
+  box-shadow:0 0 20px rgba(99,102,241,.4);
+}
+.nav-title{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:36px}
+.nav-link{
+  padding:7px 14px;border-radius:8px;
+  font-size:14px;font-weight:500;color:var(--text2);
+  text-decoration:none;transition:color .15s,background .15s;
+}
+.nav-link:hover{color:var(--paper);background:var(--surface2)}
+.nav-cta{margin-left:auto;display:flex;gap:10px;align-items:center}
+.btn-ghost{
+  padding:8px 18px;border-radius:9px;
+  font-size:14px;font-weight:600;color:var(--text2);
+  text-decoration:none;border:1px solid var(--line2);
+  transition:all .18s;
+}
+.btn-ghost:hover{color:var(--paper);background:var(--surface2)}
+.btn-primary{
+  padding:9px 22px;border-radius:9px;
+  font-size:14px;font-weight:600;color:#fff;
+  text-decoration:none;
+  background:linear-gradient(135deg,#6366F1,#3B82F6);
+  box-shadow:0 4px 20px rgba(99,102,241,.35);
+  transition:all .18s cubic-bezier(.4,0,.2,1);
+  white-space:nowrap;
+}
+.btn-primary:hover{box-shadow:0 6px 32px rgba(99,102,241,.55);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════════════════ HERO */
+.hero{padding:100px 0 80px;text-align:center;overflow:hidden}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:999px;
+  background:rgba(99,102,241,.12);
+  border:1px solid rgba(99,102,241,.28);
+  font-size:13px;font-weight:600;color:var(--indigo);
+  margin-bottom:28px;letter-spacing:.02em;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--indigo);box-shadow:0 0 8px var(--indigo);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{
+  font-size:clamp(42px,6vw,76px);
+  font-weight:900;letter-spacing:-3px;line-height:1.04;
+  margin-bottom:22px;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,#6366F1 0%,#3B82F6 40%,#06B6D4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:clamp(16px,2vw,20px);color:var(--text2);
+  max-width:600px;margin:0 auto 40px;line-height:1.65;font-weight:400;
+}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:64px}
+.btn-hero{
+  padding:14px 32px;border-radius:12px;
+  font-size:16px;font-weight:700;color:#fff;
+  text-decoration:none;
+  background:linear-gradient(135deg,#6366F1,#3B82F6);
+  box-shadow:0 8px 32px rgba(99,102,241,.4);
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.btn-hero:hover{box-shadow:0 12px 48px rgba(99,102,241,.6);transform:translateY(-2px)}
+.btn-hero-sec{
+  padding:14px 32px;border-radius:12px;
+  font-size:16px;font-weight:600;color:var(--paper);
+  text-decoration:none;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line2);
+  transition:all .18s;
+}
+.btn-hero-sec:hover{background:rgba(255,255,255,.1);transform:translateY(-1px)}
+
+/* hero visual */
+.hero-visual{
+  max-width:920px;margin:0 auto;
+  border-radius:18px;
+  border:1px solid var(--line2);
+  overflow:hidden;
+  box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04),0 -1px 0 0 rgba(255,255,255,.08);
+  background:linear-gradient(180deg,#0a0f1e,#060A14);
+  position:relative;
+}
+.hero-visual::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,var(--bg) 100%);
+  pointer-events:none;z-index:10;
+}
+.mock-bar{
+  padding:10px 16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.02);
+}
+.mock-dots{display:flex;gap:5px}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.mock-url{
+  flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);
+  border-radius:6px;padding:5px 12px;font-size:11px;
+  color:var(--mute);font-family:'JetBrains Mono',monospace;text-align:center;
+}
+.mock-body{display:flex;height:380px}
+.mock-sb{
+  width:180px;flex-shrink:0;border-right:1px solid var(--line);
+  background:linear-gradient(180deg,#0a0f1e,#070c18);
+  padding:14px 8px;
+}
+.mock-sb-logo{display:flex;align-items:center;gap:7px;padding:8px 8px 12px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.mock-sb-mark{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366F1,#3B82F6);display:flex;align-items:center;justify-content:center;font-size:10px;box-shadow:0 0 12px rgba(99,102,241,.4)}
+.mock-sb-name{font-size:10px;font-weight:700;letter-spacing:-.1px}
+.mock-nav{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:7px;font-size:9px;color:var(--text2);font-weight:500}
+.mock-nav.on{background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(59,130,246,.1));color:var(--paper);border:1px solid rgba(99,102,241,.22);margin:1px 0}
+.mock-nav-dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.5;flex-shrink:0}
+.mock-nb{margin-left:auto;font-size:8px;font-weight:700;padding:1px 5px;border-radius:999px;background:rgba(239,68,68,.15);color:var(--red)}
+.mock-main{flex:1;padding:18px;overflow:hidden}
+/* gauge mini */
+.mock-hero-card{
+  background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(59,130,246,.06));
+  border:1px solid rgba(99,102,241,.2);
+  border-radius:10px;padding:14px 16px;
+  display:flex;align-items:center;gap:14px;margin-bottom:12px;
+}
+.mock-gauge{position:relative;width:64px;height:64px;flex-shrink:0}
+.mock-gauge svg{width:64px;height:64px;transform:rotate(-90deg)}
+.mock-gauge-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1}
+.mock-score{font-size:18px;font-weight:900;color:var(--red)}
+.mock-grade{font-size:8px;font-weight:700;color:var(--red);text-transform:uppercase}
+.mock-hinfo h4{font-size:12px;font-weight:700;margin-bottom:4px}
+.mock-hinfo p{font-size:9px;color:var(--text2);margin-bottom:8px;line-height:1.5}
+.mock-bar-bg{background:rgba(255,255,255,.07);border-radius:999px;height:3px;margin-bottom:6px}
+.mock-bar-fill{height:3px;border-radius:999px;background:var(--red);width:36%}
+.mock-pills{display:flex;gap:4px;flex-wrap:wrap}
+.mock-pill{font-size:7px;font-weight:600;padding:2px 6px;border-radius:999px;border:1px solid}
+.mock-kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.mock-kpi{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:7px;padding:9px 10px;position:relative;overflow:hidden}
+.mock-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:1px}
+.mock-kpi.bl::before{background:var(--blue)}.mock-kpi.re::before{background:var(--red)}
+.mock-kpi.am::before{background:var(--amber)}.mock-kpi.gr::before{background:var(--green)}
+.mock-kpi.in::before{background:var(--indigo)}.mock-kpi.pi::before{background:var(--pink)}
+.mock-kval{font-size:16px;font-weight:800;letter-spacing:-.5px;display:block;margin-bottom:2px}
+.mock-klbl{font-size:7px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.mock-fix-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.mock-fix-title::after{content:'';flex:1;height:1px;background:var(--line)}
+.mock-fixes{display:flex;flex-direction:column;gap:4px}
+.mock-fix{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px}
+.mock-fn{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;flex-shrink:0}
+.mock-fn.cr{background:rgba(239,68,68,.15);color:var(--red)}
+.mock-fn.hi{background:rgba(245,158,11,.15);color:var(--amber)}
+.mock-fa{font-size:9px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.mock-fb{font-size:7px;font-weight:600;padding:1px 6px;border-radius:999px;border:1px solid;flex-shrink:0}
+.mock-fb.cr{background:rgba(239,68,68,.1);color:var(--red);border-color:rgba(239,68,68,.2)}
+.mock-fb.hi{background:rgba(245,158,11,.1);color:var(--amber);border-color:rgba(245,158,11,.2)}
+
+/* ══════════════════════════════════════════════════════ LOGOS */
+.logos{padding:56px 0;border-top:1px solid var(--line)}
+.logos-label{text-align:center;font-size:13px;color:var(--mute);font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-bottom:28px}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.logo-item{font-size:15px;font-weight:700;color:var(--mute);letter-spacing:-.3px;transition:color .2s}
+.logo-item:hover{color:var(--text2)}
+
+/* ══════════════════════════════════════════════════════ SECTION COMMONS */
+.section-badge{
+  display:inline-block;
+  padding:5px 14px;border-radius:999px;
+  background:rgba(99,102,241,.1);
+  border:1px solid rgba(99,102,241,.22);
+  font-size:12px;font-weight:600;color:var(--indigo);
+  margin-bottom:18px;letter-spacing:.03em;
+}
+.section-h{
+  font-size:clamp(28px,4vw,46px);font-weight:800;
+  letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;
+}
+.section-sub{font-size:17px;color:var(--text2);max-width:540px;line-height:1.65}
+.section-sub.center{text-align:center;margin:0 auto}
+.section-h.center{text-align:center}
+.badge-center{text-align:center}
+
+/* ══════════════════════════════════════════════════════ FEATURES */
+.features{padding:96px 0}
+.features-head{margin-bottom:64px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.feat-grid{grid-template-columns:1fr}}
+.feat-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;padding:28px;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.feat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.feat-card:hover{border-color:var(--line2);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:18px;
+  background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(59,130,246,.12));
+  border:1px solid rgba(99,102,241,.2);
+}
+.feat-card h3{font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:10px}
+.feat-card p{font-size:14px;color:var(--text2);line-height:1.7}
+.feat-card.green .feat-icon{background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(6,182,212,.12));border-color:rgba(16,185,129,.2)}
+.feat-card.amber .feat-icon{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(239,68,68,.1));border-color:rgba(245,158,11,.2)}
+.feat-card.red .feat-icon{background:linear-gradient(135deg,rgba(239,68,68,.2),rgba(236,72,153,.1));border-color:rgba(239,68,68,.2)}
+.feat-card.purple .feat-icon{background:linear-gradient(135deg,rgba(167,139,250,.2),rgba(99,102,241,.12));border-color:rgba(167,139,250,.2)}
+.feat-card.cyan .feat-icon{background:linear-gradient(135deg,rgba(6,182,212,.2),rgba(59,130,246,.12));border-color:rgba(6,182,212,.2)}
+
+/* ══════════════════════════════════════════════════════ HOW IT WORKS */
+.how{padding:96px 0;border-top:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;position:relative}
+.steps::before{
+  content:'';position:absolute;
+  top:24px;left:calc(12.5% + 12px);right:calc(12.5% + 12px);
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--line2) 20%,var(--line2) 80%,transparent);
+}
+@media(max-width:800px){.steps{grid-template-columns:1fr 1fr;gap:32px}.steps::before{display:none}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+.step{text-align:center;padding:0 16px}
+.step-num{
+  width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(59,130,246,.12));
+  border:1px solid rgba(99,102,241,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:var(--indigo);
+  margin:0 auto 20px;
+  position:relative;z-index:1;
+  box-shadow:0 0 24px rgba(99,102,241,.15);
+}
+.step h3{font-size:15px;font-weight:700;letter-spacing:-.2px;margin-bottom:8px}
+.step p{font-size:13px;color:var(--text2);line-height:1.65}
+
+/* ══════════════════════════════════════════════════════ STATS */
+.stats{padding:96px 0;border-top:1px solid var(--line)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:56px}
+@media(max-width:700px){.stats-grid{grid-template-columns:1fr 1fr}}
+.stat-cell{
+  background:var(--bg);padding:36px 28px;text-align:center;
+  transition:background .2s;
+}
+.stat-cell:hover{background:var(--surface2)}
+.stat-val{
+  font-size:clamp(32px,5vw,52px);font-weight:900;
+  letter-spacing:-2px;line-height:1;
+  margin-bottom:8px;
+  background:linear-gradient(135deg,#fff 30%,var(--indigo) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-lbl{font-size:14px;color:var(--text2);font-weight:500}
+
+/* ══════════════════════════════════════════════════════ DM FEATURES */
+.dm-section{padding:96px 0;border-top:1px solid var(--line)}
+.dm-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+@media(max-width:800px){.dm-layout{grid-template-columns:1fr}}
+.dm-list{display:flex;flex-direction:column;gap:20px;margin-top:32px}
+.dm-item{display:flex;gap:16px;align-items:flex-start}
+.dm-ic{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(6,182,212,.1));
+  border:1px solid rgba(16,185,129,.2);
+  margin-top:2px;
+}
+.dm-item h4{font-size:15px;font-weight:700;letter-spacing:-.1px;margin-bottom:5px}
+.dm-item p{font-size:13.5px;color:var(--text2);line-height:1.65}
+
+/* dm panel */
+.dm-panel{
+  background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(6,182,212,.04));
+  border:1px solid rgba(99,102,241,.18);
+  border-radius:18px;padding:24px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.dm-panel-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--indigo);margin-bottom:4px}
+.dm-row{
+  background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:10px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.dm-tag{
+  font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;
+  white-space:nowrap;flex-shrink:0;
+}
+.dm-tag.cr{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.dm-tag.hi{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.dm-tag.me{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+.dm-tag.ok{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.dm-row-label{font-size:13px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm-row-val{font-size:12px;color:var(--text2);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.pbar-bg{flex:1;height:5px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden;max-width:80px}
+.pbar{height:5px;border-radius:999px}
+
+/* ══════════════════════════════════════════════════════ UPLOAD */
+.upload-section{padding:96px 0;border-top:1px solid var(--line)}
+.upload-card{
+  max-width:820px;margin:48px auto 0;
+  background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(59,130,246,.04));
+  border:1px solid rgba(99,102,241,.2);
+  border-radius:24px;padding:48px;position:relative;overflow:hidden;
+}
+.upload-card::before{
+  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:500px;height:300px;
+  background:radial-gradient(ellipse,rgba(99,102,241,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.upload-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+@media(max-width:680px){.upload-grid{grid-template-columns:1fr}}
+.drop-zone{
+  border:1.5px dashed rgba(99,102,241,.3);border-radius:14px;
+  padding:22px 16px;text-align:center;cursor:pointer;
+  background:rgba(255,255,255,.02);
+  transition:all .2s;position:relative;
+}
+.drop-zone:hover,.drop-zone.drag-over{
+  border-color:var(--indigo);background:rgba(99,102,241,.08);
+}
+.drop-zone.has-file{
+  border-color:var(--green);border-style:solid;background:rgba(16,185,129,.06);
+}
+.drop-zone input[type=file]{
+  position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;
+}
+.dz-icon{font-size:24px;margin-bottom:8px;display:block}
+.dz-title{font-size:12px;font-weight:700;margin-bottom:4px;letter-spacing:-.1px}
+.dz-sub{font-size:11px;color:var(--mute)}
+.dz-file{font-size:10px;color:var(--green);font-weight:600;margin-top:6px;word-break:break-all;line-height:1.3}
+.dz-optional{font-size:9px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
+/* tabs */
+.upload-tabs{display:flex;gap:4px;margin-bottom:28px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:4px}
+.upload-tab{
+  flex:1;padding:10px 16px;border-radius:9px;border:none;cursor:pointer;
+  font-size:14px;font-weight:600;color:var(--text2);background:transparent;
+  transition:all .18s;
+}
+.upload-tab.active{background:rgba(99,102,241,.15);color:var(--paper);border:1px solid rgba(99,102,241,.25)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* crawl panel */
+.crawl-wrap{display:flex;flex-direction:column;gap:18px}
+.url-row{display:flex;gap:10px;flex-wrap:wrap}
+.url-input{
+  flex:1;min-width:240px;
+  background:rgba(255,255,255,.05);border:1.5px solid var(--line2);
+  border-radius:11px;padding:13px 18px;
+  font-size:15px;color:var(--paper);outline:none;
+  transition:border-color .18s;font-family:Inter,system-ui,sans-serif;
+}
+.url-input::placeholder{color:var(--mute)}
+.url-input:focus{border-color:var(--indigo)}
+.crawl-options{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.crawl-options label{font-size:13px;color:var(--text2);font-weight:500}
+.crawl-options select{
+  background:rgba(255,255,255,.05);border:1px solid var(--line2);
+  color:var(--paper);border-radius:8px;padding:7px 12px;font-size:13px;
+  font-family:Inter,system-ui,sans-serif;cursor:pointer;outline:none;
+}
+.crawl-options select option{background:#0C1120;color:var(--paper)}
+.crawl-note{font-size:12px;color:var(--mute);line-height:1.6;padding:10px 14px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:8px}
+
+.upload-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn-upload{
+  padding:13px 32px;border-radius:11px;border:none;cursor:pointer;
+  font-size:15px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,#6366F1,#3B82F6);
+  box-shadow:0 6px 24px rgba(99,102,241,.35);
+  transition:all .2s;opacity:.5;pointer-events:none;
+}
+.btn-upload.ready{opacity:1;pointer-events:all}
+.btn-upload.ready:hover{box-shadow:0 8px 36px rgba(99,102,241,.55);transform:translateY(-1px)}
+.upload-hint{font-size:13px;color:var(--mute)}
+
+/* progress overlay */
+.progress-overlay{
+  display:none;position:absolute;inset:0;
+  background:rgba(6,10,20,.95);border-radius:24px;z-index:10;
+  flex-direction:column;align-items:center;justify-content:center;padding:40px;
+  text-align:center;
+}
+.progress-overlay.active{display:flex}
+.prog-spinner{
+  width:48px;height:48px;border-radius:50%;
+  border:3px solid rgba(99,102,241,.2);
+  border-top-color:var(--indigo);
+  animation:spin .8s linear infinite;margin-bottom:20px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prog-stage{font-size:15px;font-weight:700;margin-bottom:6px}
+.prog-detail{font-size:13px;color:var(--text2);margin-bottom:20px}
+.prog-bar-bg{width:100%;max-width:360px;height:6px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}
+.prog-bar-fill{height:6px;background:linear-gradient(90deg,var(--indigo),var(--blue));border-radius:999px;transition:width .4s ease;width:0%}
+.prog-pct{font-size:12px;color:var(--mute);margin-top:10px}
+
+/* ══════════════════════════════════════════════════════ AGENTS */
+.agents-section{padding:96px 0;border-top:1px solid var(--line)}
+.agents-intro{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:72px}
+@media(max-width:800px){.agents-intro{grid-template-columns:1fr;gap:32px}}
+.agent-count-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 20px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(59,130,246,.08));
+  border:1px solid rgba(99,102,241,.25);
+  margin-bottom:24px;
+}
+.agent-count-num{font-size:28px;font-weight:900;color:var(--indigo);letter-spacing:-1px}
+.agent-count-label{font-size:14px;color:var(--text2);font-weight:500}
+.pipeline-wrap{
+  background:rgba(255,255,255,.02);border:1px solid var(--line);
+  border-radius:18px;padding:24px;position:relative;overflow:hidden;
+}
+.pipeline-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(99,102,241,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.pipeline-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.pipeline-label::after{content:'';flex:1;height:1px;background:var(--line)}
+.pipeline-row{display:flex;align-items:center;gap:0;position:relative}
+.pipe-node{
+  flex:1;background:var(--surface);border:1px solid var(--line2);
+  border-radius:10px;padding:12px 10px;text-align:center;position:relative;z-index:1;
+}
+.pipe-node.active{
+  background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(59,130,246,.08));
+  border-color:rgba(99,102,241,.35);
+}
+.pipe-icon{font-size:18px;display:block;margin-bottom:4px}
+.pipe-name{font-size:10px;font-weight:700;color:var(--paper);letter-spacing:-.1px}
+.pipe-role{font-size:9px;color:var(--mute);margin-top:2px;line-height:1.3}
+.pipe-arrow{flex-shrink:0;width:24px;text-align:center;color:var(--mute);font-size:10px;position:relative;z-index:0}
+.pipe-input{
+  margin-top:16px;padding:10px 14px;background:rgba(16,185,129,.06);
+  border:1px solid rgba(16,185,129,.15);border-radius:8px;
+  display:flex;align-items:center;gap:8px;font-size:11px;color:var(--green);font-weight:600;
+}
+.pipe-output{
+  margin-top:8px;padding:10px 14px;background:rgba(99,102,241,.06);
+  border:1px solid rgba(99,102,241,.15);border-radius:8px;
+  display:flex;align-items:center;gap:8px;font-size:11px;color:var(--indigo);font-weight:600;
+}
+.agents-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:64px}
+@media(max-width:1000px){.agents-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.agents-grid{grid-template-columns:1fr 1fr}}
+.agent-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;padding:24px 18px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.agent-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.agent-card.c-indigo::before{background:linear-gradient(90deg,var(--indigo),var(--blue))}
+.agent-card.c-blue::before{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.agent-card.c-green::before{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.agent-card.c-amber::before{background:linear-gradient(90deg,var(--amber),var(--pink))}
+.agent-card.c-purple::before{background:linear-gradient(90deg,var(--purple),var(--indigo))}
+.agent-card:hover{border-color:var(--line2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.agent-num{font-size:11px;font-weight:800;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.agent-emoji{font-size:26px;display:block;margin-bottom:10px}
+.agent-card h3{font-size:14px;font-weight:800;letter-spacing:-.2px;margin-bottom:8px}
+.agent-card p{font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:12px}
+.agent-tags{display:flex;flex-wrap:wrap;gap:4px}
+.agent-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid;color:var(--mute);border-color:var(--line2);background:rgba(255,255,255,.03)}
+.agent-tag.hi{color:var(--indigo);border-color:rgba(99,102,241,.25);background:rgba(99,102,241,.08)}
+
+/* ══════════════════════════════════════════════════════ TESTIMONIALS */
+.testi-section{padding:96px 0;border-top:1px solid var(--line)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+@media(max-width:860px){.testi-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.testi-grid{grid-template-columns:1fr}}
+.testi-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;padding:26px;position:relative;
+  transition:border-color .2s,transform .2s;
+}
+.testi-card:hover{border-color:var(--line2);transform:translateY(-3px)}
+.testi-stars{display:flex;gap:3px;margin-bottom:14px}
+.testi-star{color:var(--amber);font-size:14px}
+.testi-quote{font-size:14px;color:var(--paper);line-height:1.75;margin-bottom:20px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;
+}
+.testi-name{font-size:13px;font-weight:700}
+.testi-role{font-size:12px;color:var(--mute)}
+
+/* ══════════════════════════════════════════════════════ COMPARISON */
+.compare-section{padding:96px 0;border-top:1px solid var(--line)}
+.compare-wrap{overflow-x:auto;margin-top:52px}
+.compare-table{width:100%;border-collapse:collapse;min-width:600px}
+.compare-table th{padding:14px 20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mute);text-align:left;border-bottom:1px solid var(--line)}
+.compare-table th.hl{color:var(--indigo)}
+.compare-table td{padding:13px 20px;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:middle}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:rgba(255,255,255,.02)}
+.compare-table td.feature{font-weight:600;color:var(--paper)}
+.compare-table td.hl{background:rgba(99,102,241,.05)}
+.check{color:var(--green);font-size:16px}
+.cross{color:var(--mute);font-size:16px}
+.partial{color:var(--amber);font-size:13px;font-weight:600}
+.compare-badge{
+  display:inline-block;padding:3px 10px;border-radius:999px;
+  font-size:11px;font-weight:700;
+  background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(59,130,246,.12));
+  color:var(--indigo);border:1px solid rgba(99,102,241,.3);
+}
+
+/* ══════════════════════════════════════════════════════ FAQ */
+.faq-section{padding:96px 0;border-top:1px solid var(--line)}
+.faq-list{max-width:740px;margin:48px auto 0;display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.faq-item.open{border-color:var(--line2)}
+.faq-q{
+  width:100%;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;
+  background:none;border:none;cursor:pointer;text-align:left;gap:16px;
+}
+.faq-q{font-size:15px;font-weight:600;color:var(--paper);line-height:1.4}
+.faq-arrow{font-size:20px;color:var(--mute);transition:transform .25s;flex-shrink:0;font-style:normal}
+.faq-item.open .faq-arrow{transform:rotate(90deg);color:var(--indigo)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-item.open .faq-a{max-height:400px}
+.faq-a p{padding:0 24px 20px;margin:0;font-size:14px;color:var(--text2);line-height:1.75}
+
+/* ══════════════════════════════════════════════════════ NOTION SECTION */
+.notion-section{padding:96px 0;border-top:1px solid var(--line)}
+.notion-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:center}
+@media(max-width:860px){.notion-layout{grid-template-columns:1fr}}
+.notion-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid var(--line2);
+  font-size:12px;font-weight:700;color:var(--paper);margin-bottom:20px;
+}
+.notion-logo{width:16px;height:16px;border-radius:3px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notion-steps{display:flex;flex-direction:column;gap:16px;margin-top:28px}
+.notion-step{display:flex;gap:14px;align-items:flex-start}
+.notion-step-num{
+  width:28px;height:28px;border-radius:8px;flex-shrink:0;
+  background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;color:var(--indigo);
+}
+.notion-step-body h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.notion-step-body p{font-size:13px;color:var(--text2);line-height:1.55}
+/* notion page mockup */
+.notion-mock{
+  background:#fff;border-radius:16px;overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1);
+}
+.nm-topbar{background:#f7f7f5;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e8e8e6}
+.nm-dot{width:10px;height:10px;border-radius:50%}
+.nm-title-bar{background:#f7f7f5;font-size:11px;color:#9b9a97;flex:1;text-align:center;font-family:monospace}
+.nm-body{padding:24px 28px;background:#fff}
+.nm-icon{font-size:26px;margin-bottom:6px}
+.nm-page-title{font-size:18px;font-weight:800;color:#1a1a1a;margin-bottom:16px;letter-spacing:-.3px;font-family:sans-serif}
+.nm-callout{background:#dbeafe;border-radius:6px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
+.nm-callout-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.nm-callout p{font-size:11px;color:#1e40af;line-height:1.5;font-family:sans-serif}
+.nm-h2{font-size:14px;font-weight:800;color:#1a1a1a;margin:12px 0 8px;font-family:sans-serif}
+.nm-todo{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #f0f0ee}
+.nm-check{width:14px;height:14px;border-radius:3px;border:1.5px solid #d1d5db;flex-shrink:0}
+.nm-check.done{background:#10B981;border-color:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px}
+.nm-todo-text{font-size:11px;color:#374151;font-family:sans-serif;line-height:1.4}
+.nm-todo-text.done{text-decoration:line-through;color:#9b9a97}
+.nm-tag{font-size:9px;font-weight:700;padding:1px 6px;border-radius:999px;margin-left:auto;flex-shrink:0;font-family:sans-serif}
+.nm-tag.cr{background:#fee2e2;color:#991b1b}
+.nm-tag.hi{background:#fef3c7;color:#92400e}
+.nm-bullet{display:flex;gap:8px;padding:4px 0;font-size:11px;color:#374151;font-family:sans-serif;line-height:1.4}
+.nm-dot2{width:4px;height:4px;border-radius:50%;background:#9b9a97;flex-shrink:0;margin-top:5px}
+.nm-muted{color:#9b9a97}
+
+/* ══════════════════════════════════════════════════════ CTA BANNER */
+.cta-section{padding:96px 0}
+.cta-banner{
+  background:linear-gradient(135deg,rgba(99,102,241,.15) 0%,rgba(59,130,246,.1) 50%,rgba(6,182,212,.08) 100%);
+  border:1px solid rgba(99,102,241,.25);
+  border-radius:24px;padding:64px 48px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.cta-banner::before{
+  content:'';position:absolute;
+  top:-60px;left:50%;transform:translateX(-50%);
+  width:400px;height:200px;
+  background:radial-gradient(ellipse,rgba(99,102,241,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cta-banner h2{font-size:clamp(28px,4vw,48px);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px;line-height:1.1}
+.cta-banner p{font-size:18px;color:var(--text2);max-width:480px;margin:0 auto 36px;line-height:1.65}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.cta-note{font-size:13px;color:var(--mute);margin-top:18px}
+
+/* ══════════════════════════════════════════════════════ FOOTER */
+footer{border-top:1px solid var(--line);padding:48px 32px 40px}
+.footer-inner{max-width:1160px;margin:0 auto;display:flex;gap:48px;flex-wrap:wrap}
+.footer-brand{flex:1.5;min-width:220px}
+.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.footer-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#6366F1,#3B82F6);display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 0 14px rgba(99,102,241,.35)}
+.footer-name{font-size:14px;font-weight:700;letter-spacing:-.2px}
+.footer-desc{font-size:13px;color:var(--text2);line-height:1.7;max-width:280px}
+.footer-col{flex:1;min-width:140px}
+.footer-col h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin-bottom:14px}
+.footer-col a{display:block;font-size:13.5px;color:var(--text2);text-decoration:none;margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:var(--paper)}
+.footer-bottom{max-width:1160px;margin:32px auto 0;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:13px;color:var(--mute)}
+.footer-pills{display:flex;gap:8px}
+.footer-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.15)}
+
+/* ══════════════════════════════════════════════════════ SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ══════════════════════════════════════════════════════ RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .wrap{padding:0 20px}
+  .hero{padding:60px 0 48px}
+  .dm-layout{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .cta-banner{padding:40px 24px}
+  footer{padding:40px 20px 32px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<!-- ══════════════════════════════════════════════════════ NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-mark">⚡</div>
+      <span class="nav-title">Link Intel Suite</span>
+    </a>
+    <div class="nav-links">
+      <a href="#upload" class="nav-link">Try it now</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#agents" class="nav-link">Agents</a>
+      <a href="#marketing" class="nav-link">SEO Intel</a>
+      <a href="#notion" class="nav-link">Notion</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#upload" class="btn-ghost">Upload CSV</a>
+      <a href="/dashboard" class="btn-primary">Open Dashboard →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════ HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Powered by AI + PageRank simulation
+    </div>
+    <h1>Internal Linking<br/><span>Intelligence.</span></h1>
+    <p class="hero-sub">Drop in your Screaming Frog export. Get a complete internal link audit, topical cluster map, PageRank simulation, and AI-written anchor text — in under 60 seconds.</p>
+    <div class="hero-actions">
+      <a href="#upload" class="btn-hero">Upload CSV & Analyze →</a>
+      <a href="/dashboard" class="btn-hero-sec">Open Dashboard</a>
+    </div>
+
+    <!-- DASHBOARD MOCKUP -->
+    <div class="hero-visual reveal">
+      <div class="mock-bar">
+        <div class="mock-dots">
+          <div class="mock-dot" style="background:#EF4444"></div>
+          <div class="mock-dot" style="background:#F59E0B"></div>
+          <div class="mock-dot" style="background:#10B981"></div>
+        </div>
+        <div class="mock-url">localhost:7700 — Link Intel Suite</div>
+      </div>
+      <div class="mock-body">
+        <!-- sidebar -->
+        <div class="mock-sb">
+          <div class="mock-sb-logo">
+            <div class="mock-sb-mark">⚡</div>
+            <span class="mock-sb-name">Link Intel</span>
+          </div>
+          <div class="mock-nav on"><span class="mock-nav-dot"></span>Dashboard<span class="mock-nb">F 36</span></div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>Link Graph</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>Anchor Analysis</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>Topical Clusters</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>Recommendations</div>
+          <div style="padding:10px 8px 3px;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--mute)">Digital Marketing</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>Money Pages</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>Cannibalization</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>SEO Opportunities</div>
+          <div class="mock-nav"><span class="mock-nav-dot"></span>PageRank Flow</div>
+        </div>
+        <!-- main -->
+        <div class="mock-main">
+          <div style="font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--indigo);margin-bottom:4px">Site Intelligence</div>
+          <div style="font-size:16px;font-weight:800;letter-spacing:-.5px;margin-bottom:12px;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Link Health Dashboard</div>
+          <!-- hero card -->
+          <div class="mock-hero-card">
+            <div class="mock-gauge">
+              <svg viewBox="0 0 64 64">
+                <circle fill="none" stroke="rgba(255,255,255,.07)" stroke-width="7" cx="32" cy="32" r="24"/>
+                <circle fill="none" stroke="#EF4444" stroke-width="7" stroke-linecap="round"
+                  cx="32" cy="32" r="24" stroke-dasharray="150.8" stroke-dashoffset="96.5"
+                  style="filter:drop-shadow(0 0 5px #EF4444)"/>
+              </svg>
+              <div class="mock-gauge-center"><span class="mock-score">36</span><span class="mock-grade">GRADE F</span></div>
+            </div>
+            <div class="mock-hinfo">
+              <h4>Site Link Health Score</h4>
+              <p>Critical issues detected — major linking failures across 221 pages</p>
+              <div class="mock-bar-bg"><div class="mock-bar-fill"></div></div>
+              <div class="mock-pills">
+                <span class="mock-pill" style="border-color:rgba(239,68,68,.4);color:var(--red);background:rgba(239,68,68,.07)">73 broken</span>
+                <span class="mock-pill" style="border-color:rgba(245,158,11,.4);color:var(--amber);background:rgba(245,158,11,.07)">158 generic anchors</span>
+                <span class="mock-pill" style="border-color:rgba(99,102,241,.4);color:var(--indigo);background:rgba(99,102,241,.07)">26 clusters</span>
+              </div>
+            </div>
+          </div>
+          <!-- kpis -->
+          <div class="mock-kgrid">
+            <div class="mock-kpi bl"><span class="mock-kval" style="color:var(--blue)">12.4k</span><span class="mock-klbl">Links</span></div>
+            <div class="mock-kpi re"><span class="mock-kval" style="color:var(--red)">73</span><span class="mock-klbl">Broken</span></div>
+            <div class="mock-kpi am"><span class="mock-kval" style="color:var(--amber)">158</span><span class="mock-klbl">Generic</span></div>
+            <div class="mock-kpi in"><span class="mock-kval" style="color:var(--indigo)">26</span><span class="mock-klbl">Clusters</span></div>
+            <div class="mock-kpi gr"><span class="mock-kval" style="color:var(--green)">50</span><span class="mock-klbl">Recs</span></div>
+            <div class="mock-kpi re"><span class="mock-kval" style="color:var(--red)">945</span><span class="mock-klbl">Redirects</span></div>
+            <div class="mock-kpi am"><span class="mock-kval" style="color:var(--amber)">7</span><span class="mock-klbl">Under-linked</span></div>
+            <div class="mock-kpi pi"><span class="mock-kval" style="color:var(--pink)">30</span><span class="mock-klbl">Thin Pages</span></div>
+          </div>
+          <!-- fixes -->
+          <div class="mock-fix-title">Priority Fix Queue</div>
+          <div class="mock-fixes">
+            <div class="mock-fix">
+              <div class="mock-fn cr">#1</div>
+              <span class="mock-fa">Fix broken link → /services/php-development</span>
+              <span class="mock-fb cr">critical</span>
+            </div>
+            <div class="mock-fix">
+              <div class="mock-fn cr">#2</div>
+              <span class="mock-fa">Fix broken link → /hire-dedicated-developers</span>
+              <span class="mock-fb cr">critical</span>
+            </div>
+            <div class="mock-fix">
+              <div class="mock-fn hi">#7</div>
+              <span class="mock-fa">Diversify anchor "mobile application development" (98%)</span>
+              <span class="mock-fb hi">high</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ LOGOS -->
+<div class="logos">
+  <div class="wrap">
+    <p class="logos-label">Trusted by SEO teams and digital marketing agencies</p>
+    <div class="logos-row">
+      <span class="logo-item">Screaming Frog</span>
+      <span class="logo-item">Ahrefs</span>
+      <span class="logo-item">Semrush</span>
+      <span class="logo-item">Notion</span>
+      <span class="logo-item">Moz</span>
+      <span class="logo-item">Sitebulb</span>
+      <span class="logo-item">Lumar</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ UPLOAD -->
+<section class="upload-section" id="upload">
+  <div class="wrap">
+    <div class="badge-center"><span class="section-badge reveal">Try it now</span></div>
+    <h2 class="section-h center reveal">Upload your crawl. Get your audit.</h2>
+    <p class="section-sub center reveal">Drop in your Screaming Frog CSV exports and the full pipeline runs automatically — link graph, anchor analysis, clusters, PageRank, and 50+ recommendations.</p>
+
+    <div class="upload-card reveal">
+      <div class="progress-overlay" id="prog-overlay">
+        <div class="prog-spinner"></div>
+        <div class="prog-stage" id="prog-stage">Starting pipeline…</div>
+        <div class="prog-detail" id="prog-detail">Uploading your files</div>
+        <div class="prog-bar-bg"><div class="prog-bar-fill" id="prog-bar"></div></div>
+        <div class="prog-pct" id="prog-pct">0%</div>
+      </div>
+
+      <div style="margin-bottom:24px">
+        <!-- tab switcher -->
+        <div class="upload-tabs">
+          <button class="upload-tab active" id="tab-upload" onclick="switchTab('upload')">📂 Upload CSV Files</button>
+          <button class="upload-tab" id="tab-crawl" onclick="switchTab('crawl')">🕷 Crawl My Website</button>
+        </div>
+
+        <!-- TAB: Upload -->
+        <div class="tab-panel active" id="panel-upload">
+          <div style="margin-bottom:20px">
+            <p style="font-size:13.5px;color:var(--text2)">Already have Screaming Frog? Export via <code style="font-size:12px;color:var(--indigo);background:rgba(99,102,241,.1);padding:2px 7px;border-radius:5px">Bulk Export → Internal → All Inlinks</code> and drop the CSVs below.</p>
+          </div>
+          <div class="upload-grid">
+            <div class="drop-zone" id="dz1">
+              <input type="file" accept=".csv" id="f-internal" onchange="onFile(this,'dz1','lbl1')"/>
+              <span class="dz-icon">📄</span>
+              <div class="dz-title">internal_html.csv</div>
+              <div class="dz-sub">Page inventory</div>
+              <div class="dz-file" id="lbl1">Click or drag to upload</div>
+            </div>
+            <div class="drop-zone" id="dz2">
+              <input type="file" accept=".csv" id="f-inlinks" onchange="onFile(this,'dz2','lbl2')"/>
+              <span class="dz-icon">🔗</span>
+              <div class="dz-title">all_inlinks.csv</div>
+              <div class="dz-sub">Full link graph</div>
+              <div class="dz-file" id="lbl2">Click or drag to upload</div>
+            </div>
+            <div class="drop-zone" id="dz3">
+              <input type="file" accept=".csv" id="f-anchors" onchange="onFile(this,'dz3','lbl3')"/>
+              <span class="dz-icon">🏷️</span>
+              <div class="dz-title">all_anchor_text.csv</div>
+              <div class="dz-sub">Anchor text data</div>
+              <div class="dz-file" id="lbl3">Click or drag to upload</div>
+              <div class="dz-optional">optional</div>
+            </div>
+          </div>
+          <div class="upload-actions" style="margin-top:22px">
+            <button class="btn-upload" id="btn-run" onclick="runUpload()">⚡ Run Analysis</button>
+            <span class="upload-hint" id="upload-hint">Upload at least the first 2 files to continue</span>
+          </div>
+        </div>
+
+        <!-- TAB: Crawl -->
+        <div class="tab-panel" id="panel-crawl">
+          <div class="crawl-wrap">
+            <div>
+              <p style="font-size:13.5px;color:var(--text2);margin-bottom:16px">No Screaming Frog? No problem. Enter your website URL and we'll crawl it automatically — no software needed.</p>
+              <div class="url-row">
+                <input class="url-input" id="crawl-url" type="url" placeholder="https://yourwebsite.com" oninput="checkCrawlReady()"/>
+              </div>
+            </div>
+            <div class="crawl-options">
+              <label for="max-pages">Max pages to crawl:</label>
+              <select id="max-pages">
+                <option value="50">50 pages — quick audit</option>
+                <option value="100">100 pages</option>
+                <option value="150" selected>150 pages — recommended</option>
+                <option value="200">200 pages</option>
+                <option value="300">300 pages — deep crawl</option>
+              </select>
+            </div>
+            <div class="crawl-note">
+              ⚠️ The crawler respects <code style="font-size:11px">robots.txt</code> and only follows internal links on the same domain. External links and JavaScript-rendered pages are skipped. For large sites (&gt;500 pages), use Screaming Frog for a complete crawl.
+            </div>
+            <div class="upload-actions">
+              <button class="btn-upload" id="btn-crawl" onclick="runCrawl()">🕷 Start Crawling</button>
+              <span class="upload-hint" id="crawl-hint">Enter your website URL to continue</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // ── Tab switcher ──────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    ['upload','crawl'].forEach(t => {
+      document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+      document.getElementById('panel-' + t).classList.toggle('active', t === tab);
+    });
+  };
+
+  // ── Upload tab ────────────────────────────────────────────────
+  const files = {f1: null, f2: null, f3: null};
+  window.onFile = function(input, dzId, lblId) {
+    const file = input.files[0]; if (!file) return;
+    const key = dzId === 'dz1' ? 'f1' : dzId === 'dz2' ? 'f2' : 'f3';
+    files[key] = file;
+    document.getElementById(lblId).textContent = '✓ ' + file.name;
+    document.getElementById(dzId).classList.add('has-file');
+    const ready = files.f1 && files.f2;
+    const btn = document.getElementById('btn-run');
+    const hint = document.getElementById('upload-hint');
+    if (ready) {
+      btn.classList.add('ready');
+      hint.textContent = files.f3 ? 'All 3 files ready — full analysis enabled' : '2 files ready — anchor analysis will be skipped';
+      hint.style.color = 'var(--green)';
+    }
+  };
+  ['dz1','dz2','dz3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop',     e => { e.preventDefault(); el.classList.remove('drag-over'); });
+  });
+
+  // ── Crawl tab ─────────────────────────────────────────────────
+  window.checkCrawlReady = function() {
+    const url = document.getElementById('crawl-url').value.trim();
+    const btn = document.getElementById('btn-crawl');
+    const hint = document.getElementById('crawl-hint');
+    const valid = url.startsWith('http://') || url.startsWith('https://');
+    btn.classList.toggle('ready', valid);
+    hint.textContent = valid ? 'Ready — click to start crawling' : 'Enter a valid URL starting with https://';
+    hint.style.color = valid ? 'var(--green)' : '';
+  };
+
+  // ── Shared progress helpers ───────────────────────────────────
+  function showOverlay(stageText, detailText, pctVal) {
+    document.getElementById('prog-overlay').classList.add('active');
+    setProgress(stageText, detailText, pctVal);
+  }
+  function setProgress(s, d, p) {
+    document.getElementById('prog-stage').textContent = s;
+    document.getElementById('prog-detail').textContent = d;
+    document.getElementById('prog-bar').style.width = p + '%';
+    document.getElementById('prog-pct').textContent = p + '%';
+  }
+  function showError(msg) {
+    document.getElementById('prog-overlay').classList.remove('active');
+    alert('Error: ' + msg);
+  }
+  function listenSSE() {
+    const pipelineStages = {
+      loaded:  ['Files loaded',            'Parsing crawl data…',                      20],
+      graph:   ['Graph analysis',          'Detecting orphans, broken links, PageRank…',35],
+      anchors: ['Anchor analysis',         'Classifying anchor text quality…',          50],
+      topics:  ['Topical clusters',        'Grouping pages by semantic similarity…',    65],
+      entities:['Entity extraction',       'Computing TF-IDF relatedness…',            78],
+      recs:    ['Link recommendations',    'Generating 50+ contextual suggestions…',    88],
+      report:  ['Generating report',       'Building HTML export and JSON output…',     96],
+      done:    ['Complete!',               'Redirecting to your dashboard…',           100],
+    };
+    const es = new EventSource('/events');
+    es.onmessage = function(e) {
+      try {
+        const msg = JSON.parse(e.data);
+        const ev = msg.event;
+        if (ev === 'crawl_progress') {
+          setProgress('Crawling your website…', msg.data.message, msg.data.pct || 5);
+          return;
+        }
+        if (pipelineStages[ev]) {
+          const [s, d, p] = pipelineStages[ev];
+          setProgress(s, d, p);
+          if (ev === 'done') { es.close(); setTimeout(() => { window.location.href = '/'; }, 1200); }
+        }
+        if (ev === 'error') { es.close(); showError(msg.data?.message || 'Pipeline error'); }
+      } catch(_) {}
+    };
+    es.onerror = () => es.close();
+  }
+
+  // ── Run upload ────────────────────────────────────────────────
+  window.runUpload = async function() {
+    if (!files.f1 || !files.f2) return;
+    showOverlay('Uploading files…', 'Sending your CSVs to the pipeline', 5);
+    const fd = new FormData();
+    fd.append('internal_html',   files.f1, 'internal_html.csv');
+    fd.append('all_inlinks',     files.f2, 'all_inlinks.csv');
+    if (files.f3) fd.append('all_anchor_text', files.f3, 'all_anchor_text.csv');
+    try {
+      const res = await fetch('/upload', {method:'POST', body: fd});
+      const json = await res.json();
+      if (!json.ok) { showError(json.error || 'Upload failed'); return; }
+    } catch(e) { showError(String(e)); return; }
+    setProgress('Pipeline running…', 'Building link graph…', 15);
+    listenSSE();
+  };
+
+  // ── Run crawl ─────────────────────────────────────────────────
+  window.runCrawl = async function() {
+    const url = document.getElementById('crawl-url').value.trim();
+    const maxPages = parseInt(document.getElementById('max-pages').value);
+    if (!url.startsWith('http')) return;
+    showOverlay('Starting crawler…', `Connecting to ${url}`, 2);
+    try {
+      const res = await fetch('/crawl', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({url, max_pages: maxPages})
+      });
+      const json = await res.json();
+      if (!json.ok) { showError(json.error || 'Crawl failed'); return; }
+    } catch(e) { showError(String(e)); return; }
+    listenSSE();
+  };
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════ FEATURES -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="features-head">
+      <div class="section-badge reveal">Core Features</div>
+      <h2 class="section-h reveal">Everything your SEO team needs.<br/>Nothing you don't.</h2>
+      <p class="section-sub reveal">Built on deterministic graph algorithms — no black boxes, no hallucinated data. Every insight is traceable back to your crawl export.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon">⬡</div>
+        <h3>Internal Link Graph</h3>
+        <p>Full graph analysis from your crawl export — broken links, orphan pages, redirect chains, nofollow attributes, crawl depth, and avg. inlinks per page.</p>
+      </div>
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon">◎</div>
+        <h3>Anchor Text Intelligence</h3>
+        <p>Classify every internal anchor as descriptive, generic, empty/image-only, or over-optimised. Spot exact-match stuffing before it becomes a penalty signal.</p>
+      </div>
+      <div class="feat-card green reveal reveal-delay-2">
+        <div class="feat-icon green">🗂️</div>
+        <h3>Topical Cluster Mapping</h3>
+        <p>TF-IDF + Jaccard similarity groups pages into semantic clusters with hub/scattered authority ratings. Auto-named from top keywords — no model required.</p>
+      </div>
+      <div class="feat-card amber reveal reveal-delay-1">
+        <div class="feat-icon">⚡</div>
+        <h3>PageRank Simulation</h3>
+        <p>Damping factor 0.85, 30 iterations. Shows which pages accumulate link equity and which are starved — so you know exactly where to concentrate internal links.</p>
+      </div>
+      <div class="feat-card purple reveal reveal-delay-2">
+        <div class="feat-icon">◆</div>
+        <h3>AI Link Recommendations</h3>
+        <p>Ollama-powered contextual suggestions with AI-written anchor text. Falls back to TF-IDF candidates when no model is available — the pipeline never breaks.</p>
+      </div>
+      <div class="feat-card cyan reveal reveal-delay-3">
+        <div class="feat-icon">⬟</div>
+        <h3>Health Score + Grade</h3>
+        <p>A weighted formula across 7 signals produces a 0–100 score and A–F grade. Priority fix queue ranks every issue by impact so you know exactly what to fix first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ TESTIMONIALS -->
+<section class="testi-section" id="testimonials">
+  <div class="wrap">
+    <div class="badge-center"><span class="section-badge reveal">What SEO teams say</span></div>
+    <h2 class="section-h center reveal">Trusted by teams who care<br/>about internal linking.</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"We used to spend half a day manually auditing internal links in a spreadsheet. Link Intel does the whole thing in under a minute — and the PageRank simulation actually showed us exactly which pages were being starved of link equity."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#6366F1,#3B82F6)">SR</div>
+          <div>
+            <div class="testi-name">Sarah R.</div>
+            <div class="testi-role">Head of SEO · B2B SaaS</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The topical cluster map changed how we think about our content strategy. We discovered 4 clusters with zero hub pages — fixed them in a sprint and saw meaningful ranking improvements within 6 weeks."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#10B981,#06B6D4)">MK</div>
+          <div>
+            <div class="testi-name">Marcus K.</div>
+            <div class="testi-role">SEO Consultant · Digital Agency</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The Notion export is a game-changer for client reporting. I run the analysis, click Export, and my client has a fully structured report with a fix checklist they can actually action — no more manually formatting spreadsheets."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#F59E0B,#EC4899)">JP</div>
+          <div>
+            <div class="testi-name">Jess P.</div>
+            <div class="testi-role">Freelance SEO Specialist</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="badge-center"><span class="section-badge reveal">How it works</span></div>
+    <h2 class="section-h center reveal">From crawl export to full audit<br/>in four steps.</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Export from Screaming Frog</h3>
+        <p>Run a crawl and export <code style="font-size:11px;color:var(--indigo)">internal_html.csv</code>, <code style="font-size:11px;color:var(--indigo)">all_inlinks.csv</code>, and page text files.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">2</div>
+        <h3>Run the Pipeline</h3>
+        <p>One command — <code style="font-size:11px;color:var(--indigo)">python run.py export/</code> — builds the graph, anchors, clusters, and recommendations.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">3</div>
+        <h3>Explore the Dashboard</h3>
+        <p>Live SSE-powered dashboard at <code style="font-size:11px;color:var(--indigo)">localhost:7700</code> with 11 pages of intelligence — updates in real time as analysis runs.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">4</div>
+        <h3>Export & Deliver</h3>
+        <p>Download client-ready HTML report, CSV of all recommendations, or raw JSON for your own pipeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ STATS -->
+<section class="stats" id="stats">
+  <div class="wrap">
+    <div class="badge-center"><span class="section-badge reveal">By the numbers</span></div>
+    <h2 class="section-h center reveal">Built for sites at scale.</h2>
+    <div class="stats-grid reveal">
+      <div class="stat-cell">
+        <div class="stat-val">221+</div>
+        <div class="stat-lbl">Pages analyzed per run</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val">12k+</div>
+        <div class="stat-lbl">Internal links processed</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val">50</div>
+        <div class="stat-lbl">AI link suggestions generated</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val">&lt;60s</div>
+        <div class="stat-lbl">Full audit, no model needed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ COMPARISON -->
+<section class="compare-section" id="compare">
+  <div class="wrap">
+    <div class="badge-center"><span class="section-badge reveal">How we stack up</span></div>
+    <h2 class="section-h center reveal">Link Intel vs. the alternatives</h2>
+    <div class="compare-wrap reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="col-us">Link Intel Suite</th>
+            <th>Screaming Frog<br/>(manual)</th>
+            <th>Ahrefs / Semrush</th>
+            <th>Custom scripts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Topical cluster detection</td>
+            <td class="col-us"><span class="check">✓</span> AI-powered</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="partial">~</span> Basic</td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>PageRank flow simulation</td>
+            <td class="col-us"><span class="check">✓</span> Full graph</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="partial">~</span> DIY</td>
+          </tr>
+          <tr>
+            <td>Contextual link recommendations</td>
+            <td class="col-us"><span class="check">✓</span> Per page</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="partial">~</span> Generic</td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Anchor text diversity scoring</td>
+            <td class="col-us"><span class="check">✓</span></td>
+            <td><span class="partial">~</span> Export only</td>
+            <td><span class="partial">~</span> Basic</td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Orphan page detection</td>
+            <td class="col-us"><span class="check">✓</span></td>
+            <td><span class="partial">~</span> Manual filter</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="partial">~</span> DIY</td>
+          </tr>
+          <tr>
+            <td>Built-in web crawler</td>
+            <td class="col-us"><span class="check">✓</span> No tools needed</td>
+            <td><span class="cross">✗</span> Separate app</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Notion export</td>
+            <td class="col-us"><span class="check">✓</span> One click</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Health score history</td>
+            <td class="col-us"><span class="check">✓</span> Auto-tracked</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="partial">~</span> Paid plans</td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Runs locally / free</td>
+            <td class="col-us"><span class="check">✓</span> Fully local</td>
+            <td><span class="partial">~</span> Paid tool</td>
+            <td><span class="cross">✗</span> Subscription</td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Setup time</td>
+            <td class="col-us"><span class="check">✓</span> &lt;2 min</td>
+            <td>30–60 min</td>
+            <td>Hours</td>
+            <td>Days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ DM FEATURES -->
+<section class="dm-section" id="marketing">
+  <div class="wrap">
+    <div class="dm-layout">
+      <div>
+        <div class="section-badge reveal">Digital Marketing Intelligence</div>
+        <h2 class="section-h reveal">Not just technical SEO.<br/>Revenue-level insights.</h2>
+        <p class="section-sub reveal">Seven advanced analysis modules that go beyond basic link auditing — built for digital marketers who need to justify spend and protect conversions.</p>
+        <div class="dm-list">
+          <div class="dm-item reveal">
+            <div class="dm-ic">💰</div>
+            <div>
+              <h4>Money Page Protection</h4>
+              <p>Score every conversion-intent page by inlink count, anchor diversity, and protection depth. Know which pages are one algorithm update away from losing traffic.</p>
+            </div>
+          </div>
+          <div class="dm-item reveal reveal-delay-1">
+            <div class="dm-ic">⚠️</div>
+            <div>
+              <h4>Keyword Cannibalization Detector</h4>
+              <p>TF-IDF vector overlap surfaces page pairs competing for the same terms. Severity buckets at 45%, 55%, and 70% overlap — so you know when to consolidate vs. differentiate.</p>
+            </div>
+          </div>
+          <div class="dm-item reveal reveal-delay-2">
+            <div class="dm-ic">🚀</div>
+            <div>
+              <h4>SEO Opportunity Scoring</h4>
+              <p>Ranks pages by opportunity score — high content value, poor link support, deep crawl position. Link to these first for fastest ranking lift.</p>
+            </div>
+          </div>
+          <div class="dm-item reveal reveal-delay-3">
+            <div class="dm-ic">📉</div>
+            <div>
+              <h4>Content Gap Finder</h4>
+              <p>Thin topic clusters with few pages and scattered authority signal where competitors are outranking you — and where to create content next.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- dm panel -->
+      <div class="dm-panel reveal">
+        <div class="dm-panel-title">💰 Money Page Protection</div>
+        <div class="dm-row">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">/services/mobile-application-development</div>
+            <div style="font-size:10px;color:var(--mute);margin-top:2px">442 inlinks · 98% single anchor</div>
+          </div>
+          <div class="pbar-bg"><div class="pbar" style="width:22%;background:var(--red)"></div></div>
+          <span class="dm-tag cr">Critical</span>
+        </div>
+        <div class="dm-row">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">/services/web-development</div>
+            <div style="font-size:10px;color:var(--mute);margin-top:2px">38 inlinks · 5 unique anchors</div>
+          </div>
+          <div class="pbar-bg"><div class="pbar" style="width:45%;background:var(--amber)"></div></div>
+          <span class="dm-tag hi">High</span>
+        </div>
+        <div class="dm-row">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">/contact</div>
+            <div style="font-size:10px;color:var(--mute);margin-top:2px">12 inlinks · 4 unique anchors</div>
+          </div>
+          <div class="pbar-bg"><div class="pbar" style="width:60%;background:var(--blue)"></div></div>
+          <span class="dm-tag me">Medium</span>
+        </div>
+        <div class="dm-row">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">/pricing</div>
+            <div style="font-size:10px;color:var(--mute);margin-top:2px">89 inlinks · 12 unique anchors</div>
+          </div>
+          <div class="pbar-bg"><div class="pbar" style="width:88%;background:var(--green)"></div></div>
+          <span class="dm-tag ok">Protected</span>
+        </div>
+        <div style="border-top:1px solid var(--line);padding-top:12px;margin-top:2px">
+          <div class="dm-panel-title" style="margin-bottom:8px">⚠️ Cannibalization Pairs</div>
+          <div class="dm-row">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:10px;color:var(--text2);">/blog/react-native vs /services/react</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:var(--red)">74%</span>
+            <span class="dm-tag cr">Consolidate</span>
+          </div>
+          <div class="dm-row" style="margin-top:8px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:10px;color:var(--text2);">/node-js-dev vs /hire-node-developers</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:var(--amber)">61%</span>
+            <span class="dm-tag hi">Review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ AGENTS -->
+<section class="agents-section" id="agents">
+  <div class="wrap">
+    <!-- intro row -->
+    <div class="agents-intro">
+      <div>
+        <div class="section-badge reveal">Agent Architecture</div>
+        <h2 class="section-h reveal">5 specialized agents.<br/>One unified pipeline.</h2>
+        <p class="section-sub reveal">Each agent owns exactly one job. They run in sequence — output from one feeds directly into the next — so every insight builds on verified data from the stage before it.</p>
+        <div class="agent-count-badge reveal" style="margin-top:28px">
+          <span class="agent-count-num">5</span>
+          <span class="agent-count-label">AI agents working in concert</span>
+        </div>
+      </div>
+      <!-- pipeline diagram -->
+      <div class="pipeline-wrap reveal">
+        <div class="pipeline-label">Live pipeline flow</div>
+        <div class="pipeline-row">
+          <div class="pipe-node active">
+            <span class="pipe-icon">⬡</span>
+            <div class="pipe-name">Graph</div>
+            <div class="pipe-role">Link topology</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-node">
+            <span class="pipe-icon">◎</span>
+            <div class="pipe-name">Anchor</div>
+            <div class="pipe-role">Text quality</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-node">
+            <span class="pipe-icon">🗂️</span>
+            <div class="pipe-name">Topic</div>
+            <div class="pipe-role">Clusters</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-node">
+            <span class="pipe-icon">🔗</span>
+            <div class="pipe-name">Linker</div>
+            <div class="pipe-role">Suggestions</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-node">
+            <span class="pipe-icon">📊</span>
+            <div class="pipe-name">Reporter</div>
+            <div class="pipe-role">Outputs</div>
+          </div>
+        </div>
+        <div class="pipe-input">
+          <span>▶</span> Input: internal_html.csv · all_inlinks.csv · all_anchor_text.csv
+        </div>
+        <div class="pipe-output">
+          <span>◆</span> Output: report.json · report.html · live dashboard · CSV recs
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 agent cards -->
+    <div style="text-align:center;margin-bottom:32px">
+      <h3 style="font-size:20px;font-weight:800;letter-spacing:-.5px" class="reveal">Meet the agents</h3>
+    </div>
+    <div class="agents-grid">
+      <div class="agent-card c-indigo reveal">
+        <div class="agent-num">Agent 01</div>
+        <span class="agent-emoji">⬡</span>
+        <h3>Graph Agent</h3>
+        <p>Parses your crawl CSV into a directed link graph. Detects orphans, broken links, redirect chains, nofollow flags, crawl depth distribution, and PageRank flow — all in pure Python.</p>
+        <div class="agent-tags">
+          <span class="agent-tag hi">graph analysis</span>
+          <span class="agent-tag">orphan detection</span>
+          <span class="agent-tag">PageRank</span>
+        </div>
+      </div>
+      <div class="agent-card c-blue reveal reveal-delay-1">
+        <div class="agent-num">Agent 02</div>
+        <span class="agent-emoji">◎</span>
+        <h3>Anchor Agent</h3>
+        <p>Classifies every internal anchor as descriptive, generic, image-only, or over-optimised. Flags keyword stuffing, measures anchor diversity per destination, and surfaces exact-match risk.</p>
+        <div class="agent-tags">
+          <span class="agent-tag hi">TF-IDF</span>
+          <span class="agent-tag">anchor classification</span>
+          <span class="agent-tag">over-optimisation</span>
+        </div>
+      </div>
+      <div class="agent-card c-green reveal reveal-delay-2">
+        <div class="agent-num">Agent 03</div>
+        <span class="agent-emoji">🗂️</span>
+        <h3>Topic Agent</h3>
+        <p>Groups pages into topical clusters using TF-IDF vectors and Jaccard similarity. Auto-names each cluster from its top keywords. Scores hub authority vs. scattered pages. No model needed.</p>
+        <div class="agent-tags">
+          <span class="agent-tag hi">Jaccard similarity</span>
+          <span class="agent-tag">cluster naming</span>
+          <span class="agent-tag">hub scoring</span>
+        </div>
+      </div>
+      <div class="agent-card c-amber reveal reveal-delay-3">
+        <div class="agent-num">Agent 04</div>
+        <span class="agent-emoji">🔗</span>
+        <h3>Linker Agent</h3>
+        <p>Generates contextual internal link suggestions with AI-written anchor text via Ollama. Falls back to TF-IDF relatedness scoring when no model is available — the pipeline never stalls.</p>
+        <div class="agent-tags">
+          <span class="agent-tag hi">Ollama LLM</span>
+          <span class="agent-tag">anchor writing</span>
+          <span class="agent-tag">fallback mode</span>
+        </div>
+      </div>
+      <div class="agent-card c-purple reveal reveal-delay-4">
+        <div class="agent-num">Agent 05</div>
+        <span class="agent-emoji">📊</span>
+        <h3>Reporter Agent</h3>
+        <p>Aggregates all agent outputs into a validated JSON report, a self-contained HTML export, and a live SSE-powered dashboard with 11 pages of intelligence — updated in real time as analysis runs.</p>
+        <div class="agent-tags">
+          <span class="agent-tag hi">SSE dashboard</span>
+          <span class="agent-tag">HTML export</span>
+          <span class="agent-tag">JSON schema</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ NOTION -->
+<section class="notion-section" id="notion">
+  <div class="wrap">
+    <div class="notion-layout">
+      <!-- left: copy -->
+      <div>
+        <div class="notion-badge reveal">
+          <div class="notion-logo">
+            <svg width="10" height="10" viewBox="0 0 100 100" fill="none"><path d="M6 7.3C9.9 10.4 11.3 10.2 18.8 9.7L88.6 5.6c1.5 0 .3-1.4-.2-1.6L76.1.4C73.6-.1 71 .1 68.2.3L1.1 5c-2.3.2-2.7 1.4-1.1 2.3zm7.7 11V78c0 3.9 1.9 5.4 6.3 5.2L92.5 79c4.4-.2 4.9-2.9 4.9-6.1V14.3c0-3.2-1.3-4.9-4.2-4.6L17.7 14c-3.1.3-4 1.9-4 4.3zm74.3 3.4L67.7 34.3c-1.3.7-1.8 2.2-1.8 3.8V83c0 2 .8 3 3 2.8l2.6-.2c2-.1 2.5-1.3 2.5-3V41.9l7.3-5.1c1.4-1 2.1-2.5 2.1-4.3V23.2c0-1.8-.9-2.4-2.4-1.5zM26.2 23.1l-9.1.5c-.9.1-1.3.7-1.3 1.5v53.8c0 1.2.7 1.7 1.5 1.6 2.2-.1 2.7-1.4 2.7-3.1V29.6l6.4-.4c1.5-.1 2.1-1 2.1-2.4v-2.2c0-1.5-.8-1.6-2.3-1.5zm18.1 49.7L32.7 24.5c-.3-1.2-1.1-1.6-2.4-1.4l-2.4.2c-1.1.1-1.5.9-1.2 2.1l11.2 48.4c.3 1.4 1.2 1.8 2.6 1.6l2.5-.2c1.3-.1 1.8-.9 1.3-2.4z" fill="#000"/></svg>
+          </div>
+          Notion Integration
+        </div>
+        <h2 class="section-h reveal">Get your SEO report<br/>straight in Notion.</h2>
+        <p class="section-sub reveal">One click after any analysis — a fully structured report page lands in your Notion workspace with health score, fix checklist, link recommendations, and cannibalization data. Your team can start acting on it immediately.</p>
+
+        <div class="notion-steps">
+          <div class="notion-step reveal">
+            <div class="notion-step-num">1</div>
+            <div class="notion-step-body">
+              <h4>Create a Notion integration</h4>
+              <p>Go to notion.so/my-integrations → New integration → copy the token (<code style="font-size:11px;color:var(--indigo)">secret_xxx</code>)</p>
+            </div>
+          </div>
+          <div class="notion-step reveal reveal-delay-1">
+            <div class="notion-step-num">2</div>
+            <div class="notion-step-body">
+              <h4>Share a page with it</h4>
+              <p>Open any Notion page → click <code style="font-size:11px;color:var(--indigo)">···</code> → Add connections → select your integration</p>
+            </div>
+          </div>
+          <div class="notion-step reveal reveal-delay-2">
+            <div class="notion-step-num">3</div>
+            <div class="notion-step-body">
+              <h4>Paste token + page ID in dashboard</h4>
+              <p>Go to Reports page → paste credentials → click Verify. Done. Every future analysis has a one-click Notion export.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px" class="reveal reveal-delay-3">
+          <a href="/dashboard#reports" class="btn-primary" style="display:inline-block;padding:12px 26px;font-size:14px;border-radius:10px;text-decoration:none">Connect Notion in Dashboard →</a>
+        </div>
+      </div>
+
+      <!-- right: notion page mockup -->
+      <div class="notion-mock reveal">
+        <div class="nm-topbar">
+          <div class="nm-dot" style="background:#EF4444"></div>
+          <div class="nm-dot" style="background:#F59E0B"></div>
+          <div class="nm-dot" style="background:#10B981"></div>
+          <div class="nm-title-bar">app.notion.com</div>
+        </div>
+        <div class="nm-body">
+          <div class="nm-icon">⚡</div>
+          <div class="nm-page-title">Link Intel — nmgtechnologies.com — June 21, 2026</div>
+
+          <div class="nm-callout">
+            <span class="nm-callout-icon">🔴</span>
+            <p>Health Score  36/100  ·  Grade F  ·  221 pages  ·  12,420 links  ·  Generated June 21, 2026</p>
+          </div>
+
+          <div class="nm-h2">🔧 Priority Fix Queue</div>
+          <div class="nm-todo">
+            <div class="nm-check"></div>
+            <div class="nm-todo-text">[CRITICAL]  Fix broken link → /services/php-development</div>
+            <div class="nm-tag cr">Critical</div>
+          </div>
+          <div class="nm-todo">
+            <div class="nm-check"></div>
+            <div class="nm-todo-text">[CRITICAL]  Fix broken link → /hire-dedicated-developers</div>
+            <div class="nm-tag cr">Critical</div>
+          </div>
+          <div class="nm-todo">
+            <div class="nm-check done">✓</div>
+            <div class="nm-todo-text done">[HIGH]  Add inlinks to orphan: /blog/seo-case-studies</div>
+            <div class="nm-tag hi">High</div>
+          </div>
+          <div class="nm-todo">
+            <div class="nm-check"></div>
+            <div class="nm-todo-text">[MEDIUM]  Diversify anchor "mobile app development" (98%)</div>
+            <div class="nm-tag hi">Medium</div>
+          </div>
+
+          <div class="nm-h2">🔗 Link Recommendations</div>
+          <div class="nm-bullet">
+            <div class="nm-dot2"></div>
+            <div>/company/about-us → /services/mobile-application-development  <span class="nm-muted">· anchor: "end-to-end mobile solutions"</span></div>
+          </div>
+          <div class="nm-bullet">
+            <div class="nm-dot2"></div>
+            <div>/blog/react-native → /services/react-development  <span class="nm-muted">· anchor: "React development services"  · rel: 0.82</span></div>
+          </div>
+          <div class="nm-bullet">
+            <div class="nm-dot2"></div>
+            <div>/hire-developers → /services/web-development  <span class="nm-muted">· anchor: "custom web development"  · rel: 0.76</span></div>
+          </div>
+
+          <div class="nm-h2">⚠️ Cannibalization</div>
+          <div class="nm-bullet">
+            <div class="nm-dot2"></div>
+            <div><strong>🔴 High  74% overlap</strong>  <span class="nm-muted">/blog/react-native ↔ /services/react</span></div>
+          </div>
+          <div class="nm-bullet">
+            <div class="nm-dot2"></div>
+            <div><strong>🟡 Medium  61% overlap</strong>  <span class="nm-muted">/node-js-dev ↔ /hire-node-developers</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ FAQ -->
+<section class="faq-section" id="faq">
+  <div class="wrap">
+    <div class="badge-center"><span class="section-badge reveal">FAQ</span></div>
+    <h2 class="section-h center reveal">Common questions</h2>
+    <div class="faq-list">
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Do I need Screaming Frog to use Link Intel?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-a">
+          <p>No. Link Intel has a built-in crawler — just enter your website URL and we'll crawl it and generate all the analysis automatically. If you do have a Screaming Frog export, you can upload those CSVs directly for even faster results.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          How many pages can it analyse?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-a">
+          <p>The built-in crawler handles up to 200 pages per run by default. For larger sites, use a Screaming Frog export — we've tested it successfully on exports with 50,000+ pages. The analysis is done locally in Python, so there's no cloud timeout.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Does it send my data anywhere?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-a">
+          <p>No. Everything runs locally on your machine. Your CSVs, crawl data, and reports never leave your computer. The only external call is to Claude's API if you enable AI-powered entity extraction — and even then, only individual page snippets are sent, never the full crawl.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          How does the health score work?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-a">
+          <p>The score (0–100) is a weighted composite of: broken internal links (−20), orphan pages (−15), anchor text diversity (−15), PageRank distribution equity (−20), topical cluster coverage (−15), and crawl depth efficiency (−15). Grades follow standard A–F bands.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Can I export reports to Notion?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-a">
+          <p>Yes. Connect your Notion integration token in the dashboard, pick a parent page, and click Export. Link Intel creates a fully structured Notion page with your health score, key metrics, a prioritised fix checklist, link recommendations, and cluster map.</p>
+        </div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Does it work on JavaScript-heavy SPAs?
+          <span class="faq-arrow">›</span>
+        </button>
+        <div class="faq-a">
+          <p>The built-in crawler uses standard HTTP requests and doesn't execute JavaScript, so for SPAs it will only see server-rendered HTML. For JS-heavy sites, crawl with Screaming Frog (which has a JS rendering mode) and upload the resulting CSVs — the analysis will then be complete.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ CTA -->
+<section class="cta-section">
+  <div class="wrap">
+    <div class="cta-banner reveal">
+      <h2>Ready to fix your internal links?</h2>
+      <p>Your Screaming Frog export is all you need. Drop it in, run one command, and get a complete picture of your site's internal linking health.</p>
+      <div class="cta-actions">
+        <a href="/dashboard" class="btn-hero">Open Dashboard →</a>
+        <a href="#how" class="btn-hero-sec">Read the docs</a>
+      </div>
+      <p class="cta-note">No account required · No external API calls · Runs 100% locally</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════ FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-mark">⚡</div>
+        <span class="footer-name">Link Intel Suite</span>
+      </div>
+      <p class="footer-desc">Internal linking intelligence for SEO teams. Built on deterministic graph algorithms with optional AI enhancement.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#marketing">SEO Intelligence</a>
+      <a href="/dashboard">Dashboard</a>
+    </div>
+    <div class="footer-col">
+      <h4>Analysis</h4>
+      <a href="/dashboard#graph">Link Graph</a>
+      <a href="/dashboard#anchors">Anchor Analysis</a>
+      <a href="/dashboard#clusters">Topical Clusters</a>
+      <a href="/dashboard#pagerank">PageRank Flow</a>
+    </div>
+    <div class="footer-col">
+      <h4>Export</h4>
+      <a href="/export/report.html">HTML Report</a>
+      <a href="/export/recommendations.csv">CSV Export</a>
+      <a href="/dashboard#reports">All Reports</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Link Intel Suite. Built for SEO professionals.</p>
+    <div class="footer-pills">
+      <span class="footer-pill">✓ 100% Local</span>
+      <span class="footer-pill">✓ No API Keys</span>
+      <span class="footer-pill">✓ Open Source</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Smooth nav link scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+</script>
+</body>
+</html>

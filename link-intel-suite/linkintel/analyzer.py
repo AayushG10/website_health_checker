@@ -45,6 +45,23 @@ GENERIC_ANCHORS = {
 
 STOPWORDS = set("""a an the and or but if then else for to of in on at by with from as is are was were be been being this that these those it its we you they he she them our your their i me my mine our ours us not no yes do does did doing have has had having will would can could should may might must shall about into over under again further once here there all any both each few more most other some such only own same so than too very s t can just don now get got also into out up down off above below""".split())
 
+# Blog / boilerplate terms that appear on many pages and pollute TF-IDF keyword vectors
+BOILERPLATE_WORDS = {
+    "minutes", "reading", "estimated", "min", "read", "time",
+    "author", "published", "updated", "posted", "date", "category", "tags", "tag",
+    "views", "comments", "comment", "share", "shares", "like", "likes",
+    "january", "february", "march", "april", "june", "july", "august",
+    "september", "october", "november", "december",
+    "mon", "tue", "wed", "thu", "fri", "sat", "sun",
+    "home", "page", "click", "contact", "email", "phone", "address",
+    "copyright", "rights", "reserved", "privacy", "terms", "policy",
+    "subscribe", "newsletter", "follow", "social", "twitter", "linkedin",
+    "facebook", "instagram", "youtube",
+    "inc", "ltd", "llc", "pvt", "corp",
+    "loading", "please", "wait", "error", "sorry",
+    "table", "contents",
+}
+
 
 # --------------------------------------------------------------------------- #
 # parsing helpers
@@ -302,7 +319,7 @@ def anchor_analysis(inlinks) -> dict:
 # --------------------------------------------------------------------------- #
 def _tokens(text: str) -> list[str]:
     return [w for w in re.findall(r"[a-z][a-z0-9\-]{2,}", (text or "").lower())
-            if w not in STOPWORDS]
+            if w not in STOPWORDS and w not in BOILERPLATE_WORDS]
 
 
 def page_keywords(page, body: str, top=12) -> list[str]:
@@ -394,54 +411,93 @@ def build_tfidf_keywords(pages: list, page_text: dict, top=12) -> dict[str, list
     return kw_out
 
 
+def _path_segment(url: str) -> str:
+    """Return the primary path segment of a URL (e.g. 'blog', 'services', or '')."""
+    try:
+        from urllib.parse import urlparse
+        parts = [x for x in urlparse(url).path.strip("/").split("/") if x]
+        return parts[0] if parts else ""
+    except Exception:
+        return ""
+
+
 def cluster_pages(pages, page_text, n_keywords=12) -> dict:
-    """Group indexable pages into topical clusters using greedy keyword-similarity.
+    """Group indexable pages into topical clusters.
 
-    Algorithm (deterministic, O(n²)):
-      1. Sort indexable pages by Unique Inlinks descending.
-      2. The most-inlinked page becomes the first cluster seed.
-      3. For each subsequent page (inlinks desc): compare its TF keywords against
-         every existing seed's keywords. Join the cluster whose seed has the highest
-         Jaccard overlap (> 0). If all overlaps are 0, start a new cluster.
-      4. Every page belongs to exactly one cluster (min size = 1).
+    Improved algorithm:
+      1. Compute TF-IDF vectors with extended boilerplate stopwords.
+      2. Pre-seed one cluster per distinct URL path segment (blog, services, etc.).
+      3. Assign each page (sorted most-inlinked-first) to the best matching cluster:
+         path-segment match gives a 0.06 Jaccard bonus; minimum threshold of 0.08 to join.
+      4. Post-process: merge singleton clusters into their nearest neighbour.
+      5. Hub = member with most Unique Inlinks. Authority = hub if hub_inlinks >= 2x second.
 
-    Hub and authority logic follow the rulebook exactly.
     cluster["name"] is left None — the topic-agent fills it in.
     """
     idx200 = [p for p in pages if is_html(p) and is_200(p) and indexable(p)]
     inl = {_norm(p["Address"]): _int(p.get("Unique Inlinks")) for p in idx200}
 
-    # TF-IDF keywords per page — downweights site-wide generic terms so Jaccard
-    # comparison reflects genuine topical similarity, not shared boilerplate words
+    # TF-IDF keywords per page
     kw: dict[str, list[str]] = compute_tfidf(idx200, page_text, n_keywords)
 
-    # greedy assignment — process pages most-inlinked first
-    sorted_urls = sorted(
-        [_norm(p["Address"]) for p in idx200],
-        key=lambda u: -inl.get(u, 0),
-    )
+    # Primary path segment for each URL
+    seg: dict[str, str] = {_norm(p["Address"]): _path_segment(_norm(p["Address"])) for p in idx200}
+
+    # Process pages most-inlinked first so authoritative pages seed good clusters
+    sorted_urls = sorted([_norm(p["Address"]) for p in idx200], key=lambda u: -inl.get(u, 0))
+
+    MIN_JAC = 0.08     # minimum score to join an existing cluster
+    SEG_BONUS = 0.06   # bonus for sharing the same URL path segment
 
     seeds: list[str] = []
     seed_kw: list[set] = []
-    assignments: dict[str, str] = {}  # url -> seed url
+    seed_seg: list[str] = []
+    assignments: dict[str, str] = {}
 
     for u in sorted_urls:
         kw_u = set(kw.get(u, []))
-        best_seed, best_jac = None, 0.0
+        u_seg = seg.get(u, "")
+        best_seed, best_score = None, -1.0
         for i, s in enumerate(seeds):
             kw_s = seed_kw[i]
             if not kw_u or not kw_s:
                 continue
-            jac = len(kw_u & kw_s) / len(kw_u | kw_s)
-            if jac > best_jac:
-                best_jac = jac
+            union = len(kw_u | kw_s)
+            jac = len(kw_u & kw_s) / union if union else 0.0
+            bonus = SEG_BONUS if (u_seg and u_seg == seed_seg[i]) else 0.0
+            score = jac + bonus
+            if score > best_score:
+                best_score = score
                 best_seed = s
-        if best_seed is None or best_jac == 0.0:
+        if best_seed is None or best_score < MIN_JAC:
             seeds.append(u)
             seed_kw.append(kw_u)
+            seed_seg.append(u_seg)
             assignments[u] = u
         else:
             assignments[u] = best_seed
+
+    # post-process: merge singletons into their nearest non-singleton neighbour
+    seed_members_raw: dict[str, list] = defaultdict(list)
+    for u, s in assignments.items():
+        seed_members_raw[s].append(u)
+
+    singletons = [s for s, m in seed_members_raw.items() if len(m) == 1]
+    non_single = [s for s in seeds if len(seed_members_raw.get(s, [])) > 1]
+    for s in singletons:
+        kw_s = set(kw.get(s, []))
+        best_target, best_jac = None, -1.0
+        for t in non_single:
+            kw_t = set(kw.get(t, []))
+            union = len(kw_s | kw_t)
+            jac = len(kw_s & kw_t) / union if union else 0.0
+            seg_bonus = SEG_BONUS if (seg.get(s) and seg.get(s) == seg.get(t)) else 0.0
+            score = jac + seg_bonus
+            if score > best_jac:
+                best_jac = score
+                best_target = t
+        if best_target and best_jac > 0.0:
+            assignments[s] = best_target
 
     # group members by seed
     seed_members: dict[str, list] = defaultdict(list)
@@ -452,6 +508,8 @@ def cluster_pages(pages, page_text, n_keywords=12) -> dict:
     used_keys: Counter = Counter()
     out: list[dict] = []
     for s, members in seed_members.items():
+        if not members:
+            continue
         members = sorted(members)
         hub = max(members, key=lambda u: inl.get(u, 0))
         hub_inlinks = inl.get(hub, 0)
@@ -461,8 +519,9 @@ def cluster_pages(pages, page_text, n_keywords=12) -> dict:
         for m in members:
             ck.update(kw.get(m, []))
         top_kw = [w for w, _ in ck.most_common(8)]
-        # key = top keyword slug, deduplicated with a suffix
-        base_key = top_kw[0] if top_kw else s.rstrip("/").split("/")[-1]
+        # key: prefer URL path segment of the seed, else top keyword
+        primary_seg = seg.get(s, "")
+        base_key = primary_seg if primary_seg else (top_kw[0] if top_kw else s.rstrip("/").split("/")[-1])
         used_keys[base_key] += 1
         key = base_key if used_keys[base_key] == 1 else f"{base_key}_{used_keys[base_key]}"
         out.append({
@@ -518,17 +577,29 @@ def relatedness(page_keywords: dict, top_per_page=10) -> dict:
 # --------------------------------------------------------------------------- #
 # 5. CONTEXTUAL LINK RECOMMENDATIONS  (starter: candidates; model writes anchors)
 # --------------------------------------------------------------------------- #
-def link_candidates(graph, relate: dict, pages, max_per_page=5) -> list:
-    """For each important page, find topically-related pages it does NOT already
-    link to. The model (linker-agent) turns each candidate into a final
-    recommendation with a suggested anchor.
+def _tfidf_anchor(page: dict, kw: list) -> str:
+    """Generate a descriptive fallback anchor from title/H1/keywords (no model needed)."""
+    title = (page.get("Title 1") or "").strip()
+    h1 = (page.get("H1-1") or "").strip()
+    # Prefer title words that aren't generic; strip company suffix patterns
+    candidate = h1 or title
+    # Remove trailing " | Company" style suffixes
+    candidate = re.sub(r"\s*[\|\-–]\s*.{1,30}$", "", candidate).strip()
+    if len(candidate.split()) <= 7:
+        return candidate
+    # Fall back to top keywords joined
+    return " ".join(kw[:4]).title() if kw else candidate[:50]
 
-    STARTER returns the raw candidates (deterministic). It does NOT write anchors -
-    that is the model's job (see agents/linker.md).
+
+def link_candidates(graph, relate: dict, pages, page_keywords: dict = None, max_per_page=5) -> list:
+    """For each important page, find topically-related pages it does NOT already
+    link to. Returns candidates with a TF-IDF fallback anchor (model overwrites these).
     """
     idx200 = [p for p in pages if is_html(p) and is_200(p) and indexable(p)]
     inl = {_norm(p["Address"]): _int(p.get("Unique Inlinks")) for p in idx200}
-    # "important" = top pages by inlinks (hubs/money pages). Tune as needed.
+    pages_by_url = {_norm(p["Address"]): p for p in pages}
+    kw_map = page_keywords or {}
+    # "important" = top pages by inlinks (hubs + money pages)
     important = sorted(inl, key=lambda u: -inl[u])[:60]
     out = []
     for u in important:
@@ -538,8 +609,15 @@ def link_candidates(graph, relate: dict, pages, max_per_page=5) -> list:
             v = e["to"]
             if v in already or v == u:
                 continue
-            cands.append({"target": v, "relatedness": e["score"], "shared_topics": e["shared"],
-                          "suggested_anchor": None})  # TODO: model writes the anchor
+            tgt_page = pages_by_url.get(v, {})
+            tgt_kw = kw_map.get(v, [])
+            fallback_anchor = _tfidf_anchor(tgt_page, tgt_kw)
+            cands.append({
+                "target": v,
+                "relatedness": e["score"],
+                "shared_topics": e["shared"],
+                "suggested_anchor": fallback_anchor or None,
+            })
             if len(cands) >= max_per_page:
                 break
         if cands:
@@ -548,22 +626,252 @@ def link_candidates(graph, relate: dict, pages, max_per_page=5) -> list:
 
 
 # --------------------------------------------------------------------------- #
+# 6. DIGITAL MARKETING INTELLIGENCE
+# --------------------------------------------------------------------------- #
+
+# URL path signals that identify conversion / money pages
+MONEY_SIGNALS = [
+    "contact", "contact-us", "pricing", "price", "prices", "demo", "free-demo",
+    "quote", "get-a-quote", "hire", "hire-us", "consultation", "book", "booking",
+    "get-started", "free-trial", "trial", "buy", "purchase", "checkout",
+    "request", "proposal", "services", "service", "solutions", "solution",
+    "work-with-us", "start-project", "estimate",
+]
+
+
+def keyword_cannibalization(page_keywords: dict, threshold: float = 0.45) -> list:
+    """Find page pairs with high TF-IDF keyword overlap — cannibalization risk.
+
+    Two indexable pages competing for the same terms split link equity and
+    confuse search engines. Returns pairs sorted by overlap score descending.
+    """
+    urls = list(page_keywords.keys())
+    sets = {u: set(page_keywords[u]) for u in urls}
+    pairs = []
+    for i, u in enumerate(urls):
+        su = sets[u]
+        if not su:
+            continue
+        for v in urls[i + 1:]:
+            sv = sets[v]
+            if not sv:
+                continue
+            inter = len(su & sv)
+            union = len(su | sv)
+            jac = inter / union if union else 0.0
+            if jac >= threshold:
+                pairs.append({
+                    "page_a": u,
+                    "page_b": v,
+                    "overlap_score": round(jac, 3),
+                    "shared_keywords": sorted(su & sv)[:8],
+                })
+    pairs.sort(key=lambda x: -x["overlap_score"])
+    return pairs[:30]
+
+
+def money_page_analysis(pages: list, inlinks: list) -> list:
+    """Score how well internal links protect money / conversion pages.
+
+    Detects pages by URL path signals and measures their Unique Inlinks.
+    Low inlinks to a money page = lost conversion traffic.
+    """
+    idx200 = [p for p in pages if is_html(p) and is_200(p) and indexable(p)]
+
+    # build per-destination anchor diversity from inlinks
+    dest_anchors: dict = defaultdict(set)
+    for r in inlinks:
+        if r.get("Type") == "Hyperlink":
+            dst = _norm(r.get("Destination", ""))
+            anc = (r.get("Anchor", "") or "").strip().lower()
+            if dst and anc:
+                dest_anchors[dst].add(anc)
+
+    money = []
+    for p in idx200:
+        url = _norm(p["Address"])
+        path = url.lower()
+        matched = [s for s in MONEY_SIGNALS if s in path]
+        # also check title for money signals
+        title = (p.get("Title 1") or "").lower()
+        if not matched:
+            matched = [s for s in ["contact", "pricing", "demo", "services", "hire", "quote", "consultation"]
+                       if s in title]
+        if not matched:
+            continue
+        inlink_count = _int(p.get("Unique Inlinks", 0))
+        anchor_diversity = len(dest_anchors.get(url, set()))
+        protection = min(100, inlink_count * 6 + anchor_diversity * 2)
+        risk = "critical" if inlink_count < 2 else "high" if inlink_count < 5 else "medium" if inlink_count < 10 else "low"
+        money.append({
+            "url": url,
+            "title": (p.get("Title 1") or "").strip(),
+            "inlinks": inlink_count,
+            "anchor_diversity": anchor_diversity,
+            "protection_score": protection,
+            "risk": risk,
+            "signals": matched[:3],
+        })
+
+    money.sort(key=lambda x: x["inlinks"])
+    return money[:25]
+
+
+def seo_opportunity_scores(pages: list, page_keywords: dict) -> list:
+    """Rank pages by SEO link-building opportunity.
+
+    High score = page has good content but poor internal link support.
+    Prioritise these pages when adding new internal links.
+    """
+    idx200 = [p for p in pages if is_html(p) and is_200(p) and indexable(p)]
+    scores = []
+    for p in idx200:
+        url   = _norm(p["Address"])
+        depth = _int(p.get("Crawl Depth", 0))
+        inl   = _int(p.get("Unique Inlinks", 0))
+        wc    = _int(p.get("Word Count", 0))
+
+        # Opportunity = buried (deep) + content-rich + under-linked
+        depth_score   = min(depth * 12, 40)
+        inlink_score  = max(0, 35 - inl * 3)
+        content_score = min(wc / 80, 25)
+        opp = round(depth_score + inlink_score + content_score)
+
+        scores.append({
+            "url": url,
+            "title": (p.get("Title 1") or "").strip(),
+            "opportunity_score": opp,
+            "crawl_depth": depth,
+            "inlinks": inl,
+            "word_count": wc,
+            "top_keywords": page_keywords.get(url, [])[:4],
+        })
+
+    scores.sort(key=lambda x: -x["opportunity_score"])
+    return scores[:20]
+
+
+def thin_content_pages(pages: list, min_words: int = 300) -> list:
+    """Find indexable pages with suspiciously low word counts.
+
+    Thin content hurts crawl budget and topical authority. Pages with
+    < min_words words and Word Count > 0 are flagged.
+    """
+    result = []
+    for p in pages:
+        if not (is_html(p) and is_200(p) and indexable(p)):
+            continue
+        wc = _int(p.get("Word Count", 0))
+        if 0 < wc < min_words:
+            result.append({
+                "url": _norm(p["Address"]),
+                "title": (p.get("Title 1") or "").strip(),
+                "word_count": wc,
+                "inlinks": _int(p.get("Unique Inlinks", 0)),
+                "crawl_depth": _int(p.get("Crawl Depth", 0)),
+            })
+    result.sort(key=lambda x: x["word_count"])
+    return result[:30]
+
+
+def pagerank_sim(graph: dict, damping: float = 0.85, iterations: int = 30) -> dict:
+    """Simulate PageRank over the internal link graph.
+
+    Returns {url: score_0_to_100} — higher = more link equity received.
+    Useful for spotting equity sinks (lots of inlinks but few outlinks passing
+    equity on) and orphaned link equity.
+    """
+    page_set = graph["page_set"]
+    N = len(page_set)
+    if N == 0:
+        return {}
+    pr = {u: 1.0 / N for u in page_set}
+    out_deg = {u: max(len(graph["out"].get(u, set())), 1) for u in page_set}
+    for _ in range(iterations):
+        new_pr: dict = {}
+        for u in page_set:
+            incoming = sum(pr.get(v, 0) / out_deg[v] for v in graph["in"].get(u, set()))
+            new_pr[u] = (1 - damping) / N + damping * incoming
+        pr = new_pr
+    max_pr = max(pr.values()) if pr else 1.0
+    return {u: round(v / max_pr * 100, 2) for u, v in pr.items()}
+
+
+def content_gap_finder(clusters: list, page_keywords: dict) -> list:
+    """Identify topic clusters with thin coverage — content gap opportunities.
+
+    A gap cluster has few pages and/or no clear hub — these are topics where
+    a competitor with deeper content can outrank you.
+    """
+    gaps = []
+    for c in clusters:
+        size = c["size"]
+        authority = c.get("authority", "scattered")
+        avg_inl = c.get("hub_inlinks", 0) / max(size, 1)
+        if size <= 3 or authority == "scattered":
+            gaps.append({
+                "cluster": c.get("name") or c["key"],
+                "key": c["key"],
+                "size": size,
+                "authority": authority,
+                "hub_page": c.get("hub_page"),
+                "keywords": (c.get("keywords") or [])[:5],
+                "gap_score": round((1 / max(size, 1)) * 50 + (30 if authority == "scattered" else 0) + max(0, 10 - avg_inl)),
+            })
+    gaps.sort(key=lambda x: -x["gap_score"])
+    return gaps[:15]
+
+
+def anchor_text_keyword_map(inlinks: list) -> list:
+    """Build a ranked map of anchor text keywords used sitewide.
+
+    Shows which keywords are being over- or under-used as anchor text —
+    useful for aligning PPC/SEO keyword strategy with internal linking.
+    """
+    kw_counter: Counter = Counter()
+    for r in inlinks:
+        if r.get("Type") != "Hyperlink":
+            continue
+        anchor = (r.get("Anchor", "") or "").strip().lower()
+        if not anchor or anchor in GENERIC_ANCHORS:
+            continue
+        for tok in _tokens(anchor):
+            if len(tok) >= 4:
+                kw_counter[tok] += 1
+    return [{"keyword": kw, "count": cnt} for kw, cnt in kw_counter.most_common(40)]
+
+
+# --------------------------------------------------------------------------- #
 # orchestration entry used by server.py / run.py
 # --------------------------------------------------------------------------- #
 def analyze(export_dir: str) -> dict:
-    pages = load_pages(export_dir)
+    pages   = load_pages(export_dir)
     inlinks = load_links(export_dir, "all_inlinks.csv")
-    text = load_page_text(export_dir)
-    graph = build_graph(pages, inlinks)
-    gstats = graph_stats(pages, inlinks, graph)
+    text    = load_page_text(export_dir)
+    graph   = build_graph(pages, inlinks)
+    gstats  = graph_stats(pages, inlinks, graph)
     anchors = anchor_analysis(inlinks)
-    clusters = cluster_pages(pages, text)                    # uses TF-IDF internally
-    relate = relatedness(clusters["page_keywords"])          # same TF-IDF vectors
-    cands = link_candidates(graph, relate, pages)
+    clusters = cluster_pages(pages, text)
+    relate   = relatedness(clusters["page_keywords"])
+    cands    = link_candidates(graph, relate, pages, clusters["page_keywords"])
+
+    # digital marketing intelligence
+    kw       = clusters["page_keywords"]
+    dm = {
+        "cannibalization":   keyword_cannibalization(kw),
+        "money_pages":       money_page_analysis(pages, inlinks),
+        "seo_opportunities": seo_opportunity_scores(pages, kw),
+        "thin_content":      thin_content_pages(pages),
+        "pagerank":          pagerank_sim(graph),
+        "content_gaps":      content_gap_finder(clusters["clusters"], kw),
+        "anchor_keyword_map": anchor_text_keyword_map(inlinks),
+    }
+
     return {
         "pages": pages, "graph": graph, "graph_stats": gstats,
         "anchors": anchors, "clusters": clusters, "relatedness": relate,
         "link_candidates": cands, "page_text": text, "page_text_count": len(text),
+        "digital_marketing": dm,
     }
 
 
